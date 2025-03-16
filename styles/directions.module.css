@@ -1,0 +1,177 @@
+.mapContainer {
+  width: 100%;
+  height: 400px;
+  background-color: rgba(131, 56, 236, 0.05);
+  border-radius: 8px;
+  border: 1px dashed rgba(131, 56, 236, 0.3);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.mapIcon {
+  font-size: 48px;
+  color: #8338ec;
+  margin-bottom: 16px;
+}
+
+.buildingCard {
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.buildingCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.buildingCardActive {
+  border-color: #8338ec;
+}
+
+.buildingCardInactive {
+  border-left: 4px solid transparent;
+}
+
+.buildingIconContainer {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #8338ec20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px;
+}
+
+.buildingIcon {
+  color: #8338ec;
+}
+
+.directionsButton {
+  border-radius: 20px;
+  color: #8338ec;
+  border-color: #8338ec;
+}
+
+.directionsButton:hover {
+  border-color: #8338ec;
+  background-color: #8338ec10;
+}
+
+.pageBackground {
+  background-image: linear-gradient(135deg, #8338ec10 0%, #3a86ff10 100%);
+  min-height: 100vh;
+  padding-bottom: 48px;
+}
+
+.headerSection {
+  padding-top: 32px;
+  padding-bottom: 24px;
+  background: linear-gradient(135deg, #8338ec 0%, #3a86ff 100%);
+  color: white;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.backButton {
+  color: white;
+}
+
+.backButton:hover {
+  background-color: rgba(255,255,255,0.1);
+}
+
+.breadcrumb {
+  opacity: 0.7;
+}
+
+.searchContainer {
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  border-radius: 50px;
+  background-color: rgba(255,255,255,0.95);
+}
+
+.searchIcon {
+  color: #8338ec;
+  font-size: 1.2rem;
+}
+
+.searchInput {
+  padding: 4px 8px;
+}
+
+.searchButton {
+  border-radius: 50px;
+  padding: 4px 16px;
+  min-width: auto;
+  background: linear-gradient(135deg, #8338ec 0%, #3a86ff 100%);
+}
+
+.searchButton:hover {
+  background: linear-gradient(135deg, #7028dc 0%, #2a76ef 100%);
+}
+
+.decorativeCircle {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+  top: -60px;
+  right: -30px;
+}
+
+.tabIndicator {
+  background-color: #8338ec;
+}
+
+.selectedTab {
+  color: #8338ec;
+}
+
+.locationChip {
+  border-color: #8338ec;
+  color: #8338ec;
+}
+
+.locationChipIcon {
+  color: #8338ec;
+}
+
+.destinationItem {
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.destinationItem:hover {
+  background-color: #f5f5f5;
+}
+
+.destinationIcon {
+  color: #8338ec;
+  margin-right: 8px;
+}
+
+.roundedPaper {
+  border-radius: 12px;
+}
+
+.iconColor {
+  color: #8338ec30;
+}
+
+@media (max-width: 600px) {
+  .mapContainer {
+    height: 300px;
+  }
+}

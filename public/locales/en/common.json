@@ -1,0 +1,212 @@
+{
+  "appName": "Smart Service Robot",
+  "welcome": "Welcome",
+  "selectService": "Please select a service",
+  "navigation": {
+    "home": "Home",
+    "services": "Services",
+    "directions": "Directions",
+    "information": "Information",
+    "help": "Help",
+    "back": "Back"
+  },
+  "services": {
+    "order": {
+      "title": "Order Service",
+      "description": "Order food, coffee and other services and track their status.",
+      "fullDescription": "Quickly and easily order products anywhere on campus. Cafes, canteens, stationery and more.",
+      "button": "Place Order"
+    },
+    "directions": {
+      "title": "Directions",
+      "description": "Learn how to get to any place in the campus or building.",
+      "button": "Get Directions"
+    },
+    "information": {
+      "title": "Information Service",
+      "description": "Access events, announcements and important information.",
+      "button": "Get Info"
+    },
+    "help": {
+      "title": "Student Counseling",
+      "description": "Access campus guide, registration procedures and academic support information.",
+      "button": "Get Help"
+    }
+  },
+  "presentations": {
+    "welcomeTitle": "Smart Service Robot",
+    "welcomeSubtitle": "I'm here to make your campus life easier!",
+    "services": {
+      "title": "Order Service",
+      "description": "You can easily place orders from cafes, restaurants, and other services and track them in real-time."
+    },
+    "directions": {
+      "title": "Navigation Assistant",
+      "description": "I provide interactive maps and directions to help you easily find places you want to go within the campus."
+    },
+    "information": {
+      "title": "Information Center",
+      "description": "You can instantly access up-to-date information about events, classes, announcements, and campus details."
+    },
+    "assistance": {
+      "title": "Student Counseling",
+      "description": "I provide orientation for new students and support with registration procedures and other academic processes."
+    },
+    "watchDemo": "Watch Demo",
+    "exitButton": "Exit Presentation Mode"
+  },
+  "voiceCommands": {
+    "title": "Voice Command",
+    "listening": "I'm listening...",
+    "processing": "Processing command...",
+    "examples": "Examples: 'Go to home page', 'I want to place an order', 'How do I get to the library?'"
+  },
+  "voiceRecognitionLang": "en-US",
+  "footerText": "Smart Service Robot - All Rights Reserved",
+  
+  "pageTitle": {
+    "home": "Home",
+    "services": "Place Order"
+  },
+  "nav": {
+    "home": "Home",
+    "services": "Place Order"
+  },
+  "categories": {
+    "cafeteria": {
+      "title": "Cafeteria Order",
+      "description": "Sandwiches, salads, snacks and other foods"
+    },
+    "coffee": {
+      "title": "Coffee Shop & Drinks",
+      "description": "Coffee, tea, beverages and snacks"
+    },
+    "printing": {
+      "title": "Printing & Stationery",
+      "description": "Document printing, stationery supplies"
+    },
+    "academic": {
+      "title": "Academic Materials",
+      "description": "Books, lecture notes and academic materials"
+    }
+  },
+  "order": {
+    "selectCategory": "Select order category",
+    "selectMenu": "Select items from menu",
+    "customizeOrder": "Customize your order",
+    "reviewSubmit": "Review and submit order",
+    "submissionNote": "After completing your order, you can track the order status from 'My Orders' page.",
+    "steps": {
+      "selectCategory": "Select Category",
+      "selectMenu": "Select Menu",
+      "customizeOrder": "Order Details",
+      "reviewSubmit": "Review & Submit"
+    },
+    "success": {
+      "title": "Order received!",
+      "message": "Your order has been successfully received. You will be notified about the status of your order."
+    },
+    "returnHome": "Return to Home"
+  },
+  "form": {
+    "name": "Full Name",
+    "email": "Email",
+    "studentId": "Student ID",
+    "studentIdHelp": "Enter your student ID number",
+    "orderDetails": "Order Notes",
+    "orderDetailsPlaceholder": "Additional notes or requests about your order",
+    "deliveryLocation": "Delivery Location",
+    "deliveryTime": "Delivery Time",
+    "paymentMethod": "Payment Method",
+    "personalDetails": "Personal Details",
+    "deliveryDetails": "Delivery Details",
+    "paymentDetails": "Payment Details"
+  },
+  "menu": {
+    "quantity": "Quantity",
+    "selectedItems": "Selected Items",
+    "total": "Total",
+    "items": "items"
+  },
+  "payment": {
+    "creditCard": "Credit Card",
+    "debitCard": "Debit Card",
+    "campusCard": "Campus Card",
+    "cash": "Cash"
+  },
+  "review": {
+    "category": "Category",
+    "selectedItems": "Selected Items"
+  },
+  "locations": {
+    "library": "Library",
+    "cafeteria": "Cafeteria",
+    "engineeringBuilding": "Engineering Building",
+    "artBuilding": "Art Building",
+    "scienceBuilding": "Science Building"
+  },
+  "times": {
+    "asap": "As soon as possible",
+    "morning": "Morning (09:00 - 12:00)",
+    "afternoon": "Afternoon (12:00 - 17:00)",
+    "evening": "Evening (17:00 - 21:00)"
+  },
+  "navigation": {
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit Order"
+  },
+  "directions": {
+    "pageTitle": "Directions",
+    "title": "Campus Navigation",
+    "subtitle": "Search for your destination or use the map to find your way",
+    "searchPlaceholder": "Search for a building or location...",
+    "search": "Search",
+    "all": "All",
+    "academic": "Academic",
+    "administrative": "Administrative",
+    "locationsFound": "locations found",
+    "noLocationsFound": "No locations found matching your criteria",
+    "campusMap": "Campus Map",
+    "getDirections": "Get Directions",
+    "commonDestinations": "Popular Destinations"
+  },
+  "help": {
+    "title": "Help Center",
+    "subtitle": "Answers to your questions and support information",
+    "searchPlaceholder": "Search for a question or topic...",
+    "noResults": "No results found matching your search criteria",
+    "clearSearch": "Clear Search",
+    "stillNeedHelp": "Still need help?",
+    "contactMessage": "We're here to answer your questions. Please contact us through one of the channels below.",
+    "contactEmail": "Email Contact",
+    "contactPhone": "Phone Contact",
+    "categories": {
+      "general": {
+        "title": "General Information",
+        "q1": "What is the Smart Service Robot?",
+        "a1": "The Smart Service Robot is an interactive system designed to facilitate services such as food and beverage ordering, directions, and information access around the campus.",
+        "q2": "How can I use this system?",
+        "a2": "You can start by selecting the service you need from the main menu. Step-by-step guidance is available for each service.",
+        "q3": "Which languages does the system support?",
+        "a3": "The system currently supports English and Turkish. You can select your preferred language from the options at the top of the screen."
+      },
+      "services": {
+        "title": "Services",
+        "q1": "How can I track my order after placing it?",
+        "a1": "After placing your order, you can check its status in the 'Order Tracking' section using the order number provided to you.",
+        "q2": "How are payments processed?",
+        "a2": "You can make payments using a credit card, debit card, campus card, or cash. Online payments are processed securely."
+      },
+      "technical": {
+        "title": "Technical Support",
+        "q1": "What should I do if the system is not working?",
+        "a1": "Please click the 'Technical Support' button at the bottom of the screen to report the issue or contact our support team at +90 232 488 8000.",
+        "q2": "How does the voice command feature work?",
+        "a2": "You can activate the voice command mode by clicking on the microphone icon in the upper right corner of the screen. Then you can speak your desired service.",
+        "q3": "I found a bug in the system, how can I report it?",
+        "a3": "You can report bugs and suggestions by sending an email to support@iue.edu.tr. Your feedback is valuable for our system improvements."
+      }
+    }
+  }
+}

@@ -1,0 +1,259 @@
+{
+  "appName": "Akıllı Servis Robotu",
+  "welcome": "Hoş Geldiniz",
+  "selectService": "Lütfen aşağıdaki hizmetlerden birini seçin",
+  "navigation": {
+    "home": "Ana Sayfa",
+    "services": "Hizmetler",
+    "directions": "Yol Tarifi",
+    "information": "Bilgi",
+    "help": "Yardım",
+    "back": "Geri"
+  },
+  "services": {
+    "order": {
+      "title": "Sipariş Ver",
+      "description": "Üniversite içindeki herhangi bir yerden yiyecek, içecek veya diğer ürünleri sipariş edin.",
+      "fullDescription": "Kampüs içinde herhangi bir yere hızlı ve kolay bir şekilde istediğiniz ürünleri sipariş edin. Kafe, kantin, kırtasiye ve daha fazlası.",
+      "button": "Sipariş Ver"
+    },
+    "directions": {
+      "title": "Yol Tarifi",
+      "description": "Kampüs içinde istediğiniz yere nasıl gideceğinizi öğrenin.",
+      "button": "Yol Bul"
+    },
+    "information": {
+      "title": "Bilgi Al",
+      "description": "Üniversite, dersler ve etkinlikler hakkında bilgi alın.",
+      "button": "Bilgi Al"
+    },
+    "help": {
+      "title": "Yardım",
+      "description": "Sorunlarınız için yardım alın veya bir görevliyle iletişime geçin.",
+      "button": "Yardım Al"
+    }
+  },
+  "presentations": {
+    "welcomeTitle": "Akıllı Servis Robotu",
+    "welcomeSubtitle": "Kampüs yaşamınızı kolaylaştırmak için buradayım!",
+    "services": {
+      "title": "Sipariş Servisi",
+      "description": "Kafeler, restoranlar ve diğer hizmetlerden siparişlerinizi kolaylıkla verebilir ve gerçek zamanlı olarak takip edebilirsiniz."
+    },
+    "directions": {
+      "title": "Yol Tarifi Asistanı",
+      "description": "Kampüs içerisinde gitmek istediğiniz yerleri kolayca bulmanız için interaktif haritalar ve yönlendirmeler sunuyorum."
+    },
+    "information": {
+      "title": "Bilgi Merkezi",
+      "description": "Etkinlikler, dersler, duyurular ve kampüs hakkında güncel bilgilere anında ulaşabilirsiniz."
+    },
+    "assistance": {
+      "title": "Öğrenci Danışmanlığı",
+      "description": "Yeni öğrencilere oryantasyon, kayıt işlemleri ve diğer akademik süreçlerde destek sağlıyorum."
+    },
+    "watchDemo": "Demo İzle",
+    "exitButton": "Sunum Modundan Çık"
+  },
+  "voiceCommands": {
+    "title": "Sesli Komut",
+    "listening": "Sizi dinliyorum...",
+    "processing": "Komut işleniyor...",
+    "examples": "Örnek: 'Ana sayfaya git', 'Sipariş vermek istiyorum', 'Kütüphaneye nasıl giderim?'"
+  },
+  "voiceRecognitionLang": "tr-TR",
+  "footerText": "Akıllı Servis Robotu - Tüm Hakları Saklıdır",
+  "pageTitle": {
+    "home": "Ana Sayfa",
+    "services": "Sipariş Ver"
+  },
+  "nav": {
+    "home": "Ana Sayfa",
+    "services": "Sipariş Ver"
+  },
+  "categories": {
+    "cafeteria": {
+      "title": "Kantin Siparişi",
+      "description": "Sandviç, salata, atıştırmalıklar ve diğer yiyecekler"
+    },
+    "coffee": {
+      "title": "Kafeterya & İçecek",
+      "description": "Kahve, çay, içecekler ve atıştırmalıklar"
+    },
+    "printing": {
+      "title": "Baskı & Kırtasiye",
+      "description": "Doküman baskısı, kırtasiye malzemeleri"
+    },
+    "academic": {
+      "title": "Akademik Malzeme",
+      "description": "Kitaplar, ders notları ve akademik malzemeler"
+    }
+  },
+  "order": {
+    "selectCategory": "Sipariş kategorisi seçin",
+    "selectMenu": "Menüden ürün seçin",
+    "customizeOrder": "Siparişinizi özelleştirin",
+    "reviewSubmit": "Siparişi gözden geçir ve gönder",
+    "submissionNote": "Siparişinizi tamamladıktan sonra, sipariş durumunu 'Siparişlerim' sayfasından takip edebilirsiniz.",
+    "steps": {
+      "selectCategory": "Kategori Seç",
+      "selectMenu": "Menü Seçimi",
+      "customizeOrder": "Sipariş Detayları",
+      "reviewSubmit": "İnceleme ve Gönder"
+    },
+    "success": {
+      "title": "Siparişiniz alındı!",
+      "message": "Siparişiniz başarıyla alındı. Siparişinizin durumu hakkında bilgilendirme alacaksınız."
+    },
+    "returnHome": "Ana Sayfaya Dön"
+  },
+  "form": {
+    "name": "Ad Soyad",
+    "email": "E-posta",
+    "studentId": "Öğrenci Numarası",
+    "studentIdHelp": "Öğrenci kimlik numaranızı giriniz",
+    "orderDetails": "Sipariş Notları",
+    "orderDetailsPlaceholder": "Siparişiniz hakkında ek notlar veya talepler",
+    "deliveryLocation": "Teslimat Yeri",
+    "deliveryTime": "Teslimat Zamanı",
+    "paymentMethod": "Ödeme Yöntemi",
+    "personalDetails": "Kişisel Bilgiler",
+    "deliveryDetails": "Teslimat Bilgileri",
+    "paymentDetails": "Ödeme Bilgileri"
+  },
+  "menu": {
+    "quantity": "Adet",
+    "selectedItems": "Seçilen Ürünler",
+    "total": "Toplam",
+    "items": "ürün"
+  },
+  "payment": {
+    "creditCard": "Kredi Kartı",
+    "debitCard": "Banka Kartı",
+    "campusCard": "Kampüs Kartı",
+    "cash": "Nakit"
+  },
+  "review": {
+    "category": "Kategori",
+    "selectedItems": "Seçilen Ürünler"
+  },
+  "locations": {
+    "library": "Kütüphane",
+    "cafeteria": "Kantin",
+    "engineeringBuilding": "Mühendislik Binası",
+    "artBuilding": "Sanat Binası",
+    "scienceBuilding": "Fen Bilimleri Binası"
+  },
+  "times": {
+    "asap": "Mümkün olan en kısa sürede",
+    "morning": "Sabah (09:00 - 12:00)",
+    "afternoon": "Öğleden sonra (12:00 - 17:00)",
+    "evening": "Akşam (17:00 - 21:00)"
+  },
+  "navigation": {
+    "back": "Geri",
+    "next": "İleri",
+    "submit": "Siparişi Gönder"
+  },
+  "directions": {
+    "pageTitle": "Yol Tarifi",
+    "title": "Kampüs İçi Yön Bulma",
+    "subtitle": "Aradığınız yeri bulmak için arama yapın veya haritayı kullanın",
+    "searchPlaceholder": "Bir bina veya lokasyon arayın...",
+    "search": "Ara",
+    "all": "Tümü",
+    "academic": "Akademik",
+    "administrative": "İdari",
+    "locationsFound": "konum bulundu",
+    "noLocationsFound": "Arama kriterlerinize uygun konum bulunamadı",
+    "campusMap": "Kampüs Haritası",
+    "getDirections": "Yol Tarifi Al",
+    "commonDestinations": "Popüler Konumlar"
+  },
+  "home": "Ana Sayfa",
+  "backToHome": "Ana Sayfaya Dön",
+  "information": {
+    "academic": {
+      "title": "Akademik Bilgiler",
+      "faculties": "Fakülteler",
+      "facultiesContent": "Üniversitemizdeki tüm fakülteler ve programlar hakkında detaylı bilgiler.",
+      "departments": "Bölümler",
+      "departmentsContent": "Fakültelere bağlı bölümlerin listesi ve eğitim programları.",
+      "programs": "Programlar",
+      "programsContent": "Lisans, yüksek lisans ve doktora programlarımız hakkında bilgi."
+    },
+    "events": {
+      "title": "Etkinlikler",
+      "upcoming": "Yaklaşan Etkinlikler",
+      "upcomingContent": "Önümüzdeki haftalarda gerçekleşecek konferans, seminer ve diğer etkinlikler.",
+      "calendar": "Akademik Takvim",
+      "calendarContent": "Kayıt, sınav ve tatil dönemlerini içeren akademik takvim."
+    },
+    "resources": {
+      "title": "Kaynaklar",
+      "library": "Kütüphane",
+      "libraryContent": "Kütüphane çalışma saatleri ve erişilebilir kaynaklar.",
+      "online": "Çevrimiçi Kaynaklar",
+      "onlineContent": "Öğrencilerin erişebileceği dijital kaynaklar ve veritabanları."
+    },
+    "student": {
+      "title": "Öğrenci Hayatı",
+      "clubs": "Öğrenci Kulüpleri",
+      "clubsContent": "Kampüsteki aktif öğrenci kulüpleri ve etkinlikleri.",
+      "services": "Öğrenci Hizmetleri",
+      "servicesContent": "Sağlık, barınma, yemek ve ulaşım hizmetleri hakkında bilgi."
+    },
+    "campus": {
+      "title": "Kampüs",
+      "map": "Kampüs Haritası",
+      "mapContent": "Binaların konumları ve kampüs içi yönlendirmeler.",
+      "facilities": "Tesisler",
+      "facilitiesContent": "Spor tesisleri, yemekhane, kafeterya ve diğer tesisler."
+    },
+    "contact": {
+      "title": "İletişim",
+      "departments": "Bölümlerle İletişim",
+      "departmentsContent": "Akademik bölümlerin iletişim bilgileri.",
+      "offices": "İdari Ofisler",
+      "officesContent": "Üniversite idari ofisleri ve iletişim bilgileri."
+    }
+  },
+  "help": {
+    "title": "Yardım Merkezi",
+    "subtitle": "Sorularınıza cevaplar ve destekle ilgili bilgiler",
+    "searchPlaceholder": "Bir soru veya konu arayın...",
+    "noResults": "Arama kriterlerinize uygun sonuç bulunamadı",
+    "clearSearch": "Aramayı Temizle",
+    "stillNeedHelp": "Hala yardıma mı ihtiyacınız var?",
+    "contactMessage": "Sorularınızı yanıtlamak için buradayız. Lütfen aşağıdaki kanallardan bizimle iletişime geçin.",
+    "contactEmail": "E-posta İletişimi",
+    "contactPhone": "Telefon İletişimi",
+    "categories": {
+      "general": {
+        "title": "Genel Bilgiler",
+        "q1": "Akıllı Servis Robotu nedir?",
+        "a1": "Akıllı Servis Robotu, kampüs içerisinde yiyecek-içecek siparişi, yol tarifi ve bilgi edinme gibi hizmetleri kolaylaştırmak için tasarlanmış interaktif bir sistemdir.",
+        "q2": "Bu sistemi nasıl kullanabilirim?",
+        "a2": "Ana ekrandaki menüden ihtiyacınız olan hizmeti seçerek başlayabilirsiniz. Her hizmet için adım adım yönlendirmeler mevcuttur.",
+        "q3": "Sistem hangi dilleri destekliyor?",
+        "a3": "Sistem şu anda Türkçe ve İngilizce dillerini desteklemektedir. Ekranın üst kısmındaki dil seçeneklerinden dilediğinizi seçebilirsiniz."
+      },
+      "services": {
+        "title": "Hizmetler",
+        "q1": "Sipariş verdikten sonra siparişimi nasıl takip edebilirim?",
+        "a1": "Siparişinizi verdikten sonra size verilen sipariş numarası ile 'Sipariş Takip' bölümünden durumunu kontrol edebilirsiniz.",
+        "q2": "Ödemeler nasıl yapılıyor?",
+        "a2": "Ödemelerinizi kredi kartı, banka kartı, kampüs kartı veya nakit olarak yapabilirsiniz. Online ödemeler güvenli bir şekilde işlenmektedir."
+      },
+      "technical": {
+        "title": "Teknik Destek",
+        "q1": "Sistem çalışmıyorsa ne yapmalıyım?",
+        "a1": "Lütfen ekranın alt kısmındaki 'Teknik Destek' butonuna tıklayarak sorunu bildiriniz veya +90 232 488 8000 numaralı telefondan destek ekibimizle iletişime geçiniz.",
+        "q2": "Sesli komut özelliği nasıl çalışır?",
+        "a2": "Ekranın sağ üst köşesindeki mikrofon ikonuna tıklayarak sesli komut modunu aktifleştirebilirsiniz. Ardından istediğiniz hizmeti sesli olarak söyleyebilirsiniz.",
+        "q3": "Sistemde bir hata buldum, nasıl bildirebilirim?",
+        "a3": "Hataları ve önerilerinizi support@iue.edu.tr adresine e-posta göndererek bildirebilirsiniz. Geri bildirimleriniz sistem geliştirmelerimiz için çok değerlidir."
+      }
+    }
+  }
+}
