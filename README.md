@@ -1,48 +1,57 @@
 # Advoard User Interface
 
-This project is a basic Next.js application for the Advoard user interface. It's designed to be fast, SEO-friendly, and scalable for frontend development.
+## Overview
+This project provides a user interface for the Advoard application. It allows users to interact with the Advoard platform and manage their advertising campaigns effectively.
 
-## Getting Started
-
-First, install dependencies:
+## Installation
 
 ```bash
+# Clone the repository
+git clone https://github.com/your-username/advoard_user_interface.git
+
+# Navigate to the project directory
+cd advoard_user_interface
+
+# Install dependencies
 npm install
-# or
-yarn install
-# or
-pnpm install
 ```
 
-Then, run the development server:
+## Usage
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+# Start development server
+npm run start
+
+# Build for production
+npm run build
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-## Project Structure
-
-- `/src/pages` - Next.js pages
-- `/src/components` - Reusable React components
-- `/src/styles` - CSS modules and global styles
-- `/public` - Static assets
 
 ## Features
+- Feature 1
+- Feature 2
+- Feature 3
 
-- **Fast Loading**: Optimized with Next.js
-- **SEO Friendly**: Built-in head components for metadata
-- **Responsive Design**: Mobile-first approach
-- **Modular Structure**: Easily extendable
+## Technologies Used
+- React.js
+- CSS/SCSS
+- [Other technologies used in your project]
 
-## Learn More
+## Project Structure
+```
+advoard_user_interface/
+├── public/
+├── src/
+│   ├── components/
+│   ├── pages/
+│   ├── assets/
+│   ├── utils/
+│   ├── App.js
+│   └── index.js
+└── [other files and directories]
+```
 
-To learn more about the technologies used in this project:
+## License
+[Your License]
 
-- [Next.js Documentation](https://nextjs.org/docs)
-- [React Documentation](https://reactjs.org/docs/getting-started.html)
+## Contact
+For questions or support, please contact [your contact information].
