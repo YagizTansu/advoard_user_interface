@@ -27,10 +27,10 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/directions": [
+    "/help": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/directions.js"
+      "static/chunks/pages/help.js"
     ]
   },
   "ampFirstPages": []

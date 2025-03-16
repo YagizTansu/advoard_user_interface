@@ -2,10 +2,13 @@ import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 import { 
   Box, Typography, Container, Accordion, AccordionSummary, 
-  AccordionDetails, Button, Grid, Divider, TextField, Paper
+  AccordionDetails, Button, Grid, Divider, TextField, Paper,
+  IconButton, Breadcrumbs
 } from '@mui/material';
+import MuiLink from '@mui/material/Link';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import SearchIcon from '@mui/icons-material/Search';
@@ -110,30 +113,29 @@ export default function Help() {
   return (
     <Box className={styles.pageContainer}>
       {/* Hero section */}
-            <Box className={styles.pageContainer}>
-                        <Box sx={{ mb: 4, display: 'flex', alignItems: 'center' }}>
-                          <IconButton 
-                            component={Link} 
-                            href="/"
-                            sx={{ mr: 2 }}
-                          >
-                            <ArrowBackIcon />
-                          </IconButton>
-                          
-                          <Breadcrumbs aria-label="breadcrumb">
-                            <MuiLink 
-                              component={Link} 
-                              href="/"
-                              underline="hover" 
-                              color="inherit"
-                            >
-                              {t('nav.home')}
-                            </MuiLink>
-                            <Typography color="text.primary">{t('nav.help')}</Typography>
-                          </Breadcrumbs>
-                        </Box>
-      
       <Container maxWidth="lg" sx={{ py: 6 }}>
+        <Box sx={{ mb: 4, display: 'flex', alignItems: 'center' }}>
+          <IconButton 
+            component={Link} 
+            href="/"
+            sx={{ mr: 2 }}
+          >
+            <ArrowBackIcon />
+          </IconButton>
+          
+          <Breadcrumbs aria-label="breadcrumb">
+            <MuiLink 
+              component={Link} 
+              href="/"
+              underline="hover" 
+              color="inherit"
+            >
+              {t('nav.home')}
+            </MuiLink>
+            <Typography color="text.primary">{t('nav.help')}</Typography>
+          </Breadcrumbs>
+        </Box>
+      
         {/* Search box */}
         <motion.div 
           initial={{ opacity: 0, y: -10 }}
