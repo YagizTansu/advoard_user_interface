@@ -12,6 +12,12 @@ package-lock.json
 /build
 /dist
 
+# Next.js
+/.next/
+/out/
+*.tsbuildinfo
+next-env.d.ts
+
 # Miscellaneous
 .DS_Store
 .env
@@ -40,5 +46,3 @@ yarn-error.log*
 
 # Optional eslint cache
 .eslintcache
-
-.next/
