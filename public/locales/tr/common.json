@@ -69,7 +69,11 @@
   },
   "nav": {
     "home": "Ana Sayfa",
-    "services": "Sipariş Ver"
+    "services": "Sipariş Ver",
+    "directions": "Yol Tarifi",
+    "information": "Bilgi",
+    "help": "Yardım",
+    "back": "Geri"
   },
   "categories": {
     "cafeteria": {

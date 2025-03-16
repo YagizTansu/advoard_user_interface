@@ -70,7 +70,10 @@
   },
   "nav": {
     "home": "Home",
-    "services": "Place Order"
+    "services": "Place Order",
+    "directions": "Directions",
+    "information": "Information",
+    "help": "Help"
   },
   "categories": {
     "cafeteria": {

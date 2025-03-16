@@ -191,6 +191,27 @@ export default function Directions() {
       </Head>
       
       <Box className={styles.pageContainer}>
+                  <Box sx={{ mb: 4, display: 'flex', alignItems: 'center' }}>
+                    <IconButton 
+                      component={Link} 
+                      href="/"
+                      sx={{ mr: 2 }}
+                    >
+                      <ArrowBackIcon />
+                    </IconButton>
+                    
+                    <Breadcrumbs aria-label="breadcrumb">
+                      <MuiLink 
+                        component={Link} 
+                        href="/"
+                        underline="hover" 
+                        color="inherit"
+                      >
+                        {t('nav.home')}
+                      </MuiLink>
+                      <Typography color="text.primary">{t('nav.directions')}</Typography>
+                    </Breadcrumbs>
+                  </Box>
         {/* 
         // Hero section with gradient overlay 
         <Box 

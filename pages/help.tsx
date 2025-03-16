@@ -110,6 +110,28 @@ export default function Help() {
   return (
     <Box className={styles.pageContainer}>
       {/* Hero section */}
+            <Box className={styles.pageContainer}>
+                        <Box sx={{ mb: 4, display: 'flex', alignItems: 'center' }}>
+                          <IconButton 
+                            component={Link} 
+                            href="/"
+                            sx={{ mr: 2 }}
+                          >
+                            <ArrowBackIcon />
+                          </IconButton>
+                          
+                          <Breadcrumbs aria-label="breadcrumb">
+                            <MuiLink 
+                              component={Link} 
+                              href="/"
+                              underline="hover" 
+                              color="inherit"
+                            >
+                              {t('nav.home')}
+                            </MuiLink>
+                            <Typography color="text.primary">{t('nav.help')}</Typography>
+                          </Breadcrumbs>
+                        </Box>
       
       <Container maxWidth="lg" sx={{ py: 6 }}>
         {/* Search box */}
