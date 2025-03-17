@@ -15,7 +15,8 @@ import {
   Button,
   Divider,
   Breadcrumbs,
-  Link as MuiLink
+  Link as MuiLink,
+  IconButton
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -56,7 +57,7 @@ export default function Information() {
     { 
       id: 'academic',
       title: 'information.academic.title', 
-      icon: <SchoolIcon sx={{ fontSize: 40, color: '#ff006e' }} />,
+      icon: <SchoolIcon sx={{ fontSize: 40, color: '#fe6b01' }} />,
       items: [
         { title: 'information.academic.faculties', content: 'information.academic.facultiesContent' },
         { title: 'information.academic.departments', content: 'information.academic.departmentsContent' },
@@ -66,7 +67,7 @@ export default function Information() {
     { 
       id: 'events',
       title: 'information.events.title', 
-      icon: <EventIcon sx={{ fontSize: 40, color: '#ff006e' }} />,
+      icon: <EventIcon sx={{ fontSize: 40, color: '#fe6b01' }} />,
       items: [
         { title: 'information.events.upcoming', content: 'information.events.upcomingContent' },
         { title: 'information.events.calendar', content: 'information.events.calendarContent' }
@@ -75,7 +76,7 @@ export default function Information() {
     { 
       id: 'resources',
       title: 'information.resources.title', 
-      icon: <LibraryBooksIcon sx={{ fontSize: 40, color: '#ff006e' }} />,
+      icon: <LibraryBooksIcon sx={{ fontSize: 40, color: '#fe6b01' }} />,
       items: [
         { title: 'information.resources.library', content: 'information.resources.libraryContent' },
         { title: 'information.resources.online', content: 'information.resources.onlineContent' }
@@ -84,7 +85,7 @@ export default function Information() {
     { 
       id: 'student',
       title: 'information.student.title', 
-      icon: <PeopleIcon sx={{ fontSize: 40, color: '#ff006e' }} />,
+      icon: <PeopleIcon sx={{ fontSize: 40, color: '#fe6b01' }} />,
       items: [
         { title: 'information.student.clubs', content: 'information.student.clubsContent' },
         { title: 'information.student.services', content: 'information.student.servicesContent' }
@@ -93,7 +94,7 @@ export default function Information() {
     { 
       id: 'campus',
       title: 'information.campus.title', 
-      icon: <MapIcon sx={{ fontSize: 40, color: '#ff006e' }} />,
+      icon: <MapIcon sx={{ fontSize: 40, color: '#fe6b01' }} />,
       items: [
         { title: 'information.campus.map', content: 'information.campus.mapContent' },
         { title: 'information.campus.facilities', content: 'information.campus.facilitiesContent' }
@@ -102,7 +103,7 @@ export default function Information() {
     { 
       id: 'contact',
       title: 'information.contact.title', 
-      icon: <InfoIcon sx={{ fontSize: 40, color: '#ff006e' }} />,
+      icon: <InfoIcon sx={{ fontSize: 40, color: '#fe6b01' }} />,
       items: [
         { title: 'information.contact.departments', content: 'information.contact.departmentsContent' },
         { title: 'information.contact.offices', content: 'information.contact.officesContent' }
@@ -112,7 +113,28 @@ export default function Information() {
 
   return (
     <Box className={styles.pageContainer}>
-      
+      {/* Page header */}
+      <Box sx={{ mb: 4, display: 'flex', alignItems: 'center' }}>
+        <IconButton 
+          component={Link} 
+          href="/"
+          sx={{ mr: 2 }}
+        >
+          <ArrowBackIcon />
+        </IconButton>
+        
+        <Breadcrumbs aria-label="breadcrumb">
+                      <MuiLink 
+                        component={Link} 
+                        href="/"
+                        underline="hover" 
+                        color="inherit"
+                      >
+                        {t('nav.home')}
+                      </MuiLink>
+                      <Typography color="text.primary">{t('nav.information')}</Typography>
+                    </Breadcrumbs>
+        </Box>
       {/* Main content */}
       <Container maxWidth="lg" sx={{ py: 6, mt: 3, position: 'relative', zIndex: 10 }}>
         <motion.div
@@ -140,7 +162,7 @@ export default function Information() {
                         left: 0,
                         right: 0,
                         height: '4px',
-                        background: '#ff006e',
+                        background: '#fe6b01',
                         borderRadius: '2px 2px 0 0'
                       }
                     }}

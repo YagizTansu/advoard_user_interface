@@ -53,7 +53,9 @@
       "description": "Yeni öğrencilere oryantasyon, kayıt işlemleri ve diğer akademik süreçlerde destek sağlıyorum."
     },
     "watchDemo": "Demo İzle",
-    "exitButton": "Sunum Modundan Çık"
+    "exitButton": "Sunum Modundan Çık",
+    "touchToInteract": "Etkileşim için dokunun",
+    "nowPlaying": "Şimdi oynatılıyor"
   },
   "voiceCommands": {
     "title": "Sesli Komut",

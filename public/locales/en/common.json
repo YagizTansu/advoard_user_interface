@@ -53,7 +53,9 @@
       "description": "I provide orientation for new students and support with registration procedures and other academic processes."
     },
     "watchDemo": "Watch Demo",
-    "exitButton": "Exit Presentation Mode"
+    "exitButton": "Exit Presentation Mode",
+    "touchToInteract": "Touch to interact",
+    "nowPlaying": "Now playing"
   },
   "voiceCommands": {
     "title": "Voice Command",

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Box, Typography, Button, IconButton, Container, Chip } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'next-i18next';
@@ -31,55 +31,62 @@ const presentations = [
     image: '/images/directions-demo.jpg',
     videoSrc: '/videos/directions-demo.mp4',
     color: '#8338ec',
-  },
-  {
-    id: 3,
-    title: 'presentations.information.title',
-    description: 'presentations.information.description',
-    image: '/images/info-demo.jpg',
-    videoSrc: '/videos/info-demo.mp4',
-    color: '#ff006e',
-  },
-  {
-    id: 4,
-    title: 'presentations.assistance.title',
-    description: 'presentations.assistance.description',
-    image: '/images/help-demo.jpg',
-    videoSrc: '/videos/help-demo.mp4',
-    color: '#3a0ca3',
-  },
+  }
 ];
 
 const PresentationModule: React.FC<PresentationModuleProps> = ({ onInteraction }) => {
   const { t } = useTranslation('common');
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [showVideo, setShowVideo] = useState(false);
+  const [showVideo, setShowVideo] = useState(true); // Start with video playing
   const [isPaused, setIsPaused] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  
+  // Handle video end and transition to next presentation
+  const handleVideoEnd = () => {
+    const nextIndex = (currentIndex + 1) % presentations.length;
+    setCurrentIndex(nextIndex);
+    setShowVideo(true); // Ensure the next video shows
+  };
   
   // Auto-rotate through presentations
   useEffect(() => {
     if (isPaused) return;
     
-    const timer = setInterval(() => {
-      if (!isPaused) {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % presentations.length);
-        setShowVideo(false); // Reset video state when changing presentation
-      }
-    }, 20000); // Change every 20 seconds
+    // If not showing video, use timer to rotate
+    let timer: NodeJS.Timeout | null = null;
     
-    return () => clearInterval(timer);
-  }, [isPaused]);
+    if (!showVideo) {
+      timer = setInterval(() => {
+        if (!isPaused) {
+          setCurrentIndex((prevIndex) => (prevIndex + 1) % presentations.length);
+          setShowVideo(true); // Show video when changing presentation
+        }
+      }, 20000); // Change every 20 seconds when not showing video
+    }
+    
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, [isPaused, showVideo, currentIndex]);
+  
+  // Reset video playback when current index changes
+  useEffect(() => {
+    if (videoRef.current && showVideo) {
+      videoRef.current.currentTime = 0;
+      videoRef.current.play().catch(e => console.log("Video autoplay prevented:", e));
+    }
+  }, [currentIndex, showVideo]);
   
   const handleNext = (e: React.MouseEvent) => {
     e.stopPropagation();
     setCurrentIndex((prevIndex) => (prevIndex + 1) % presentations.length);
-    setShowVideo(false);
+    setShowVideo(true); // Show video for the next presentation
   };
   
   const handlePrevious = (e: React.MouseEvent) => {
     e.stopPropagation();
     setCurrentIndex((prevIndex) => prevIndex === 0 ? presentations.length - 1 : prevIndex - 1);
-    setShowVideo(false);
+    setShowVideo(true); // Show video for the previous presentation
   };
   
   const togglePause = (e: React.MouseEvent) => {
@@ -93,14 +100,21 @@ const PresentationModule: React.FC<PresentationModuleProps> = ({ onInteraction }
     
     if (showVideo) {
       return (
-        <Box className={`${styles.videoContainer} ${styles.fullscreenVideoContainer}`}>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.7 }}
+          className={`${styles.videoContainer} ${styles.fullscreenVideoContainer}`}
+        >
           <video 
+            ref={videoRef}
             autoPlay 
-            muted 
-            loop
+            muted
             className={styles.video}
             src={presentation.videoSrc}
             poster={presentation.image}
+            onEnded={handleVideoEnd}
+            style={{ opacity: 1, transition: "opacity 0.5s ease-in-out" }}
           />
           <IconButton
             className={styles.exitFullscreenBtn}
@@ -121,7 +135,7 @@ const PresentationModule: React.FC<PresentationModuleProps> = ({ onInteraction }
               className={styles.videoChip}
             />
           </Box>
-        </Box>
+        </motion.div>
       );
     }
     
@@ -159,7 +173,14 @@ const PresentationModule: React.FC<PresentationModuleProps> = ({ onInteraction }
   };
 
   return (
-    <Box className={styles.container} onClick={() => showVideo ? setShowVideo(false) : null}>
+    <Box 
+      className={styles.container} 
+      onClick={() => showVideo ? setShowVideo(false) : null}
+      sx={{
+        transition: 'background-color 0.5s ease-in-out',
+        backgroundColor: showVideo ? 'black' : 'transparent'
+      }}
+    >
       {/* Only show the header and controls when not playing video */}
       {!showVideo && (
         <>
@@ -208,14 +229,28 @@ const PresentationModule: React.FC<PresentationModuleProps> = ({ onInteraction }
       )}
       
       {/* Main content */}
-      <Container maxWidth="lg" sx={{ flexGrow: 1, py: showVideo ? 0 : 4, m: showVideo ? 0 : 'auto', maxWidth: showVideo ? '100%' : 'lg' }}>
+      <Container 
+        maxWidth="lg" 
+        sx={{ 
+          flexGrow: 1, 
+          py: showVideo ? 0 : 4, 
+          m: showVideo ? 0 : 'auto', 
+          maxWidth: showVideo ? '100%' : 'lg',
+          transition: 'all 0.3s ease-out'
+        }}
+      >
         <AnimatePresence mode="wait">
           <motion.div
-            key={currentIndex}
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -30 }}
-            transition={{ type: "spring", stiffness: 250, damping: 25 }}
+            key={`${currentIndex}-${showVideo}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ 
+              type: showVideo ? "tween" : "spring", 
+              duration: showVideo ? 0.5 : undefined,
+              stiffness: showVideo ? undefined : 250, 
+              damping: showVideo ? undefined : 25 
+            }}
             className="h-full flex flex-col"
           >
             {renderMediaContent()}

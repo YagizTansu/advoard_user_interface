@@ -12,6 +12,11 @@ package-lock.json
 /build
 /dist
 
+# Next.js build output
+.next/
+/.next/
+
+
 # Next.js
 /.next/
 /out/

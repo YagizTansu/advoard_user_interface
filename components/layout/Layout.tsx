@@ -37,7 +37,7 @@ export default function Layout({ children }: LayoutProps) {
   
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      <AppBar position="static" sx={{ bgcolor: '#FF8C00' }}>
+      <AppBar position="static" sx={{ bgcolor: '#fe6b01' }}>
         <Toolbar>
           <IconButton
             size="large"
