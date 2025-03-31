@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { Box, Typography, Button, Grid, Container, Fade, IconButton, Divider } from '@mui/material';
 import PresentationModule from '../components/modules/presentation/PresentationModule';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import styles from '../styles/Home.module.css';
+import styles from '../styles/index.module.css';
 
 export default function Home() {
   const { t } = useTranslation('common');
