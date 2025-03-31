@@ -2,6 +2,7 @@ import { SetStateAction, useState, useEffect } from 'react';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { motion } from 'framer-motion';
+import styles from '../styles/service.module.css';
 import { 
   Box, 
   Container, 
@@ -375,45 +376,17 @@ export default function Services() {
                     animate="visible"
                   >
                     <Card 
+                      className={styles.categoryCard}
                       onClick={() => handleCategorySelect(category.id)}
-                      sx={{
-                        height: '100%',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        cursor: 'pointer',
-                        position: 'relative',
-                        overflow: 'hidden',
-                        borderRadius: '12px',
-                        transition: 'all 0.2s',
-                        '&:hover': {
-                          transform: 'translateY(-4px)',
-                        }
-                      }}
                     >
-                      <Box sx={{ 
-                        height: '6px', 
-                        width: '100%', 
-                        bgcolor: category.color 
-                      }} />
+                      <Box className={styles.categoryCardStrip} sx={{ bgcolor: category.color }} />
                       
-                      <CardContent sx={{ 
-                        flexGrow: 1, 
-                        display: 'flex', 
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        textAlign: 'center',
-                        p: 3
-                      }}>
-                        <Box sx={{ 
-                          mb: 2, 
-                          color: category.color,
-                          display: 'flex',
-                          justifyContent: 'center'
-                        }}>
+                      <CardContent className={styles.categoryCardContent}>
+                        <Box className={styles.categoryCardIcon}>
                           {category.icon}
                         </Box>
                         
-                        <Typography variant="h6" component="h3" sx={{ mb: 1, fontWeight: 600 }}>
+                        <Typography className={styles.categoryCardTitle}>
                           {t(category.title)}
                         </Typography>
                         
@@ -436,7 +409,7 @@ export default function Services() {
             animate="visible"
             variants={pageTransition}
           >
-            <Box sx={{ mb: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Box className={styles.breadcrumbContainer}>
               <Box>
                 <Chip 
                   label={t(`categories.${selectedCategory}.title`)} 
@@ -449,20 +422,13 @@ export default function Services() {
               </Box>
 
               <Badge 
+                className={styles.cartBadge}
                 badgeContent={selectedItems.length} 
                 color="primary"
                 sx={{ '& .MuiBadge-badge': { fontSize: 14, fontWeight: 'bold' } }}
               >
-                <Paper 
-                  elevation={3} 
-                  sx={{ 
-                    p: 1.5, 
-                    display: 'flex', 
-                    alignItems: 'center',
-                    borderRadius: '12px'
-                  }}
-                >
-                  <ShoppingCartIcon sx={{ mr: 1 }} />
+                <Paper className={styles.cartPaper}>
+                  <ShoppingCartIcon className={styles.cartIcon} />
                   <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
                     {calculateTotal()} ₺
                   </Typography>
@@ -479,35 +445,27 @@ export default function Services() {
                     initial="hidden"
                     animate="visible"
                   >
-                    <Card sx={{ 
-                      height: '100%', 
-                      display: 'flex', 
-                      flexDirection: 'column',
-                      overflow: 'hidden',
-                      borderRadius: '12px'
-                    }}>
+                    <Card className={styles.menuItemCard}>
                       <CardMedia
                         component="img"
                         height="140"
                         image={item.image}
                         alt={item.name}
                       />
-                      <CardContent sx={{ flexGrow: 1 }}>
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                          <Typography variant="h6" component="h3" sx={{ fontWeight: 600 }}>
+                      <CardContent className={styles.menuItemContent}>
+                        <Box className={styles.menuItemHeader}>
+                          <Typography className={styles.menuItemName}>
                             {item.name}
                           </Typography>
-                          <Typography variant="h6" component="span" sx={{ fontWeight: 600, color: 'primary.main' }}>
+                          <Typography className={styles.menuItemPrice}>
                             {item.price} ₺
                           </Typography>
                         </Box>
-                        
-                        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                        <Typography className={styles.menuItemDescription}>
                           {item.description}
                         </Typography>
                       </CardContent>
-                      
-                      <CardActions sx={{ justifyContent: 'space-between', p: 2 }}>
+                      <CardActions className={styles.menuItemActions}>
                         <Typography variant="body2" sx={{ fontWeight: 500, color: 'text.secondary' }}>
                           {t('menu.quantity')}
                         </Typography>
@@ -534,13 +492,8 @@ export default function Services() {
             </Grid>
 
             {selectedItems.length > 0 && (
-              <Paper elevation={0} sx={{ 
-                mt: 4, 
-                p: 3, 
-                borderRadius: '12px', 
-                bgcolor: 'rgba(0,0,0,0.02)' 
-              }}>
-                <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
+              <Paper className={styles.selectedItemsPaper}>
+                <Typography className={styles.selectedItemsTitle}>
                   {t('menu.selectedItems')}
                 </Typography>
                 
@@ -597,17 +550,11 @@ export default function Services() {
               </Typography>
             </Box>
             
-            <Paper elevation={0} sx={{ 
-              p: 4, 
-              borderRadius: '12px',
-              bgcolor: 'rgba(255,255,255,0.8)',
-              backdropFilter: 'blur(10px)',
-              border: '1px solid rgba(0,0,0,0.05)'
-            }}>
+            <Paper className={styles.formPaper}>
               <Grid container spacing={3}>
                 {/* Personal Information Section */}
                 <Grid item xs={12}>
-                  <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
+                  <Typography className={styles.sectionTitle}>
                     {t('form.personalDetails')}
                   </Typography>
                 </Grid>
@@ -632,7 +579,7 @@ export default function Services() {
 
                 {/* Delivery Information Section */}
                 <Grid item xs={12}>
-                  <Typography variant="h6" sx={{ mb: 2, mt: 1, fontWeight: 600 }}>
+                  <Typography className={styles.sectionTitle}>
                     {t('form.deliveryDetails')}
                   </Typography>
                 </Grid>
@@ -692,7 +639,7 @@ export default function Services() {
 
                 {/* Payment Information Section */}
                 <Grid item xs={12}>
-                  <Typography variant="h6" sx={{ mb: 2, mt: 1, fontWeight: 600 }}>
+                  <Typography className={styles.sectionTitle}>
                     {t('form.paymentDetails')}
                   </Typography>
                 </Grid>
@@ -716,17 +663,7 @@ export default function Services() {
                 
                 {/* Order Summary */}
                 <Grid item xs={12} md={6}>
-                  <Paper 
-                    variant="outlined" 
-                    sx={{ 
-                      p: 2, 
-                      borderRadius: 2, 
-                      height: '100%',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'center'
-                    }}
-                  >
+                  <Paper className={styles.summaryPaper}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
                       <Typography variant="body2">{t('menu.selectedItems')}:</Typography>
                       <Typography variant="body2" sx={{ fontWeight: 500 }}>
@@ -759,14 +696,7 @@ export default function Services() {
               {t('order.reviewSubmit')}
             </Typography>
 
-            <Paper elevation={0} sx={{ 
-              p: 4, 
-              borderRadius: '12px',
-              mb: 3,
-              bgcolor: 'rgba(255,255,255,0.8)',
-              backdropFilter: 'blur(10px)',
-              border: '1px solid rgba(0,0,0,0.05)'
-            }}>
+            <Paper className={styles.reviewContainer}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
@@ -787,7 +717,7 @@ export default function Services() {
                     <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1 }}>
                       {t('review.selectedItems')}:
                     </Typography>
-                    <Paper variant="outlined" sx={{ p: 2, borderRadius: 2, mb: 2 }}>
+                    <Paper className={styles.reviewItemsList}>
                       <List disablePadding>
                         {selectedItems.map((item) => (
                           <ListItem key={item.id} sx={{ py: 1 }}>
@@ -859,20 +789,14 @@ export default function Services() {
                   <Typography variant="subtitle2" color="text.secondary">
                     {t('form.orderDetails')}
                   </Typography>
-                  <Typography variant="body1" 
-                    sx={{ 
-                      p: 2, 
-                      bgcolor: 'rgba(0,0,0,0.02)', 
-                      borderRadius: 1,
-                      mt: 1
-                    }}>
+                  <Typography className={styles.reviewDetailText}>
                     {formData.orderDetails || '-'}
                   </Typography>
                 </Grid>
               </Grid>
             </Paper>
 
-            <Box sx={{ bgcolor: '#f0f9ff', p: 2, borderRadius: 2, mb: 3 }}>
+            <Box className={styles.submissionNote}>
               <Typography variant="body2" color="info.dark">
                 {t('order.submissionNote')}
               </Typography>
@@ -887,13 +811,7 @@ export default function Services() {
             animate="visible"
             variants={pageTransition}
           >
-            <Box sx={{ 
-              display: 'flex', 
-              flexDirection: 'column', 
-              alignItems: 'center',
-              textAlign: 'center',
-              py: 6
-            }}>
+            <Box className={styles.successContainer}>
               <motion.div
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
@@ -903,18 +821,14 @@ export default function Services() {
                   damping: 20
                 }}
               >
-                <CheckCircleOutlineIcon sx={{ 
-                  fontSize: 80, 
-                  color: 'success.main',
-                  mb: 2
-                }} />
+                <CheckCircleOutlineIcon className={styles.successIcon} />
               </motion.div>
               
-              <Typography variant="h4" component="h2" sx={{ mb: 2, fontWeight: 600 }}>
+              <Typography className={styles.successTitle}>
                 {t('order.success.title')}
               </Typography>
               
-              <Typography variant="body1" color="text.secondary" sx={{ maxWidth: 600, mb: 4 }}>
+              <Typography className={styles.successMessage}>
                 {t('order.success.message')}
               </Typography>
               
@@ -939,13 +853,13 @@ export default function Services() {
         <title>{t('pageTitle.services')}</title>
       </Head>
       
-      <Container maxWidth="lg" sx={{ py: 6 }}>
+      <Container maxWidth="lg" className={styles.pageContainer}>
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <Box sx={{ mb: 4, display: 'flex', alignItems: 'center' }}>
+          <Box className={styles.breadcrumbContainer}>
             <IconButton 
               component={Link} 
               href="/"
@@ -970,13 +884,7 @@ export default function Services() {
           <Typography 
             variant="h3" 
             component="h1" 
-            sx={{ 
-              mb: 1, 
-              fontWeight: 700,
-              background: 'linear-gradient(90deg, #3a86ff 0%, #8338ec 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-            }}
+            className={styles.pageTitle}
           >
             {t('services.order.title')}
           </Typography>
@@ -993,7 +901,7 @@ export default function Services() {
         
         {/* Stepper - updated to show 4 steps */}
         {activeStep < 4 && (
-          <Box sx={{ mb: 6, width: '100%' }}>
+          <Box className={styles.stepperContainer}>
             <Stepper activeStep={activeStep} alternativeLabel>
               {steps.map((label) => (
                 <Step key={label}>
@@ -1005,17 +913,13 @@ export default function Services() {
         )}
           
         {/* Step Content */}
-        <Box sx={{ my: 4 }}>
+        <Box className={styles.contentContainer}>
           {getStepContent(activeStep)}
         </Box>
         
         {/* Navigation Buttons */}
         {activeStep < 4 && (
-          <Box sx={{ 
-            display: 'flex', 
-            justifyContent: activeStep === 0 ? 'flex-end' : 'space-between',
-            mt: 4 
-          }}>
+          <Box className={`${styles.navigationContainer} ${activeStep === 0 ? styles.navigationContainerEnd : styles.navigationContainerSpaceBetween}`}>
             {activeStep > 0 && (
               <Button
                 variant="outlined"

@@ -174,7 +174,7 @@
 
 .pageContainer {
   background-color: #f5f7fa;
-  min-height: 100vh;
+  height: fit-content;
 }
 
 .buildingCardElevated {
@@ -289,7 +289,7 @@
 }
 
 .contentSection {
-  padding: 48px 0;
+  padding: 20px 0;
   margin-top: 24px;
   position: relative;
   z-index: 10;

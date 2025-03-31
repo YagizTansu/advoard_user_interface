@@ -1,3 +1,9 @@
+.pageContainer {
+  width: 100%;
+  max-height: 20vh;
+  background: linear-gradient(to bottom, var(--background), rgba(var(--background-rgb), 0.95));
+}
+
 .breadcrumbContainer {
   margin-bottom: 2rem;
   display: flex;

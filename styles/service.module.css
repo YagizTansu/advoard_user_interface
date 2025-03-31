@@ -1,0 +1,431 @@
+/* Page Layout */
+.pageContainer {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+.breadcrumbContainer {
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+}
+
+.pageTitle {
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, #3a86ff 0%, #8338ec 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.pageSubtitle {
+  margin-bottom: 3rem;
+  max-width: 700px;
+}
+
+.stepperContainer {
+  margin-bottom: 3rem;
+  width: 100%;
+}
+
+.contentContainer {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.navigationContainer {
+  display: flex;
+  margin-top: 2rem;
+}
+
+.navigationContainerSpaceBetween {
+  justify-content: space-between;
+}
+
+.navigationContainerEnd {
+  justify-content: flex-end;
+}
+
+/* Cards & Grid Items */
+.categoryCard {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  transition: all 0.2s;
+}
+
+.categoryCard:hover {
+  transform: translateY(-4px);
+}
+
+.categoryCardStrip {
+  height: 6px;
+  width: 100%;
+}
+
+.categoryCardContent {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1.5rem;
+}
+
+.categoryCardIcon {
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.categoryCardTitle {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+/* Menu Selection */
+.menuHeader {
+  margin-bottom: 4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.categoryChip {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.cartBadge :global(.MuiBadge-badge) {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.cartPaper {
+  padding: 0.75rem;
+  display: flex;
+  align-items: center;
+  border-radius: 12px;
+}
+
+.cartIcon {
+  margin-right: 0.5rem;
+}
+
+/* Menu Cards */
+.menuCard {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.menuCardHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.menuItemName {
+  font-weight: 600;
+}
+
+.menuItemPrice {
+  font-weight: 600;
+  color: var(--primary-main);
+}
+
+.menuItemDescription {
+  margin-bottom: 1rem;
+}
+
+.menuCardActions {
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+.quantityText {
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.quantityButton {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  min-width: 40px;
+}
+
+/* Selected Items */
+.selectedItemsPaper {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.selectedItemsTitle {
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.selectedItemsDivider {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.totalText {
+  font-weight: 600;
+}
+
+.totalAmount {
+  font-weight: 700;
+  color: var(--primary-main);
+}
+
+/* Order Form */
+.formPaper {
+  padding: 2rem;
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.sectionTitle {
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.sectionWithMargin {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.orderSummaryPaper {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.detailsText {
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.02);
+  border-radius: 0.25rem;
+  margin-top: 0.5rem;
+}
+
+/* Success Page */
+.successContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 3rem 0;
+}
+
+.successIcon {
+  font-size: 5rem;
+  color: var(--success-main);
+  margin-bottom: 1rem;
+}
+
+.successTitle {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.successMessage {
+  max-width: 600px;
+  margin-bottom: 2rem;
+}
+
+/* Info Box */
+.infoBox {
+  background-color: #f0f9ff;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Animation Related */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Header Section */
+.headerContainer {
+  margin-bottom: 4rem;
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumbNav {
+  margin-bottom: 4rem;
+  display: flex;
+  align-items: center;
+}
+
+.backButton {
+  margin-right: 0.5rem;
+}
+
+/* Section Headers */
+.gradientTitle {
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, #3a86ff 0%, #8338ec 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.sectionHeader {
+  margin-bottom: 4rem;
+}
+
+/* Category Selection */
+.categorySection {
+  margin-bottom: 4rem;
+}
+
+.categoryIcon {
+  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+/* Menu Items */
+.menuSection {
+  margin-bottom: 2rem;
+}
+
+/* Order Review */
+.reviewBox {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.reviewChip {
+  margin-left: 0.25rem;
+}
+
+.reviewPaper {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Motion Container */
+.motionContainer {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+/* Category Header */
+.categoryHeader {
+  margin-bottom: 4rem;
+  font-weight: 500;
+}
+
+/* Menu Item Card */
+.menuItemCard {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.menuItemContent {
+  flex-grow: 1;
+}
+
+.menuItemHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.menuItemName {
+  font-weight: 600;
+}
+
+.menuItemPrice {
+  font-weight: 600;
+  color: var(--primary-main);
+}
+
+.menuItemDescription {
+  margin-bottom: 2rem;
+}
+
+.menuItemActions {
+  justify-content: space-between;
+  padding: 2rem;
+}
+
+/* Review Section */
+.reviewContainer {
+  padding: 4rem;
+  border-radius: 12px;
+  margin-bottom: 3rem;
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.reviewChip {
+  margin-right: 1rem;
+}
+
+.reviewItemsList {
+  padding: 2rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.reviewDetailText {
+  margin-bottom: 2rem;
+}
+
+.orderDetails {
+  padding: 2rem;
+  background-color: rgba(0, 0, 0, 0.02);
+  border-radius: 4px;
+  margin-top: 1rem;
+}
+
+/* Info Box */
+.submissionNote {
+  background-color: #f0f9ff;
+  padding: 2rem;
+  border-radius: 8px;
+  margin-bottom: 3rem;
+}
+
+/* Summary Paper */
+.summaryPaper {
+  padding: 2rem;
+  border-radius: 8px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

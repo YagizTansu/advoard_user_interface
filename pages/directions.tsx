@@ -33,7 +33,6 @@ import ApartmentIcon from '@mui/icons-material/Apartment';
 import SchoolIcon from '@mui/icons-material/School';
 import Link from 'next/link';
 import MapIcon from '@mui/icons-material/Map';
-import styles from '../styles/Home.module.css';
 import directionStyles from '../styles/directions.module.css';
 
 // Animation variants

@@ -15,7 +15,6 @@ import SearchIcon from '@mui/icons-material/Search';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneIcon from '@mui/icons-material/Phone';
-import styles from '../styles/Home.module.css';
 import helpStyles from '../styles/help.module.css';
 
 export default function Help() {
@@ -112,7 +111,7 @@ export default function Help() {
     : helpCategories;
 
   return (
-    <Box className={styles.pageContainer}>
+    <Box className={helpStyles.pageContainer}>
       {/* Hero section */}
       <Container maxWidth="lg" sx={{ py: 6 }}>
         <Box className={helpStyles.breadcrumbContainer}>
