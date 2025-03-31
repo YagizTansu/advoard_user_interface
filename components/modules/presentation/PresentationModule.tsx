@@ -126,9 +126,7 @@ const PresentationModule: React.FC<PresentationModuleProps> = ({ onInteraction }
             <CloseIcon />
           </IconButton>
           <Box className={styles.videoOverlay}>
-            <Typography variant="subtitle1" className={styles.videoTitle}>
-              {t(presentation.title)}
-            </Typography>
+
             <Chip 
               label={t('presentations.nowPlaying')} 
               size="small"
@@ -160,13 +158,7 @@ const PresentationModule: React.FC<PresentationModuleProps> = ({ onInteraction }
             {t('presentations.watchDemo')}
           </Button>
           
-          <Typography variant="h4" className={styles.imageTitle}>
-            {t(presentation.title)}
-          </Typography>
-          
-          <Typography variant="body1" className={styles.imageDescription}>
-            {t(presentation.description)}
-          </Typography>
+
         </Box>
       </Box>
     );
@@ -191,20 +183,7 @@ const PresentationModule: React.FC<PresentationModuleProps> = ({ onInteraction }
             className={styles.header}
           >
             <Box className={styles.headerContent}>
-              <Typography 
-                variant="h3" 
-                gutterBottom
-                className={styles.headerTitle}
-              >
-                {t('presentations.welcomeTitle')}
-              </Typography>
-              <Typography 
-                variant="h6"
-                className={styles.headerSubtitle}
-              >
-                {t('presentations.welcomeSubtitle')}
-              </Typography>
-              
+
               {/* Interactive instruction */}
               <motion.div
                 animate={{ y: [0, -5, 0] }}
