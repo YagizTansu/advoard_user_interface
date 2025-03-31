@@ -81,6 +81,7 @@
 
 .backButton {
   color: white;
+  margin-right: 16px;
 }
 
 .backButton:hover {
@@ -150,11 +151,12 @@
   padding: 16px;
   display: flex;
   align-items: center;
+  border-radius: 8px;
   cursor: pointer;
 }
 
 .destinationItem:hover {
-  background-color: #f5f5f5;
+  background-color: rgba(131, 56, 236, 0.05);
 }
 
 .destinationIcon {
@@ -168,6 +170,135 @@
 
 .iconColor {
   color: #8338ec30;
+}
+
+.pageContainer {
+  background-color: #f5f7fa;
+  min-height: 100vh;
+}
+
+.buildingCardElevated {
+  margin-bottom: 16px;
+  border-radius: 8px;
+  overflow: visible;
+  position: relative;
+}
+
+.buildingCardActive::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: #8338ec;
+  border-radius: 2px 2px 0 0;
+}
+
+.buildingIconBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background-color: rgba(131, 56, 236, 0.1);
+  color: #8338ec;
+  margin-right: 16px;
+}
+
+.buildingContent {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.buildingName {
+  font-weight: 600;
+}
+
+.buildingDetails {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.buildingDescription {
+  margin-bottom: 16px;
+}
+
+.searchBox {
+  margin-bottom: 16px;
+}
+
+.tabsContainer {
+  margin-top: 8px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  padding-top: 8px;
+}
+
+.resultsCount {
+  margin-bottom: 16px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.noResultsBox {
+  text-align: center;
+  padding: 32px 0;
+  background-color: rgba(0, 0, 0, 0.02);
+  border-radius: 8px;
+}
+
+.noResultsIcon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  color: #8338ec;
+}
+
+.mapPaper {
+  padding: 24px;
+  border-radius: 8px;
+  position: relative;
+  overflow: visible;
+}
+
+.mapPaper::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: #8338ec;
+  border-radius: 2px 2px 0 0;
+}
+
+.mapHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.mapTitle {
+  font-weight: 500;
+}
+
+.destinationsTitle {
+  font-weight: 500;
+  margin-top: 24px;
+  margin-bottom: 8px;
+}
+
+.contentSection {
+  padding: 48px 0;
+  margin-top: 24px;
+  position: relative;
+  z-index: 10;
+}
+
+.sidebarPaper {
+  margin-bottom: 24px;
+  padding: 16px;
+  border-radius: 8px;
 }
 
 @media (max-width: 600px) {
