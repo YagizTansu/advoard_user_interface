@@ -46,193 +46,10 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Link from 'next/link';
 import Head from 'next/head';
+import { supabase, getCategories, getMenuItems, Category, MenuItemType } from '../src/lib/supabase';
 
 // Define steps for the order process - updated to include menu selection
 const steps = ['selectCategory', 'selectMenu', 'customizeOrder', 'reviewSubmit'];
-
-// Define order categories
-const categories = [
-  { 
-    id: 'cafeteria', 
-    title: 'categories.cafeteria.title', 
-    description: 'categories.cafeteria.description',
-    icon: <FastfoodIcon sx={{ fontSize: 40 }} />,
-    color: '#3a86ff'
-  },
-  { 
-    id: 'coffee', 
-    title: 'categories.coffee.title', 
-    description: 'categories.coffee.description',
-    icon: <CoffeeIcon sx={{ fontSize: 40 }} />,
-    color: '#8338ec'
-  },
-  { 
-    id: 'printing', 
-    title: 'categories.printing.title', 
-    description: 'categories.printing.description',
-    icon: <LocalPrintshopIcon sx={{ fontSize: 40 }} />,
-    color: '#ff006e'
-  },
-  { 
-    id: 'academic', 
-    title: 'categories.academic.title', 
-    description: 'categories.academic.description',
-    icon: <SchoolIcon sx={{ fontSize: 40 }} />,
-    color: '#3a0ca3'
-  }
-];
-
-// Define menu items for each category
-const menuItems = {
-  cafeteria: [
-    { 
-      id: 'sandwich', 
-      name: 'Sandviç', 
-      description: 'Taze ekmek ile hazırlanmış tavuk/peynir sandviç',
-      price: 35,
-      image: 'https://images.unsplash.com/photo-1509722747041-616f39b57569?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-    },
-    { 
-      id: 'salad', 
-      name: 'Mevsim Salatası', 
-      description: 'Taze mevsim sebzeleri ile hazırlanmış salata',
-      price: 30,
-      image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-    },
-    { 
-      id: 'burger', 
-      name: 'Hamburger', 
-      description: 'Dana eti, domates, marul, soğan, özel sos',
-      price: 45,
-      image: 'https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-    },
-    { 
-      id: 'pizza', 
-      name: 'Pizza', 
-      description: 'Karışık malzemeli pizza',
-      price: 50,
-      image: 'https://images.unsplash.com/photo-1605478371310-a9f1e96b4ff4?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-    },
-    { 
-      id: 'chickenWrap', 
-      name: 'Tavuk Dürüm', 
-      description: 'Izgara tavuk, yeşillikler ve özel sosla hazırlanmış lavaş dürüm',
-      price: 40,
-      image: 'https://images.unsplash.com/photo-1671572580025-0280545b48c8?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-    },
-    { 
-      id: 'pasta', 
-      name: 'Makarna', 
-      description: 'Bolonez veya Napoliten soslu makarna seçeneği',
-      price: 35,
-      image: 'https://images.unsplash.com/photo-1622973536968-3ead9e780960?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-    },
-    { 
-      id: 'dailySoup', 
-      name: 'Günün Çorbası', 
-      description: 'Şef tarafından günlük hazırlanan taze çorba',
-      price: 25,
-      image: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?q=80&w=2071&auto=format&fit=crop'
-    },
-    { 
-      id: 'meatballs', 
-      name: 'Köfte', 
-      description: 'Izgara köfte, pilav ve salata ile servis edilir',
-      price: 55,
-      image: 'https://images.unsplash.com/photo-1625147541750-dfecb0a624a5?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-    },
-    { 
-      id: 'vegetarianPlate', 
-      name: 'Vejetaryen Tabağı', 
-      description: 'Mevsim sebzeleri, bulgur pilavı ve humus',
-      price: 45,
-      image: 'https://images.unsplash.com/photo-1543339308-43e59d6b73a6?q=80&w=2070&auto=format&fit=crop'
-    },
-    { 
-      id: 'grilledChicken', 
-      name: 'Izgara Tavuk', 
-      description: 'Baharatlı marine edilmiş ızgara tavuk, sebzeler ile servis edilir',
-      price: 50,
-      image: 'https://images.unsplash.com/photo-1532550907401-a500c9a57435?q=80&w=2069&auto=format&fit=crop'
-    }
-  ],
-  coffee: [
-    { 
-      id: 'turkishCoffee', 
-      name: 'Türk Kahvesi', 
-      description: 'Geleneksel yöntem ile hazırlanmış Türk kahvesi',
-      price: 20,
-      image: 'https://source.unsplash.com/nzyzAUsbV0M/400x300'
-    },
-    { 
-      id: 'latte', 
-      name: 'Latte', 
-      description: 'Espresso ve buharla ısıtılmış süt',
-      price: 25,
-      image: 'https://source.unsplash.com/Ciqxn7FE4vE/400x300'
-    },
-    { 
-      id: 'espresso', 
-      name: 'Espresso', 
-      description: 'Yoğun kahve deneyimi',
-      price: 15,
-      image: 'https://source.unsplash.com/Y6O6PKsYqQk/400x300'
-    },
-    { 
-      id: 'tea', 
-      name: 'Çay', 
-      description: 'Demlenmiş siyah çay',
-      price: 10,
-      image: 'https://source.unsplash.com/AQ_og49rSYA/400x300'
-    }
-  ],
-  printing: [
-    { 
-      id: 'blackWhite', 
-      name: 'Siyah-Beyaz Baskı', 
-      description: 'Sayfa başına siyah-beyaz baskı',
-      price: 1,
-      image: 'https://source.unsplash.com/UC0HZdUitWY/400x300'
-    },
-    { 
-      id: 'color', 
-      name: 'Renkli Baskı', 
-      description: 'Sayfa başına renkli baskı',
-      price: 3,
-      image: 'https://source.unsplash.com/Ba7ik0ZUEVY/400x300'
-    },
-    { 
-      id: 'binding', 
-      name: 'Ciltleme', 
-      description: 'Spiral ciltleme hizmeti',
-      price: 15,
-      image: 'https://source.unsplash.com/Ti4vJCr0ygY/400x300'
-    }
-  ],
-  academic: [
-    { 
-      id: 'notebook', 
-      name: 'Defter', 
-      description: 'Çizgili, kaliteli kağıt, 100 yaprak',
-      price: 20,
-      image: 'https://source.unsplash.com/1WzXgLgm7Dk/400x300'
-    },
-    { 
-      id: 'textbook', 
-      name: 'Ders Kitabı', 
-      description: 'Çeşitli dersler için ders kitapları',
-      price: 80,
-      image: 'https://source.unsplash.com/WAzxq9N--g0/400x300'
-    },
-    { 
-      id: 'notes', 
-      name: 'Ders Notları', 
-      description: 'Çeşitli dersler için öğretim üyesi ders notları',
-      price: 30,
-      image: 'https://source.unsplash.com/7JGjoSVU0vg/400x300'
-    }
-  ]
-};
 
 export default function Services() {
   const { t, i18n } = useTranslation('common'); // Destructure both t and i18n
@@ -246,12 +63,45 @@ export default function Services() {
     deliveryTime: '',
     paymentMethod: 'credit'
   });
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [menuItems, setMenuItems] = useState<{[key: string]: MenuItemType[]}>({});
 
   useEffect(() => {
     // Force reload of translations
     i18n.reloadResources(i18n.language, ['common']);
   }, [i18n]); // Add i18n to dependency array
-  
+
+  useEffect(() => {
+    // Fetch categories when component mounts
+    async function fetchCategories() {
+      try {
+        const categoriesData = await getCategories();
+        setCategories(categoriesData);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    }
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    // Fetch menu items when category is selected
+    async function fetchMenuItems() {
+      if (selectedCategory) {
+        try {
+          const items = await getMenuItems(selectedCategory);
+          setMenuItems(prev => ({
+            ...prev,
+            [selectedCategory]: items
+          }));
+        } catch (error) {
+          console.error('Error fetching menu items:', error);
+        }
+      }
+    }
+    fetchMenuItems();
+  }, [selectedCategory]);
+
   // Animation variants
   const pageTransition = {
     hidden: { opacity: 0, x: -20 },
@@ -351,6 +201,17 @@ export default function Services() {
     return item ? item.quantity : 0;
   };
 
+  // Helper function to map icon strings to components
+  const getIconComponent = (iconName: string) => {
+    const iconMap: {[key: string]: React.ReactNode} = {
+      'FastfoodIcon': <FastfoodIcon sx={{ fontSize: 40 }} />,
+      'CoffeeIcon': <CoffeeIcon sx={{ fontSize: 40 }} />,
+      'LocalPrintshopIcon': <LocalPrintshopIcon sx={{ fontSize: 40 }} />,
+      'SchoolIcon': <SchoolIcon sx={{ fontSize: 40 }} />
+    };
+    return iconMap[iconName] || null;
+  };
+
   // Render different content based on active step
   const getStepContent = (step: number) => {
     switch (step) {
@@ -383,7 +244,7 @@ export default function Services() {
                       
                       <CardContent className={styles.categoryCardContent}>
                         <Box className={styles.categoryCardIcon}>
-                          {category.icon}
+                          {getIconComponent(category.icon)}
                         </Box>
                         
                         <Typography className={styles.categoryCardTitle}>
@@ -437,7 +298,7 @@ export default function Services() {
             </Box>
             
             <Grid container spacing={3}>
-              {selectedCategory && menuItems[selectedCategory as keyof typeof menuItems]?.map((item, index) => (
+              {selectedCategory && menuItems[selectedCategory]?.map((item, index) => (
                 <Grid item xs={12} sm={6} md={4} key={item.id}>
                   <motion.div
                     custom={index}
