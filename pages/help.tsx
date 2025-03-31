@@ -16,6 +16,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneIcon from '@mui/icons-material/Phone';
 import styles from '../styles/Home.module.css';
+import helpStyles from '../styles/help.module.css';
 
 export default function Help() {
   const { t } = useTranslation('common');
@@ -114,7 +115,7 @@ export default function Help() {
     <Box className={styles.pageContainer}>
       {/* Hero section */}
       <Container maxWidth="lg" sx={{ py: 6 }}>
-        <Box sx={{ mb: 4, display: 'flex', alignItems: 'center' }}>
+        <Box className={helpStyles.breadcrumbContainer}>
           <IconButton 
             component={Link} 
             href="/"
@@ -142,15 +143,7 @@ export default function Help() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.8 }}
         >
-          <Box 
-            sx={{ 
-              display: 'flex', 
-              mb: 6,
-              boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
-              borderRadius: 2,
-              overflow: 'hidden'
-            }}
-          >
+          <Box className={helpStyles.searchBox}>
             <TextField
               fullWidth
               placeholder={t('help.searchPlaceholder')}
@@ -159,10 +152,7 @@ export default function Help() {
               onChange={(e) => setSearchQuery(e.target.value)}
               InputProps={{
                 startAdornment: <SearchIcon sx={{ color: 'text.secondary', mr: 1 }} />,
-                sx: { 
-                  p: 0.5,
-                  '& fieldset': { border: 'none' }
-                }
+                className: helpStyles.searchInput
               }}
             />
           </Box>
@@ -179,39 +169,19 @@ export default function Help() {
               <motion.div
                 key={category.id}
                 variants={itemVariants}
-                style={{ marginBottom: '2rem' }}
+                className={helpStyles.categoryContainer}
               >
-                <Paper 
-                  elevation={0} 
-                  sx={{ 
-                    p: 2, 
-                    borderRadius: 2,
-                    boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
-                    mb: 3,
-                    position: 'relative',
-                    overflow: 'hidden'
-                  }}
-                >
+                <Paper className={helpStyles.categoryPaper}>
                   <Box 
-                    sx={{ 
-                      position: 'absolute',
-                      left: 0,
-                      top: 0,
-                      bottom: 0,
-                      width: '8px',
-                      backgroundColor: category.color
-                    }}
+                    className={helpStyles.categoryIndicator}
+                    sx={{ backgroundColor: category.color }}
                   />
                   
                   <Typography 
                     variant="h5" 
                     component="h2"
-                    sx={{ 
-                      fontWeight: 600,
-                      mb: 2, 
-                      pl: 1.5,
-                      color: category.color
-                    }}
+                    className={helpStyles.categoryTitle}
+                    sx={{ color: category.color }}
                   >
                     {t(category.title)}
                   </Typography>
@@ -222,34 +192,21 @@ export default function Help() {
                       expanded={expanded === `${category.id}-${idx}`}
                       onChange={handleAccordionChange(`${category.id}-${idx}`)}
                       elevation={0}
-                      sx={{ 
-                        mb: 1,
-                        '&:before': { display: 'none' },
-                        bgcolor: 'transparent',
-                        '&.Mui-expanded': {
-                          bgcolor: 'rgba(0,0,0,0.02)',
-                          borderRadius: 2
-                        }
-                      }}
+                      className={`${helpStyles.accordion} ${expanded === `${category.id}-${idx}` ? helpStyles.accordionExpanded : ''}`}
                     >
                       <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
                         aria-controls={`${category.id}-${idx}-content`}
                         id={`${category.id}-${idx}-header`}
-                        sx={{ 
-                          '&.Mui-expanded': { minHeight: 48 },
-                          '& .MuiAccordionSummary-content.Mui-expanded': { my: 0.5 }
+                        className={helpStyles.accordionSummary}
+                        classes={{
+                          content: helpStyles.accordionSummaryContent
                         }}
                       >
-                        <Typography sx={{ fontWeight: 500 }}>{t(faq.q)}</Typography>
+                        <Typography className={helpStyles.accordionQuestion}>{t(faq.q)}</Typography>
                       </AccordionSummary>
-                      <AccordionDetails sx={{ pt: 0 }}>
-                        <Typography 
-                          sx={{ 
-                            color: 'text.secondary',
-                            whiteSpace: 'pre-line'
-                          }}
-                        >
+                      <AccordionDetails className={helpStyles.accordionDetails}>
+                        <Typography className={helpStyles.accordionAnswer}>
                           {t(faq.a)}
                         </Typography>
                       </AccordionDetails>
@@ -259,7 +216,7 @@ export default function Help() {
               </motion.div>
             ))
           ) : (
-            <Box sx={{ textAlign: 'center', py: 4 }}>
+            <Box className={helpStyles.noResults}>
               <Typography variant="h6">{t('help.noResults')}</Typography>
               <Button 
                 variant="outlined" 
@@ -278,42 +235,28 @@ export default function Help() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8, duration: 0.8 }}
         >
-          <Box sx={{ mt: 8, mb: 4, textAlign: 'center' }}>
-            <Typography variant="h4" component="h2" sx={{ mb: 2 }}>
+          <Box className={helpStyles.contactSection}>
+            <Typography variant="h4" component="h2" className={helpStyles.contactTitle}>
               {t('help.stillNeedHelp')}
             </Typography>
-            <Typography variant="body1" color="text.secondary" sx={{ mb: 4, maxWidth: 600, mx: 'auto' }}>
+            <Typography variant="body1" color="text.secondary" className={helpStyles.contactMessage}>
               {t('help.contactMessage')}
             </Typography>
             
             <Grid container spacing={3} justifyContent="center">
               <Grid item xs={12} sm={6} md={4}>
-                <Paper
-                  elevation={0}
-                  sx={{ 
-                    p: 3, 
-                    textAlign: 'center',
-                    height: '100%',
-                    boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
-                    borderRadius: 2,
-                    transition: 'transform 0.3s, box-shadow 0.3s',
-                    '&:hover': {
-                      transform: 'translateY(-5px)',
-                      boxShadow: '0 8px 25px rgba(0,0,0,0.1)'
-                    }
-                  }}
-                >
-                  <EmailIcon sx={{ fontSize: 40, color: '#3a86ff', mb: 2 }} />
-                  <Typography variant="h6" sx={{ mb: 1 }}>{t('help.contactEmail')}</Typography>
+                <Paper className={helpStyles.contactCard}>
+                  <EmailIcon 
+                    className={helpStyles.contactIcon}
+                    sx={{ color: '#3a86ff' }} 
+                  />
+                  <Typography variant="h6" className={helpStyles.contactMethod}>{t('help.contactEmail')}</Typography>
                   <Typography 
                     variant="body2" 
                     component="a" 
                     href="mailto:support@iue.edu.tr"
-                    sx={{ 
-                      color: '#3a86ff', 
-                      textDecoration: 'none',
-                      '&:hover': { textDecoration: 'underline' }
-                    }}
+                    className={helpStyles.contactLink}
+                    sx={{ color: '#3a86ff' }}
                   >
                     support@iue.edu.tr
                   </Typography>
@@ -321,32 +264,18 @@ export default function Help() {
               </Grid>
               
               <Grid item xs={12} sm={6} md={4}>
-                <Paper
-                  elevation={0}
-                  sx={{ 
-                    p: 3, 
-                    textAlign: 'center',
-                    height: '100%',
-                    boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
-                    borderRadius: 2,
-                    transition: 'transform 0.3s, box-shadow 0.3s',
-                    '&:hover': {
-                      transform: 'translateY(-5px)',
-                      boxShadow: '0 8px 25px rgba(0,0,0,0.1)'
-                    }
-                  }}
-                >
-                  <PhoneIcon sx={{ fontSize: 40, color: '#8338ec', mb: 2 }} />
-                  <Typography variant="h6" sx={{ mb: 1 }}>{t('help.contactPhone')}</Typography>
+                <Paper className={helpStyles.contactCard}>
+                  <PhoneIcon 
+                    className={helpStyles.contactIcon} 
+                    sx={{ color: '#8338ec' }}
+                  />
+                  <Typography variant="h6" className={helpStyles.contactMethod}>{t('help.contactPhone')}</Typography>
                   <Typography 
                     variant="body2" 
                     component="a" 
                     href="tel:+902324888000"
-                    sx={{ 
-                      color: '#8338ec', 
-                      textDecoration: 'none',
-                      '&:hover': { textDecoration: 'underline' }
-                    }}
+                    className={helpStyles.contactLink}
+                    sx={{ color: '#8338ec' }}
                   >
                     +90 232 488 8000
                   </Typography>
