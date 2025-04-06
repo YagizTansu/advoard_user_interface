@@ -97,6 +97,7 @@ export interface MenuItemType {
 
 // Types for buildings
 export interface Building {
+  code: any;
   id: string;
   name: string;
   floor: string;
@@ -112,6 +113,7 @@ export interface CommonDestination {
 }
 
 export interface ProfessorRoom {
+  email: any;
   id: string;
   professor_name: string;
   room_number: string;
