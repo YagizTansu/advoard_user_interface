@@ -45,7 +45,7 @@ export default function Layout({ children }: LayoutProps) {
             sx={{ 
               flexGrow: 1, 
               mb: isMobile ? 1 : 0,
-              fontSize: isMobile ? '1.1rem' : '1.25rem'
+              fontSize: isMobile ? '1.0rem' : '1.0rem'
             }}
           >
             {t('appName')}

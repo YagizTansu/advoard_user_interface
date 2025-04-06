@@ -1,0 +1,6 @@
+// ...existing code...
+
+// Firebase yapılandırmasını içe aktar
+import "./config/firebase";
+
+// ...existing code...

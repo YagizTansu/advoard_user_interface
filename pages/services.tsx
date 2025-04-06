@@ -32,7 +32,10 @@ import {
   List,
   ListItem,
   ListItemText,
-  ListItemSecondaryAction
+  ListItemSecondaryAction,
+  CircularProgress,
+  Snackbar,
+  Alert
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -47,11 +50,10 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Link from 'next/link';
 import Head from 'next/head';
 import { supabase, getCategories, getMenuItems, Category, MenuItemType } from '../src/lib/supabase';
+import { dbService } from '../src/services/firebaseService';
 
-// Define steps for the order process - updated to include menu selection
 const steps = ['selectCategory', 'selectMenu', 'customizeOrder', 'reviewSubmit'];
 
-// Custom hook for window size
 function useWindowSize() {
   const [windowSize, setWindowSize] = useState({
     width: undefined as number | undefined,
@@ -59,7 +61,6 @@ function useWindowSize() {
   });
   
   useEffect(() => {
-    // Only execute on the client
     function handleResize() {
       setWindowSize({
         width: window.innerWidth,
@@ -67,21 +68,16 @@ function useWindowSize() {
       });
     }
     
-    // Add event listener
     window.addEventListener("resize", handleResize);
-    
-    // Call handler right away so state gets updated with initial window size
     handleResize();
-    
-    // Remove event listener on cleanup
     return () => window.removeEventListener("resize", handleResize);
-  }, []); // Empty array ensures that effect is only run on mount
+  }, []);
   
   return windowSize;
 }
 
 export default function Services() {
-  const { t, i18n } = useTranslation('common'); // Destructure both t and i18n
+  const { t, i18n } = useTranslation('common');
   const [activeStep, setActiveStep] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedItems, setSelectedItems] = useState<{id: string, quantity: number, name: string, price: number}[]>([]);
@@ -89,21 +85,21 @@ export default function Services() {
     studentId: '',
     orderDetails: '',
     deliveryLocation: '',
-    deliveryTime: 'asap',  // Changed from empty string to 'asap'
+    deliveryTime: 'asap',
     paymentMethod: 'credit'
   });
   const [categories, setCategories] = useState<Category[]>([]);
   const [menuItems, setMenuItems] = useState<{[key: string]: MenuItemType[]}>({});
   const { width } = useWindowSize();
   const isMobile = width !== undefined && width < 600;
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Force reload of translations
     i18n.reloadResources(i18n.language, ['common']);
-  }, [i18n]); // Add i18n to dependency array
+  }, [i18n]);
 
   useEffect(() => {
-    // Fetch categories when component mounts
     async function fetchCategories() {
       try {
         const categoriesData = await getCategories();
@@ -116,7 +112,6 @@ export default function Services() {
   }, []);
 
   useEffect(() => {
-    // Fetch menu items when category is selected
     async function fetchMenuItems() {
       if (selectedCategory) {
         try {
@@ -133,7 +128,6 @@ export default function Services() {
     fetchMenuItems();
   }, [selectedCategory]);
 
-  // Animation variants
   const pageTransition = {
     hidden: { opacity: 0, x: -20 },
     visible: { 
@@ -181,20 +175,57 @@ export default function Services() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = () => {
-    // Here you would handle the form submission
-    console.log({ selectedCategory, selectedItems, ...formData });
-    handleNext();
+  const submitOrderToFirebase = async () => {
+    try {
+      setIsSubmitting(true);
+      setSubmitError(null);
+      
+      const orderData = {
+        studentId: formData.studentId,
+        orderItems: selectedItems.map(item => ({
+          id: item.id,
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity,
+          totalPrice: item.price * item.quantity
+        })),
+        category: selectedCategory,
+        totalAmount: calculateTotal(),
+        deliveryDetails: {
+          location: formData.deliveryLocation,
+          time: formData.deliveryTime,
+          specialInstructions: formData.orderDetails || ""
+        },
+        paymentMethod: formData.paymentMethod,
+        status: "pending",
+        createdAt: new Date().toISOString()
+      };
+      console.log('Order data:', orderData);
+
+      const orderId = await dbService.pushData('orders', orderData);
+      console.log('Order submitted successfully with ID:', orderId);
+      
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      
+    } catch (error) {
+      console.error('Error submitting order:', error);
+      setSubmitError(typeof error === 'object' && error !== null && 'message' in error 
+        ? String(error.message) 
+        : 'An unexpected error occurred while submitting your order.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  // Calculate total price
+  const handleSubmit = () => {
+    submitOrderToFirebase();
+  };
+
   const calculateTotal = () => {
     return selectedItems.reduce((total, item) => total + (item.price * item.quantity), 0);
   };
 
-  // Handle menu item quantity change
   const handleItemQuantityChange = (itemId: string, change: number) => {
-    // Find if item already exists in selection
     const existingItemIndex = selectedItems.findIndex(item => item.id === itemId);
     const itemCategory = selectedCategory as keyof typeof menuItems;
     const menuItem = menuItems[itemCategory]?.find(item => item.id === itemId);
@@ -202,21 +233,17 @@ export default function Services() {
     if (!menuItem) return;
 
     if (existingItemIndex >= 0) {
-      // Update existing item
       const updatedItems = [...selectedItems];
       const newQuantity = updatedItems[existingItemIndex].quantity + change;
       
       if (newQuantity <= 0) {
-        // Remove item if quantity becomes zero or negative
         updatedItems.splice(existingItemIndex, 1);
       } else {
-        // Otherwise update the quantity
         updatedItems[existingItemIndex].quantity = newQuantity;
       }
       
       setSelectedItems(updatedItems);
     } else if (change > 0) {
-      // Add new item
       setSelectedItems([...selectedItems, {
         id: itemId,
         quantity: 1,
@@ -226,13 +253,11 @@ export default function Services() {
     }
   };
 
-  // Get current quantity for an item
   const getItemQuantity = (itemId: string) => {
     const item = selectedItems.find(item => item.id === itemId);
     return item ? item.quantity : 0;
   };
 
-  // Helper function to map icon strings to components
   const getIconComponent = (iconName: string) => {
     const iconMap: {[key: string]: React.ReactNode} = {
       'FastfoodIcon': <FastfoodIcon sx={{ fontSize: 40 }} />,
@@ -243,7 +268,6 @@ export default function Services() {
     return iconMap[iconName] || null;
   };
 
-  // Render different content based on active step
   const getStepContent = (step: number) => {
     switch (step) {
       case 0:
@@ -294,7 +318,7 @@ export default function Services() {
           </motion.div>
         );
       
-      case 1: // Menu selection step
+      case 1:
         return (
           <motion.div 
             initial="hidden"
@@ -410,7 +434,7 @@ export default function Services() {
           </motion.div>
         );
       
-      case 2: // Updated order details step
+      case 2:
         return (
           <motion.div 
             initial="hidden"
@@ -430,7 +454,6 @@ export default function Services() {
             
             <Paper className={styles.formPaper}>
               <Grid container spacing={3}>
-                {/* Personal Information Section */}
                 <Grid item xs={12}>
                   <Typography className={styles.sectionTitle}>
                     {t('form.personalDetails')}
@@ -455,7 +478,6 @@ export default function Services() {
                   <Divider sx={{ my: 1 }} />
                 </Grid>
 
-                {/* Delivery Information Section */}
                 <Grid item xs={12}>
                   <Typography className={styles.sectionTitle}>
                     {t('form.deliveryDetails')}
@@ -490,9 +512,6 @@ export default function Services() {
                       onChange={handleInputChange}
                     >
                       <MenuItem value="asap">{t('times.asap')}</MenuItem>
-                      {/* <MenuItem value="morning">{t('times.morning')}</MenuItem>
-                      <MenuItem value="afternoon">{t('times.afternoon')}</MenuItem>
-                      <MenuItem value="evening">{t('times.evening')}</MenuItem> */}
                     </Select>
                   </FormControl>
                 </Grid>
@@ -515,7 +534,6 @@ export default function Services() {
                   <Divider sx={{ my: 1 }} />
                 </Grid>
 
-                {/* Payment Information Section */}
                 <Grid item xs={12}>
                   <Typography className={styles.sectionTitle}>
                     {t('form.paymentDetails')}
@@ -539,7 +557,6 @@ export default function Services() {
                   </FormControl>
                 </Grid>
                 
-                {/* Order Summary */}
                 <Grid item xs={12} md={6}>
                   <Paper className={styles.summaryPaper}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
@@ -563,7 +580,7 @@ export default function Services() {
           </motion.div>
         );
       
-      case 3: // Updated review step (previously case 2)
+      case 3:
         return (
           <motion.div 
             initial="hidden"
@@ -589,7 +606,6 @@ export default function Services() {
                   </Box>
                 </Grid>
                 
-                {/* Selected menu items */}
                 {selectedItems.length > 0 && (
                   <Grid item xs={12}>
                     <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1 }}>
@@ -788,7 +804,6 @@ export default function Services() {
           </Typography>
         </motion.div>
         
-        {/* Stepper - Make mobile friendly */}
         {activeStep < 4 && (
           <Box className={styles.stepperContainer}>
             <Stepper 
@@ -810,7 +825,6 @@ export default function Services() {
           </Box>
         )}
         
-        {/* Cart Badge */}
         {selectedItems.length > 0 && activeStep < 4 && (
           <Box className={styles.cartBadgeContainer}>
             <Badge 
@@ -850,12 +864,10 @@ export default function Services() {
           </Box>
         )}
           
-        {/* Step Content */}
         <Box className={styles.contentContainer}>
           {getStepContent(activeStep)}
         </Box>
         
-        {/* Navigation Buttons */}
         {activeStep < 4 && (
           <Box className={`${styles.navigationContainer} ${activeStep === 0 ? styles.navigationContainerEnd : styles.navigationContainerSpaceBetween}`}>
             {activeStep > 0 && (
@@ -865,6 +877,7 @@ export default function Services() {
                 startIcon={<ArrowBackIcon />}
                 sx={{ mr: 1, px: { xs: 2, sm: 3 } }}
                 size={isMobile ? "small" : "medium"}
+                disabled={isSubmitting}
               >
                 {t('navigation.back')}
               </Button>
@@ -877,7 +890,8 @@ export default function Services() {
                 onClick={handleNext}
                 endIcon={<ArrowForwardIcon />}
                 disabled={(activeStep === 1 && selectedItems.length === 0) || 
-                          (activeStep === 2 && !formData.studentId)}
+                          (activeStep === 2 && !formData.studentId) ||
+                          isSubmitting}
                 sx={{ px: { xs: 2, sm: 3 } }}
                 size={isMobile ? "small" : "medium"}
               >
@@ -888,15 +902,31 @@ export default function Services() {
                 variant="contained"
                 color="primary"
                 onClick={handleSubmit}
-                endIcon={<CheckCircleOutlineIcon />}
+                endIcon={isSubmitting ? <CircularProgress size={20} color="inherit" /> : <CheckCircleOutlineIcon />}
+                disabled={isSubmitting}
                 sx={{ px: { xs: 2, sm: 3 } }}
                 size={isMobile ? "small" : "medium"}
               >
-                {t('navigation.submit')}
+                {isSubmitting ? t('navigation.submitting') : t('navigation.submit')}
               </Button>
             )}
           </Box>
         )}
+        
+        <Snackbar 
+          open={!!submitError} 
+          autoHideDuration={6000} 
+          onClose={() => setSubmitError(null)}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        >
+          <Alert 
+            onClose={() => setSubmitError(null)} 
+            severity="error" 
+            sx={{ width: '100%' }}
+          >
+            {submitError}
+          </Alert>
+        </Snackbar>
       </Container>
     </>
   );
