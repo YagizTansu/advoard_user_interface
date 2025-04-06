@@ -148,7 +148,12 @@
     "cafeteria": "Kantin",
     "engineeringBuilding": "Mühendislik Binası",
     "artBuilding": "Sanat Binası",
-    "scienceBuilding": "Fen Bilimleri Binası"
+    "scienceBuilding": "Fen Bilimleri Binası",
+    "table1": "Masa 1",
+    "table2": "Masa 2",
+    "table3": "Masa 3",
+    "table4": "Masa 4",
+    "table5": "Masa 5"
   },
   "times": {
     "asap": "Mümkün olan en kısa sürede",

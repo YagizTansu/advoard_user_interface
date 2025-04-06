@@ -107,14 +107,33 @@
 }
 
 .cartPaper {
-  padding: 0.75rem;
+  padding: 0.75rem 1.25rem;
   display: flex;
   align-items: center;
   border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  background-color: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.cartPaper:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
 .cartIcon {
-  margin-right: 0.5rem;
+  margin-right: 0.75rem;
+  color: #3a86ff;
+}
+
+/* Cart Badge */
+.cartBadgeContainer {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+  position: sticky;
+  top: 20px;
+  z-index: 100;
 }
 
 /* Menu Cards */
@@ -355,6 +374,10 @@
 
 .menuItemContent {
   flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 180px; /* Set a minimum height for content */
+  padding-bottom: 0; /* Remove default padding-bottom to control spacing better */
 }
 
 .menuItemHeader {
@@ -365,20 +388,36 @@
 
 .menuItemName {
   font-weight: 600;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .menuItemPrice {
   font-weight: 600;
   color: var(--primary-main);
+  white-space: nowrap;
+  margin-left: 8px;
 }
 
 .menuItemDescription {
-  margin-bottom: 2rem;
+  margin-bottom: auto; /* Push to the top, leaving space below */
+  flex-grow: 1; /* Allow description to take available space */
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Limit to 3 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .menuItemActions {
   justify-content: space-between;
-  padding: 2rem;
+  padding: 16px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  height: 72px; /* Fixed height for actions */
+  box-sizing: border-box;
 }
 
 /* Review Section */
@@ -428,4 +467,12 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+/* Menu Header */
+.menuHeaderContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
 }

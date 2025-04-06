@@ -1,15 +1,22 @@
 .mapContainer {
   width: 100%;
   height: 400px;
-  background-color: rgba(131, 56, 236, 0.05);
-  border-radius: 8px;
-  border: 1px dashed rgba(131, 56, 236, 0.3);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  border-radius: 16px;
+  border: 1px solid rgba(131, 56, 236, 0.1);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 24px;
   box-sizing: border-box;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.mapContainer:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(131, 56, 236, 0.1);
 }
 
 .mapIcon {
@@ -19,18 +26,22 @@
 }
 
 .buildingCard {
-  transition: all 0.3s ease;
-  cursor: pointer;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 16px;
+  border: 1px solid rgba(131, 56, 236, 0.1);
 }
 
 .buildingCard:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(131, 56, 236, 0.15);
 }
 
 .buildingCardActive {
-  border-color: #8338ec;
+  border: none;
+  background: linear-gradient(135deg, rgba(131, 56, 236, 0.05) 0%, rgba(58, 134, 255, 0.05) 100%);
+  box-shadow: 0 8px 24px rgba(131, 56, 236, 0.15);
 }
 
 .buildingCardInactive {
@@ -93,11 +104,13 @@
 }
 
 .searchContainer {
-  padding: 4px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(12px);
+  border-radius: 50px;
+  padding: 8px 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   display: flex;
   align-items: center;
-  border-radius: 50px;
-  background-color: rgba(255,255,255,0.95);
 }
 
 .searchIcon {
@@ -111,13 +124,14 @@
 
 .searchButton {
   border-radius: 50px;
-  padding: 4px 16px;
-  min-width: auto;
+  padding: 8px 24px;
   background: linear-gradient(135deg, #8338ec 0%, #3a86ff 100%);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .searchButton:hover {
-  background: linear-gradient(135deg, #7028dc 0%, #2a76ef 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(131, 56, 236, 0.3);
 }
 
 .decorativeCircle {
@@ -151,12 +165,16 @@
   padding: 16px;
   display: flex;
   align-items: center;
-  border-radius: 8px;
+  border-radius: 12px;
   cursor: pointer;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  transition: all 0.3s ease;
 }
 
 .destinationItem:hover {
-  background-color: rgba(131, 56, 236, 0.05);
+  background: rgba(131, 56, 236, 0.05);
+  transform: translateX(4px);
 }
 
 .destinationIcon {
@@ -255,7 +273,10 @@
 
 .mapPaper {
   padding: 24px;
-  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(131, 56, 236, 0.1);
   position: relative;
   overflow: visible;
 }
@@ -289,8 +310,8 @@
 }
 
 .contentSection {
-  padding: 20px 0;
-  margin-top: 24px;
+  padding: 10px 0;
+  margin-top: 0px;
   position: relative;
   z-index: 10;
 }
@@ -298,7 +319,68 @@
 .sidebarPaper {
   margin-bottom: 24px;
   padding: 16px;
-  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(131, 56, 236, 0.1);
+}
+
+.buildingNameText {
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.dividerSpacing {
+  margin: 12px 0;
+}
+
+.sidebarPadding {
+  padding: 0 8px;
+}
+
+.searchTextField {
+  width: 100%;
+}
+
+.gridSpacing {
+  margin-top: 24px;
+}
+
+.navigationContainer {
+  display: flex;
+  align-items: center;
+  padding: 16px 24px;
+  background-color: #f5f7fa;
+}
+
+.searchAdornment {
+  color: rgba(0,0,0,0.54);
+}
+
+.elevationOverride {
+  box-shadow: none;
+}
+
+.professorItem {
+  display: flex;
+  align-items: flex-start;
+  padding: 16px;
+  transition: all 0.3s ease;
+}
+
+.professorItem:hover {
+  background: rgba(131, 56, 236, 0.05);
+  transform: translateX(4px);
+}
+
+.professorIcon {
+  color: #8338ec;
+  margin-right: 12px;
+  margin-top: 4px;
+}
+
+.professorInfo {
+  flex: 1;
 }
 
 @media (max-width: 600px) {

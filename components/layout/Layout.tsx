@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useState, useEffect } from 'react';
 import { AppBar, Toolbar, IconButton, Typography, Box,Container } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
@@ -15,11 +15,23 @@ export default function Layout({ children }: LayoutProps) {
   const { t, i18n } = useTranslation('common');
   const [voiceCommandActive, setVoiceCommandActive] = useState(false);
   
+  // Check for stored language preference when component mounts
+  useEffect(() => {
+    const storedLang = localStorage.getItem('preferredLanguage');
+    if (storedLang && storedLang !== i18n.language) {
+      router.push(router.pathname, router.asPath, { locale: storedLang });
+    }
+  }, []);
+  
   const toggleLanguage = () => {
     const newLang = i18n.language === 'tr' ? 'en' : 'tr';
-    router.push(router.pathname, router.pathname, { locale: newLang });
+    
+    // Store the preferred language in localStorage
+    localStorage.setItem('preferredLanguage', newLang);
+    
+    // Update the page with the new locale
+    router.push(router.pathname, router.asPath, { locale: newLang });
   };
-  
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>

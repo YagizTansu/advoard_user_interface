@@ -60,7 +60,7 @@ export default function Services() {
     studentId: '',
     orderDetails: '',
     deliveryLocation: '',
-    deliveryTime: '',
+    deliveryTime: 'asap',  // Changed from empty string to 'asap'
     paymentMethod: 'credit'
   });
   const [categories, setCategories] = useState<Category[]>([]);
@@ -226,7 +226,7 @@ export default function Services() {
               {t('order.selectCategory')}
             </Typography>
             
-            <Grid container spacing={3}>
+            <Grid container spacing={2}>
               {categories.map((category, index) => (
                 <Grid item xs={12} sm={6} md={3} key={category.id}>
                   <motion.div
@@ -263,14 +263,14 @@ export default function Services() {
           </motion.div>
         );
       
-      case 1: // New menu selection step
+      case 1: // Menu selection step
         return (
           <motion.div 
             initial="hidden"
             animate="visible"
             variants={pageTransition}
           >
-            <Box className={styles.breadcrumbContainer}>
+            <Box className={styles.menuHeaderContainer}>
               <Box>
                 <Chip 
                   label={t(`categories.${selectedCategory}.title`)} 
@@ -281,20 +281,6 @@ export default function Services() {
                   {t('order.selectMenu')}
                 </Typography>
               </Box>
-
-              <Badge 
-                className={styles.cartBadge}
-                badgeContent={selectedItems.length} 
-                color="primary"
-                sx={{ '& .MuiBadge-badge': { fontSize: 14, fontWeight: 'bold' } }}
-              >
-                <Paper className={styles.cartPaper}>
-                  <ShoppingCartIcon className={styles.cartIcon} />
-                  <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-                    {calculateTotal()} ₺
-                  </Typography>
-                </Paper>
-              </Badge>
             </Box>
             
             <Grid container spacing={3}>
@@ -454,11 +440,11 @@ export default function Services() {
                       value={formData.deliveryLocation}
                       onChange={handleInputChange}
                     >
-                      <MenuItem value="library">{t('locations.library')}</MenuItem>
-                      <MenuItem value="cafeteria">{t('locations.cafeteria')}</MenuItem>
-                      <MenuItem value="engineeringBuilding">{t('locations.engineeringBuilding')}</MenuItem>
-                      <MenuItem value="artBuilding">{t('locations.artBuilding')}</MenuItem>
-                      <MenuItem value="scienceBuilding">{t('locations.scienceBuilding')}</MenuItem>
+                      <MenuItem value="table1">{t('locations.table1') || 'Table 1'}</MenuItem>
+                      <MenuItem value="table2">{t('locations.table2') || 'Table 2'}</MenuItem>
+                      <MenuItem value="table3">{t('locations.table3') || 'Table 3'}</MenuItem>
+                      <MenuItem value="table4">{t('locations.table4') || 'Table 4'}</MenuItem>
+                      <MenuItem value="table5">{t('locations.table5') || 'Table 5'}</MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>
@@ -473,9 +459,9 @@ export default function Services() {
                       onChange={handleInputChange}
                     >
                       <MenuItem value="asap">{t('times.asap')}</MenuItem>
-                      <MenuItem value="morning">{t('times.morning')}</MenuItem>
+                      {/* <MenuItem value="morning">{t('times.morning')}</MenuItem>
                       <MenuItem value="afternoon">{t('times.afternoon')}</MenuItem>
-                      <MenuItem value="evening">{t('times.evening')}</MenuItem>
+                      <MenuItem value="evening">{t('times.evening')}</MenuItem> */}
                     </Select>
                   </FormControl>
                 </Grid>
@@ -760,7 +746,7 @@ export default function Services() {
           </Typography>
         </motion.div>
         
-        {/* Stepper - updated to show 4 steps */}
+        {/* Stepper */}
         {activeStep < 4 && (
           <Box className={styles.stepperContainer}>
             <Stepper activeStep={activeStep} alternativeLabel>
@@ -770,6 +756,25 @@ export default function Services() {
                 </Step>
               ))}
             </Stepper>
+          </Box>
+        )}
+        
+        {/* Cart Badge - Displayed consistently when there are selected items */}
+        {selectedItems.length > 0 && activeStep < 4 && (
+          <Box className={styles.cartBadgeContainer}>
+            <Badge 
+              className={styles.cartBadge}
+              badgeContent={selectedItems.length} 
+              color="primary"
+              sx={{ '& .MuiBadge-badge': { fontSize: 14, fontWeight: 'bold' } }}
+            >
+              <Paper className={styles.cartPaper} elevation={3}>
+                <ShoppingCartIcon className={styles.cartIcon} />
+                <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                  {calculateTotal()} ₺
+                </Typography>
+              </Paper>
+            </Badge>
           </Box>
         )}
           

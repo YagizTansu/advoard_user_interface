@@ -9,7 +9,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "start:dev": "NODE_OPTIONS='--max_old_space_size=4096' next dev",
+    "start:prod": "NODE_OPTIONS='--max_old_space_size=4096' next start",
+    "build:prod": "NODE_OPTIONS='--max_old_space_size=4096' next build",
+    "build:docker": "NODE_OPTIONS='--max_old_space_size=4096' next build",
+    "start:docker": "NODE_OPTIONS='--max_old_space_size=4096' next start"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",

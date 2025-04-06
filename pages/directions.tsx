@@ -1,4 +1,4 @@
-import { SetStateAction, useState } from 'react';
+import { SetStateAction, useState, useEffect } from 'react';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { motion } from 'framer-motion';
@@ -31,9 +31,11 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import PinDropIcon from '@mui/icons-material/PinDrop';
 import ApartmentIcon from '@mui/icons-material/Apartment';
 import SchoolIcon from '@mui/icons-material/School';
+import PersonIcon from '@mui/icons-material/Person';
 import Link from 'next/link';
 import MapIcon from '@mui/icons-material/Map';
 import directionStyles from '../styles/directions.module.css';
+import { getBuildings, getCommonDestinations, getProfessorRooms, Building, CommonDestination, ProfessorRoom } from '../src/lib/supabase';
 
 // Animation variants
 const containerVariants = {
@@ -41,39 +43,44 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1
+      staggerChildren: 0.1,
+      duration: 0.6,
+      ease: "easeOut"
     }
   }
 };
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300 } }
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { 
+      type: "spring", 
+      stiffness: 400,
+      damping: 30 
+    } 
+  }
 };
 
 // Map component with styled box
 const MapComponent = () => {
   return (
-    <Box className={directionStyles.mapContainer}>
+    <motion.div 
+      className={directionStyles.mapContainer}
+      whileHover={{ scale: 1.01 }}
+      transition={{ type: "spring", stiffness: 400, damping: 30 }}
+    >
       <MapIcon className={directionStyles.mapIcon} />
-      <Typography variant="body1" sx={{ fontWeight: 500, mb: 1 }}>
+      <Typography variant="body1" className={directionStyles.buildingNameText}>
         Campus Map View
       </Typography>
       <Typography variant="body2" color="text.secondary">
         Interactive map will be displayed here
       </Typography>
-    </Box>
+    </motion.div>
   );
 };
-
-// Define building type
-interface Building {
-  id: number;
-  name: string;
-  floor: string;
-  type: 'academic' | 'administrative';
-  description: string;
-}
 
 // Building information component
 const BuildingInfo = ({ building, active, onClick }: {
@@ -82,49 +89,54 @@ const BuildingInfo = ({ building, active, onClick }: {
   onClick: (id: number) => void;
 }) => {
   return (
-    <Card 
-      elevation={active ? 4 : 1} 
-      className={`${directionStyles.buildingCard} ${active ? directionStyles.buildingCardActive : ''} ${directionStyles.buildingCardElevated}`}
-      onClick={() => onClick(building.id)}
+    <motion.div
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+      transition={{ type: "spring", stiffness: 400, damping: 30 }}
     >
-      <CardContent>
-        <Box className={directionStyles.buildingContent}>
-          <Box className={directionStyles.buildingIconBox}>
-            {building.type === 'academic' ? 
-              <SchoolIcon /> : 
-              <ApartmentIcon />
-            }
-          </Box>
-          <Box>
-            <Typography variant="subtitle1" className={directionStyles.buildingName}>
-              {building.name}
-            </Typography>
-            <Typography variant="body2" className={directionStyles.buildingDetails}>
-              {building.floor} {building.type === 'academic' ? '• Academic' : '• Administrative'}
-            </Typography>
-          </Box>
-        </Box>
-        
-        {active && (
-          <Fade in={active}>
-            <Box>
-              <Divider sx={{ my: 1.5 }} />
-              <Typography variant="body2" className={directionStyles.buildingDescription}>
-                {building.description}
-              </Typography>
-              <Button 
-                variant="outlined" 
-                size="small" 
-                startIcon={<NavigationIcon />}
-                className={directionStyles.directionsButton}
-              >
-                Get Directions
-              </Button>
+      <Card 
+        className={`${directionStyles.buildingCard} ${active ? directionStyles.buildingCardActive : ''} ${directionStyles.elevationOverride}`}
+        onClick={() => onClick(building.id)}
+      >
+        <CardContent>
+          <Box className={directionStyles.buildingContent}>
+            <Box className={directionStyles.buildingIconBox}>
+              {building.type === 'academic' ? 
+                <SchoolIcon /> : 
+                <ApartmentIcon />
+              }
             </Box>
-          </Fade>
-        )}
-      </CardContent>
-    </Card>
+            <Box>
+              <Typography variant="subtitle1" className={directionStyles.buildingName}>
+                {building.name}
+              </Typography>
+              <Typography variant="body2" className={directionStyles.buildingDetails}>
+                {building.floor} {building.type === 'academic' ? '• Academic' : '• Administrative'}
+              </Typography>
+            </Box>
+          </Box>
+          
+          {active && (
+            <Fade in={active}>
+              <Box>
+                <Divider className={directionStyles.dividerSpacing} />
+                <Typography variant="body2" className={directionStyles.buildingDescription}>
+                  {building.description}
+                </Typography>
+                <Button 
+                  variant="outlined" 
+                  size="small" 
+                  startIcon={<NavigationIcon />}
+                  className={directionStyles.directionsButton}
+                >
+                  Get Directions
+                </Button>
+              </Box>
+            </Fade>
+          )}
+        </CardContent>
+      </Card>
+    </motion.div>
   );
 };
 
@@ -133,19 +145,45 @@ export default function Directions() {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState(0);
   const [activeBuilding, setActiveBuilding] = useState(null);
-  
-  // Sample building data - would come from an API in production
-  const buildings = [
-    { id: 1, name: 'A Block', floor: '4 Floors', type: 'academic', description: 'Main lecture halls and faculty offices.' },
-    { id: 2, name: 'B Block', floor: '3 Floors', type: 'academic', description: 'Computer labs and research facilities.' },
-    { id: 3, name: 'C Block', floor: '5 Floors', type: 'academic', description: 'Library and study spaces.' },
-    { id: 4, name: 'Admin Building', floor: '2 Floors', type: 'administrative', description: 'Student affairs and administration offices.' },
-  ];
+  const [buildings, setBuildings] = useState<Building[]>([]);
+  const [destinations, setDestinations] = useState<CommonDestination[]>([]);
+  const [professorRooms, setProfessorRooms] = useState<ProfessorRoom[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Filter buildings based on search and tab
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [buildingsData, destinationsData, professorsData] = await Promise.all([
+          getBuildings(),
+          getCommonDestinations(),
+          getProfessorRooms()
+        ]);
+        setBuildings(buildingsData);
+        setDestinations(destinationsData);
+        setProfessorRooms(professorsData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // Filter buildings and professors based on search and tab
   const filteredBuildings = buildings.filter(building => {
     const matchesSearch = building.name.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesTab = activeTab === 0 || (activeTab === 1 && building.type === 'academic') || (activeTab === 2 && building.type === 'administrative');
+    const matchesTab = activeTab === 0 || 
+      (activeTab === 1 && building.type === 'academic') || 
+      (activeTab === 2 && building.type === 'administrative');
+    return matchesSearch && matchesTab;
+  });
+
+  const filteredProfessors = professorRooms.filter(professor => {
+    const matchesSearch = professor.professor_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         professor.department.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesTab = activeTab === 0 || activeTab === 1; // Show in All and Academic tabs
     return matchesSearch && matchesTab;
   });
 
@@ -192,14 +230,14 @@ export default function Directions() {
             initial="hidden"
             animate="visible"
           >
-            <Grid container spacing={3}>
+            <Grid container spacing={3} className={directionStyles.gridSpacing}>
               {/* Sidebar with building list */}
               <Grid item xs={12} md={4}>
-                <Paper className={directionStyles.sidebarPaper} elevation={3}>
+                <Paper className={directionStyles.sidebarPaper}>
                   {/* Search input placed before tabs */}
                   <Box className={directionStyles.searchBox}>
                     <TextField
-                      fullWidth
+                      className={directionStyles.searchTextField}
                       placeholder={t('directions.searchPlaceholder')}
                       variant="outlined"
                       size="small"
@@ -208,7 +246,7 @@ export default function Directions() {
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
-                            <SearchIcon sx={{ color: 'rgba(0,0,0,0.54)' }} />
+                            <SearchIcon className={directionStyles.searchAdornment} />
                           </InputAdornment>
                         )
                       }}
@@ -229,7 +267,7 @@ export default function Directions() {
                   </Tabs>
                 </Paper>
                 
-                <Box sx={{ px: 1 }}>
+                <Box className={directionStyles.sidebarPadding}>
                   <Typography variant="subtitle2" className={directionStyles.resultsCount}>
                     {filteredBuildings.length} {t('directions.locationsFound')}
                   </Typography>
@@ -259,7 +297,7 @@ export default function Directions() {
               
               {/* Map section */}
               <Grid item xs={12} md={8}>
-                <Paper className={directionStyles.mapPaper} elevation={2}>
+                <Paper className={directionStyles.mapPaper}>
                   <Box className={directionStyles.mapHeader}>
                     <Typography variant="h6" component="h2" className={directionStyles.mapTitle}>
                       {t('directions.campusMap')}
@@ -279,15 +317,47 @@ export default function Directions() {
                       {t('directions.commonDestinations')}
                     </Typography>
                     <Grid container spacing={2}>
-                      {['Main Entrance', 'Library', 'Cafeteria', 'Administrative Building'].map((destination, index) => (
-                        <Grid item xs={12} sm={6} key={index}>
+                      {destinations.map((destination) => (
+                        <Grid item xs={12} sm={6} key={destination.id}>
                           <Paper className={directionStyles.destinationItem}>
                             <PinDropIcon className={directionStyles.destinationIcon} />
-                            <Typography variant="body2">{destination}</Typography>
+                            <Typography variant="body2">{destination.name}</Typography>
                           </Paper>
                         </Grid>
                       ))}
                     </Grid>
+
+                    {/* Professor Rooms - Only show in All and Academic tabs */}
+                    {(activeTab === 0 || activeTab === 1) && (
+                      <>
+                        <Typography variant="subtitle1" className={directionStyles.destinationsTitle}>
+                          {t('directions.professorRooms')}
+                        </Typography>
+                        <Grid container spacing={2}>
+                          {filteredProfessors.map((professor) => (
+                            <Grid item xs={12} sm={6} key={professor.id}>
+                              <Paper className={directionStyles.destinationItem}>
+                                <PersonIcon className={directionStyles.destinationIcon} />
+                                <Box className={directionStyles.professorInfo}>
+                                  <Typography variant="subtitle2">
+                                    {professor.professor_name}
+                                  </Typography>
+                                  <Typography variant="body2" color="text.secondary">
+                                    {professor.room_number} • {professor.floor}
+                                  </Typography>
+                                  <Typography variant="caption" color="text.secondary" display="block">
+                                    {professor.department}
+                                  </Typography>
+                                  <Typography variant="caption" color="text.secondary" display="block">
+                                    {professor.office_hours}
+                                  </Typography>
+                                </Box>
+                              </Paper>
+                            </Grid>
+                          ))}
+                        </Grid>
+                      </>
+                    )}
                   </Box>
                 </Paper>
               </Grid>
@@ -299,7 +369,7 @@ export default function Directions() {
   );
 }
 
-export async function getStaticProps({ locale }: { locale?: string }) {
+export async function getServerSideProps({ locale }: { locale?: string }) {
   const safeLocale = locale || 'tr';
   
   return {
