@@ -113,17 +113,23 @@ export default function Help() {
   return (
     <Box className={helpStyles.pageContainer}>
       {/* Hero section */}
-      <Container maxWidth="lg" sx={{ py: 6 }}>
+      <Container maxWidth="lg" sx={{ py: { xs: 3, sm: 4, md: 6 } }}>
         <Box className={helpStyles.breadcrumbContainer}>
           <IconButton 
             component={Link} 
             href="/"
-            sx={{ mr: 2 }}
+            sx={{ mr: { xs: 1, sm: 2 } }}
           >
             <ArrowBackIcon />
           </IconButton>
           
-          <Breadcrumbs aria-label="breadcrumb">
+          <Breadcrumbs 
+            aria-label="breadcrumb"
+            sx={{ 
+              '& .MuiBreadcrumbs-ol': { flexWrap: { xs: 'wrap', sm: 'nowrap' } },
+              '& .MuiBreadcrumbs-li': { fontSize: { xs: '0.875rem', sm: '1rem' } }
+            }}
+          >
             <MuiLink 
               component={Link} 
               href="/"
@@ -142,7 +148,13 @@ export default function Help() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.8 }}
         >
-          <Box className={helpStyles.searchBox}>
+          <Box 
+            className={helpStyles.searchBox}
+            sx={{ 
+              padding: { xs: '16px', sm: '24px' },
+              margin: { xs: '16px 0', sm: '24px 0' }
+            }}
+          >
             <TextField
               fullWidth
               placeholder={t('help.searchPlaceholder')}
@@ -169,8 +181,12 @@ export default function Help() {
                 key={category.id}
                 variants={itemVariants}
                 className={helpStyles.categoryContainer}
+                style={{ marginBottom: index < filteredCategories.length - 1 ? '24px' : '0' }}
               >
-                <Paper className={helpStyles.categoryPaper}>
+                <Paper 
+                  className={helpStyles.categoryPaper}
+                  sx={{ padding: { xs: '0 0 0 12px', sm: '0 0 0 16px' } }}
+                >
                   <Box 
                     className={helpStyles.categoryIndicator}
                     sx={{ backgroundColor: category.color }}
@@ -180,7 +196,11 @@ export default function Help() {
                     variant="h5" 
                     component="h2"
                     className={helpStyles.categoryTitle}
-                    sx={{ color: category.color }}
+                    sx={{ 
+                      color: category.color,
+                      fontSize: { xs: '1.25rem', sm: '1.5rem' },
+                      padding: { xs: '16px 16px 8px', sm: '24px 24px 12px' }
+                    }}
                   >
                     {t(category.title)}
                   </Typography>
@@ -201,11 +221,26 @@ export default function Help() {
                         classes={{
                           content: helpStyles.accordionSummaryContent
                         }}
+                        sx={{ 
+                          minHeight: { xs: '48px', sm: '56px' },
+                          padding: { xs: '0 16px 0 4px', sm: '0 24px 0 8px' }
+                        }}
                       >
-                        <Typography className={helpStyles.accordionQuestion}>{t(faq.q)}</Typography>
+                        <Typography 
+                          className={helpStyles.accordionQuestion}
+                          sx={{ fontSize: { xs: '0.9rem', sm: '1rem' } }}
+                        >
+                          {t(faq.q)}
+                        </Typography>
                       </AccordionSummary>
-                      <AccordionDetails className={helpStyles.accordionDetails}>
-                        <Typography className={helpStyles.accordionAnswer}>
+                      <AccordionDetails 
+                        className={helpStyles.accordionDetails}
+                        sx={{ padding: { xs: '8px 16px 16px', sm: '12px 24px 24px' } }}
+                      >
+                        <Typography 
+                          className={helpStyles.accordionAnswer}
+                          sx={{ fontSize: { xs: '0.875rem', sm: '1rem' } }}
+                        >
                           {t(faq.a)}
                         </Typography>
                       </AccordionDetails>
@@ -234,28 +269,62 @@ export default function Help() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8, duration: 0.8 }}
         >
-          <Box className={helpStyles.contactSection}>
-            <Typography variant="h4" component="h2" className={helpStyles.contactTitle}>
+          <Box 
+            className={helpStyles.contactSection}
+            sx={{ 
+              padding: { xs: '24px 16px', sm: '32px 24px', md: '48px 32px' },
+              margin: { xs: '24px 0', sm: '32px 0', md: '48px 0' }
+            }}
+          >
+            <Typography 
+              variant="h4" 
+              component="h2" 
+              className={helpStyles.contactTitle}
+              sx={{ fontSize: { xs: '1.5rem', sm: '2rem', md: '2.25rem' } }}
+            >
               {t('help.stillNeedHelp')}
             </Typography>
-            <Typography variant="body1" color="text.secondary" className={helpStyles.contactMessage}>
+            <Typography 
+              variant="body1" 
+              color="text.secondary" 
+              className={helpStyles.contactMessage}
+              sx={{ 
+                fontSize: { xs: '0.9rem', sm: '1rem' },
+                maxWidth: { xs: '100%', sm: '80%', md: '60%' }
+              }}
+            >
               {t('help.contactMessage')}
             </Typography>
             
-            <Grid container spacing={3} justifyContent="center">
+            <Grid container spacing={{ xs: 2, sm: 3 }} justifyContent="center">
               <Grid item xs={12} sm={6} md={4}>
-                <Paper className={helpStyles.contactCard}>
+                <Paper 
+                  className={helpStyles.contactCard}
+                  sx={{ padding: { xs: '16px', sm: '24px' } }}
+                >
                   <EmailIcon 
                     className={helpStyles.contactIcon}
-                    sx={{ color: '#3a86ff' }} 
+                    sx={{ 
+                      color: '#3a86ff',
+                      fontSize: { xs: '2rem', sm: '2.5rem' } 
+                    }} 
                   />
-                  <Typography variant="h6" className={helpStyles.contactMethod}>{t('help.contactEmail')}</Typography>
+                  <Typography 
+                    variant="h6" 
+                    className={helpStyles.contactMethod}
+                    sx={{ fontSize: { xs: '1.1rem', sm: '1.25rem' } }}
+                  >
+                    {t('help.contactEmail')}
+                  </Typography>
                   <Typography 
                     variant="body2" 
                     component="a" 
                     href="mailto:support@iue.edu.tr"
                     className={helpStyles.contactLink}
-                    sx={{ color: '#3a86ff' }}
+                    sx={{ 
+                      color: '#3a86ff',
+                      fontSize: { xs: '0.875rem', sm: '1rem' }
+                    }}
                   >
                     support@iue.edu.tr
                   </Typography>
@@ -263,18 +332,33 @@ export default function Help() {
               </Grid>
               
               <Grid item xs={12} sm={6} md={4}>
-                <Paper className={helpStyles.contactCard}>
+                <Paper 
+                  className={helpStyles.contactCard}
+                  sx={{ padding: { xs: '16px', sm: '24px' } }}
+                >
                   <PhoneIcon 
                     className={helpStyles.contactIcon} 
-                    sx={{ color: '#8338ec' }}
+                    sx={{ 
+                      color: '#8338ec',
+                      fontSize: { xs: '2rem', sm: '2.5rem' }
+                    }}
                   />
-                  <Typography variant="h6" className={helpStyles.contactMethod}>{t('help.contactPhone')}</Typography>
+                  <Typography 
+                    variant="h6" 
+                    className={helpStyles.contactMethod}
+                    sx={{ fontSize: { xs: '1.1rem', sm: '1.25rem' } }}
+                  >
+                    {t('help.contactPhone')}
+                  </Typography>
                   <Typography 
                     variant="body2" 
                     component="a" 
                     href="tel:+902324888000"
                     className={helpStyles.contactLink}
-                    sx={{ color: '#8338ec' }}
+                    sx={{ 
+                      color: '#8338ec',
+                      fontSize: { xs: '0.875rem', sm: '1rem' }
+                    }}
                   >
                     +90 232 488 8000
                   </Typography>

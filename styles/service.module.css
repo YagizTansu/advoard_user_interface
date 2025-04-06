@@ -4,10 +4,24 @@
   padding-bottom: 3rem;
 }
 
+@media (max-width: 600px) {
+  .pageContainer {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+}
+
 .breadcrumbContainer {
   margin-bottom: 2rem;
   display: flex;
   align-items: center;
+}
+
+@media (max-width: 600px) {
+  .breadcrumbContainer {
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
 }
 
 .pageTitle {
@@ -19,9 +33,22 @@
   -webkit-text-fill-color: transparent;
 }
 
+@media (max-width: 600px) {
+  .pageTitle {
+    font-size: 1.75rem;
+  }
+}
+
 .pageSubtitle {
   margin-bottom: 3rem;
   max-width: 700px;
+}
+
+@media (max-width: 600px) {
+  .pageSubtitle {
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+  }
 }
 
 .stepperContainer {
@@ -29,14 +56,42 @@
   width: 100%;
 }
 
+@media (max-width: 600px) {
+  .stepperContainer {
+    margin-bottom: 1.5rem;
+  }
+}
+
 .contentContainer {
   margin-top: 2rem;
   margin-bottom: 2rem;
 }
 
+@media (max-width: 600px) {
+  .contentContainer {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+}
+
 .navigationContainer {
   display: flex;
   margin-top: 2rem;
+}
+
+@media (max-width: 600px) {
+  .navigationContainer {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .navigationContainerSpaceBetween {
+    flex-direction: column-reverse;
+  }
+
+  .navigationContainerEnd button {
+    width: 100%;
+  }
 }
 
 .navigationContainerSpaceBetween {
@@ -86,6 +141,35 @@
 .categoryCardTitle {
   margin-bottom: 0.5rem;
   font-weight: 600;
+}
+
+@media (max-width: 600px) {
+  .menuHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .categoryCard {
+    height: auto;
+  }
+  
+  .menuItemContent {
+    min-height: 150px;
+  }
+  
+  .menuItemActions {
+    flex-direction: column;
+    height: auto;
+    gap: 1rem;
+    align-items: center;
+  }
+  
+  .quantityControl {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 /* Menu Selection */
@@ -188,6 +272,12 @@
   background-color: rgba(0, 0, 0, 0.02);
 }
 
+@media (max-width: 600px) {
+  .selectedItemsPaper {
+    padding: 1rem;
+  }
+}
+
 .selectedItemsTitle {
   margin-bottom: 1rem;
   font-weight: 600;
@@ -214,6 +304,12 @@
   background-color: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+@media (max-width: 600px) {
+  .formPaper {
+    padding: 1rem;
+  }
 }
 
 .sectionTitle {
@@ -380,6 +476,12 @@
   padding-bottom: 0; /* Remove default padding-bottom to control spacing better */
 }
 
+@media (max-width: 600px) {
+  .menuItemContent {
+    min-height: 150px;
+  }
+}
+
 .menuItemHeader {
   display: flex;
   justify-content: space-between;
@@ -420,6 +522,15 @@
   box-sizing: border-box;
 }
 
+@media (max-width: 600px) {
+  .menuItemActions {
+    flex-direction: column;
+    height: auto;
+    gap: 1rem;
+    align-items: center;
+  }
+}
+
 /* Review Section */
 .reviewContainer {
   padding: 4rem;
@@ -428,6 +539,12 @@
   background-color: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+@media (max-width: 600px) {
+  .reviewContainer {
+    padding: 1.5rem;
+  }
 }
 
 .reviewChip {

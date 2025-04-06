@@ -1,5 +1,5 @@
 {
-  "appName": "Smart Service Robot",
+  "appName": "Smart Campus Robot",
   "welcome": "Welcome",
   "selectService": "Please select a service",
   "navigation": {
@@ -34,7 +34,7 @@
     }
   },
   "presentations": {
-    "welcomeTitle": "Smart Service Robot",
+    "welcomeTitle": "Smart Campus Robot",
     "welcomeSubtitle": "I'm here to make your campus life easier!",
     "services": {
       "title": "Order Service",
@@ -64,7 +64,7 @@
     "examples": "Examples: 'Go to home page', 'I want to place an order', 'How do I get to the library?'"
   },
   "voiceRecognitionLang": "en-US",
-  "footerText": "Smart Service Robot - All Rights Reserved",
+  "footerText": "Smart Campus Robot - All Rights Reserved",
   
   "pageTitle": {
     "home": "Home",
@@ -194,8 +194,8 @@
     "categories": {
       "general": {
         "title": "General Information",
-        "q1": "What is the Smart Service Robot?",
-        "a1": "The Smart Service Robot is an interactive system designed to facilitate services such as food and beverage ordering, directions, and information access around the campus.",
+        "q1": "What is the Smart Campus Robot?",
+        "a1": "The Smart Campus Robot is an interactive system designed to facilitate services such as food and beverage ordering, directions, and information access around the campus.",
         "q2": "How can I use this system?",
         "a2": "You can start by selecting the service you need from the main menu. Step-by-step guidance is available for each service.",
         "q3": "Which languages does the system support?",

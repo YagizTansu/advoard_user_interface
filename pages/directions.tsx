@@ -86,7 +86,7 @@ const MapComponent = () => {
 const BuildingInfo = ({ building, active, onClick }: {
   building: Building;
   active: boolean;
-  onClick: (id: number) => void;
+  onClick: (id: string) => void;
 }) => {
   return (
     <motion.div
@@ -144,7 +144,7 @@ export default function Directions() {
   const { t } = useTranslation('common');
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState(0);
-  const [activeBuilding, setActiveBuilding] = useState(null);
+  const [activeBuilding, setActiveBuilding] = useState<string | null>(null);
   const [buildings, setBuildings] = useState<Building[]>([]);
   const [destinations, setDestinations] = useState<CommonDestination[]>([]);
   const [professorRooms, setProfessorRooms] = useState<ProfessorRoom[]>([]);
@@ -187,7 +187,7 @@ export default function Directions() {
     return matchesSearch && matchesTab;
   });
 
-  const handleBuildingClick = (id: SetStateAction<null>) => {
+  const handleBuildingClick = (id: string) => {
     setActiveBuilding(activeBuilding === id ? null : id);
   };
 
@@ -207,11 +207,22 @@ export default function Directions() {
             component={Link} 
             href="/"
             className={directionStyles.backButton}
+            sx={{ fontSize: { xs: '1.2rem', sm: '1.5rem' } }}
           >
             <ArrowBackIcon />
           </IconButton>
           
-          <Breadcrumbs aria-label="breadcrumb">
+          <Breadcrumbs 
+            aria-label="breadcrumb"
+            sx={{ 
+              '& .MuiBreadcrumbs-ol': { 
+                flexWrap: { xs: 'wrap', sm: 'nowrap' } 
+              },
+              '& .MuiBreadcrumbs-li': {
+                fontSize: { xs: '0.875rem', sm: '1rem' }
+              }
+            }}
+          >
             <MuiLink 
               component={Link} 
               href="/"
@@ -230,9 +241,9 @@ export default function Directions() {
             initial="hidden"
             animate="visible"
           >
-            <Grid container spacing={3} className={directionStyles.gridSpacing}>
+            <Grid container spacing={{ xs: 2, sm: 3 }} className={directionStyles.gridSpacing}>
               {/* Sidebar with building list */}
-              <Grid item xs={12} md={4}>
+              <Grid item xs={12} md={4} order={{ xs: 2, md: 1 }}>
                 <Paper className={directionStyles.sidebarPaper}>
                   {/* Search input placed before tabs */}
                   <Box className={directionStyles.searchBox}>
@@ -260,6 +271,13 @@ export default function Directions() {
                     variant="fullWidth"
                     className={directionStyles.tabsContainer}
                     classes={{ indicator: directionStyles.tabIndicator }}
+                    sx={{
+                      '& .MuiTab-root': {
+                        minWidth: { xs: '30%', sm: 'auto' },
+                        fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                        padding: { xs: '6px 4px', sm: '12px 16px' }
+                      }
+                    }}
                   >
                     <Tab label={t('directions.all')} className={activeTab === 0 ? directionStyles.selectedTab : ''} />
                     <Tab label={t('directions.academic')} className={activeTab === 1 ? directionStyles.selectedTab : ''} />
@@ -296,7 +314,7 @@ export default function Directions() {
               </Grid>
               
               {/* Map section */}
-              <Grid item xs={12} md={8}>
+              <Grid item xs={12} md={8} order={{ xs: 1, md: 2 }}>
                 <Paper className={directionStyles.mapPaper}>
                   <Box className={directionStyles.mapHeader}>
                     <Typography variant="h6" component="h2" className={directionStyles.mapTitle}>

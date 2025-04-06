@@ -51,6 +51,35 @@ import { supabase, getCategories, getMenuItems, Category, MenuItemType } from '.
 // Define steps for the order process - updated to include menu selection
 const steps = ['selectCategory', 'selectMenu', 'customizeOrder', 'reviewSubmit'];
 
+// Custom hook for window size
+function useWindowSize() {
+  const [windowSize, setWindowSize] = useState({
+    width: undefined as number | undefined,
+    height: undefined as number | undefined,
+  });
+  
+  useEffect(() => {
+    // Only execute on the client
+    function handleResize() {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    }
+    
+    // Add event listener
+    window.addEventListener("resize", handleResize);
+    
+    // Call handler right away so state gets updated with initial window size
+    handleResize();
+    
+    // Remove event listener on cleanup
+    return () => window.removeEventListener("resize", handleResize);
+  }, []); // Empty array ensures that effect is only run on mount
+  
+  return windowSize;
+}
+
 export default function Services() {
   const { t, i18n } = useTranslation('common'); // Destructure both t and i18n
   const [activeStep, setActiveStep] = useState(0);
@@ -65,6 +94,8 @@ export default function Services() {
   });
   const [categories, setCategories] = useState<Category[]>([]);
   const [menuItems, setMenuItems] = useState<{[key: string]: MenuItemType[]}>({});
+  const { width } = useWindowSize();
+  const isMobile = width !== undefined && width < 600;
 
   useEffect(() => {
     // Force reload of translations
@@ -715,7 +746,13 @@ export default function Services() {
               <ArrowBackIcon />
             </IconButton>
             
-            <Breadcrumbs aria-label="breadcrumb">
+            <Breadcrumbs 
+              aria-label="breadcrumb"
+              sx={{ 
+                '& .MuiBreadcrumbs-ol': { flexWrap: { xs: 'wrap', sm: 'nowrap' } },
+                '& .MuiBreadcrumbs-li': { fontSize: { xs: '0.875rem', sm: '1rem' } }
+              }}
+            >
               <MuiLink 
                 component={Link} 
                 href="/"
@@ -732,6 +769,7 @@ export default function Services() {
             variant="h3" 
             component="h1" 
             className={styles.pageTitle}
+            sx={{ fontSize: { xs: '1.75rem', sm: '2.5rem', md: '3rem' } }}
           >
             {t('services.order.title')}
           </Typography>
@@ -740,16 +778,29 @@ export default function Services() {
             variant="h6" 
             component="p" 
             color="text.secondary" 
-            sx={{ mb: 6, maxWidth: 700 }}
+            sx={{ 
+              mb: { xs: 3, sm: 4, md: 6 }, 
+              maxWidth: 700,
+              fontSize: { xs: '1rem', sm: '1.25rem' }
+            }}
           >
             {t('services.order.fullDescription')}
           </Typography>
         </motion.div>
         
-        {/* Stepper */}
+        {/* Stepper - Make mobile friendly */}
         {activeStep < 4 && (
           <Box className={styles.stepperContainer}>
-            <Stepper activeStep={activeStep} alternativeLabel>
+            <Stepper 
+              activeStep={activeStep} 
+              alternativeLabel
+              sx={{
+                flexWrap: { xs: 'wrap', sm: 'nowrap' },
+                '& .MuiStepLabel-label': {
+                  fontSize: { xs: '0.75rem', sm: '0.875rem' }
+                }
+              }}
+            >
               {steps.map((label) => (
                 <Step key={label}>
                   <StepLabel>{t(`order.steps.${label}`)}</StepLabel>
@@ -759,18 +810,39 @@ export default function Services() {
           </Box>
         )}
         
-        {/* Cart Badge - Displayed consistently when there are selected items */}
+        {/* Cart Badge */}
         {selectedItems.length > 0 && activeStep < 4 && (
           <Box className={styles.cartBadgeContainer}>
             <Badge 
               className={styles.cartBadge}
               badgeContent={selectedItems.length} 
               color="primary"
-              sx={{ '& .MuiBadge-badge': { fontSize: 14, fontWeight: 'bold' } }}
+              sx={{ 
+                '& .MuiBadge-badge': { 
+                  fontSize: { xs: '12px', sm: '14px' }, 
+                  fontWeight: 'bold' 
+                } 
+              }}
             >
-              <Paper className={styles.cartPaper} elevation={3}>
-                <ShoppingCartIcon className={styles.cartIcon} />
-                <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+              <Paper 
+                className={styles.cartPaper} 
+                elevation={3}
+                sx={{ 
+                  padding: { xs: '8px 12px', sm: '10px 16px' },
+                  flexDirection: { xs: 'column', sm: 'row' }
+                }}
+              >
+                <ShoppingCartIcon 
+                  className={styles.cartIcon}
+                  sx={{ fontSize: { xs: '1.2rem', sm: '1.5rem' } }}
+                />
+                <Typography 
+                  variant="subtitle1" 
+                  sx={{ 
+                    fontWeight: 600,
+                    fontSize: { xs: '0.9rem', sm: '1.1rem' }
+                  }}
+                >
                   {calculateTotal()} ₺
                 </Typography>
               </Paper>
@@ -791,7 +863,8 @@ export default function Services() {
                 variant="outlined"
                 onClick={handleBack}
                 startIcon={<ArrowBackIcon />}
-                sx={{ mr: 1 }}
+                sx={{ mr: 1, px: { xs: 2, sm: 3 } }}
+                size={isMobile ? "small" : "medium"}
               >
                 {t('navigation.back')}
               </Button>
@@ -804,7 +877,9 @@ export default function Services() {
                 onClick={handleNext}
                 endIcon={<ArrowForwardIcon />}
                 disabled={(activeStep === 1 && selectedItems.length === 0) || 
-                         (activeStep === 2 && !formData.studentId)}
+                          (activeStep === 2 && !formData.studentId)}
+                sx={{ px: { xs: 2, sm: 3 } }}
+                size={isMobile ? "small" : "medium"}
               >
                 {t('navigation.next')}
               </Button>
@@ -814,6 +889,8 @@ export default function Services() {
                 color="primary"
                 onClick={handleSubmit}
                 endIcon={<CheckCircleOutlineIcon />}
+                sx={{ px: { xs: 2, sm: 3 } }}
+                size={isMobile ? "small" : "medium"}
               >
                 {t('navigation.submit')}
               </Button>

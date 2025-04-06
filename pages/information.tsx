@@ -123,7 +123,13 @@ export default function Information() {
           <ArrowBackIcon />
         </IconButton>
         
-        <Breadcrumbs aria-label="breadcrumb">
+        <Breadcrumbs 
+          aria-label="breadcrumb"
+          sx={{ 
+            '& .MuiBreadcrumbs-ol': { flexWrap: { xs: 'wrap', sm: 'nowrap' } },
+            '& .MuiBreadcrumbs-li': { fontSize: { xs: '0.875rem', sm: '1rem' } }
+          }}
+        >
           <MuiLink 
             component={Link} 
             href="/"
@@ -142,7 +148,7 @@ export default function Information() {
           initial="hidden"
           animate="visible"
         >
-          <Grid container spacing={4}>
+          <Grid container spacing={{ xs: 2, sm: 3, md: 4 }}>
             {infoCategories.map((category, index) => (
               <Grid item xs={12} sm={6} md={4} key={index}>
                 <motion.div variants={itemVariants}>
@@ -150,15 +156,37 @@ export default function Information() {
                     elevation={2}
                     className={styles.categoryCard}
                   >
-                    <CardContent className={styles.cardContent}>
-                      <Box className={styles.categoryHeader}>
+                    <CardContent 
+                      className={styles.cardContent}
+                      sx={{ padding: { xs: '16px', sm: '24px' } }}
+                    >
+                      <Box 
+                        className={styles.categoryHeader}
+                        sx={{ 
+                          flexDirection: { xs: 'column', sm: 'row' },
+                          alignItems: { xs: 'flex-start', sm: 'center' },
+                          mb: { xs: 2, sm: 3 }
+                        }}
+                      >
                         {category.icon}
-                        <Typography variant="h5" component="h2" className={styles.categoryTitle}>
+                        <Typography 
+                          variant="h5" 
+                          component="h2" 
+                          className={styles.categoryTitle}
+                          sx={{ 
+                            fontSize: { xs: '1.25rem', sm: '1.5rem' },
+                            mt: { xs: 1, sm: 0 },
+                            ml: { xs: 0, sm: 2 }
+                          }}
+                        >
                           {t(category.title)}
                         </Typography>
                       </Box>
                       
-                      <Box className={styles.accordionContainer}>
+                      <Box 
+                        className={styles.accordionContainer}
+                        sx={{ mt: { xs: 1, sm: 2 } }}
+                      >
                         {category.items.map((item, i) => (
                           <Accordion 
                             key={i}
@@ -171,13 +199,22 @@ export default function Information() {
                               aria-controls={`${category.id}-content-${i}`}
                               id={`${category.id}-header-${i}`}
                               className={styles.accordionSummary}
+                              sx={{ padding: { xs: '0 12px', sm: '0 16px' } }}
                             >
-                              <Typography className={styles.accordionTitle}>
+                              <Typography 
+                                className={styles.accordionTitle}
+                                sx={{ fontSize: { xs: '0.9rem', sm: '1rem' } }}
+                              >
                                 {t(item.title)}
                               </Typography>
                             </AccordionSummary>
-                            <AccordionDetails className={styles.accordionDetails}>
-                              <Typography>{t(item.content)}</Typography>
+                            <AccordionDetails 
+                              className={styles.accordionDetails}
+                              sx={{ padding: { xs: '8px 12px 16px', sm: '8px 16px 16px' } }}
+                            >
+                              <Typography sx={{ fontSize: { xs: '0.875rem', sm: '1rem' } }}>
+                                {t(item.content)}
+                              </Typography>
                             </AccordionDetails>
                           </Accordion>
                         ))}

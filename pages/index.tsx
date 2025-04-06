@@ -65,23 +65,41 @@ export default function Home() {
             animate={{ opacity: 1 }}
             transition={{ duration: 1 }}
           >
+            {/* Logos Section */}
+            <Box sx={{ mb: 2 }}>
+              <motion.div
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.8 }}
+              >
+                <Box 
+                  sx={{ 
+                    display: 'flex', 
+                    justifyContent: 'center', 
+                    alignItems: 'center',
+                    gap: { xs: 2, sm: 3 },
+                    mb: { xs: 2, sm: 3 }
+                  }}
+                >
+                  <Box 
+                    component="img"
+                    src="/images/logo2.png" 
+                    alt="Logo 2"
+                    sx={{ 
+                      height: { xs: '40px', sm: '50px', md: '100px' },
+                      width: 'auto',
+                      filter: 'drop-shadow(0px 2px 4px rgba(0,0,0,0.2))'
+                    }}
+                  />
+                </Box>
+              </motion.div>
+            </Box>
+
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.8 }}
             >
-              <Typography 
-                variant="subtitle1" 
-                component="div"
-                className={styles.universityNameEnglish}
-                sx={{ 
-                  fontWeight: 900, 
-                  letterSpacing: 5,
-                  mb: 3,
-                }}
-              >
-                IZMIR UNIVERSITY OF ECONOMICS
-              </Typography>
             </motion.div>
 
             <motion.div
@@ -93,7 +111,10 @@ export default function Home() {
                 variant="h2" 
                 component="h1" 
                 className={styles.heroTitle}
-                sx={{ fontWeight: 500 }}
+                sx={{ 
+                  fontWeight: 500,
+                  fontSize: { xs: '2rem', sm: '3rem', md: '3.75rem' }
+                }}
               >
                 {t('welcome')}
               </Typography>
@@ -111,38 +132,27 @@ export default function Home() {
                 variant="h5" 
                 component="p" 
                 className={styles.heroSubtitle}
-                sx={{ mt: 2, fontWeight: 400 }}
+                sx={{ 
+                  mt: 2, 
+                  fontWeight: 400,
+                  fontSize: { xs: '1.1rem', sm: '1.5rem' }
+                }}
               >
                 {t('selectService')}
               </Typography>
             </motion.div>
           </motion.div>
         </Container>
-        
-        {/* Enhanced decorative elements */}
-        <Box className={styles.decorativeCircle1} />
-        <Box className={styles.decorativeCircle2} />
-        <motion.div 
-          className={styles.decorativeShape}
-          initial={{ opacity: 0, x: -100 }}
-          animate={{ opacity: 0.15, x: 0 }}
-          transition={{ delay: 0.7, duration: 1.2 }}
-        />
-        <motion.div 
-          className={styles.decorativeShape2}
-          initial={{ opacity: 0, x: 100 }}
-          animate={{ opacity: 0.15, x: 0 }}
-          transition={{ delay: 0.9, duration: 1.2 }}
-        />
+    
       </Box>
 
-      <Container maxWidth="lg" sx={{ py: 6 }}>
+      <Container maxWidth="lg" sx={{ py: { xs: 3, sm: 4, md: 6 } }}>
         <motion.div 
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
-          <Grid container spacing={4} className="mt-4">
+          <Grid container spacing={{ xs: 2, sm: 3, md: 4 }}>
             {[
               {
                 title: 'services.order.title',

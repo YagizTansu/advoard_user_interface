@@ -10,6 +10,13 @@
   align-items: center;
 }
 
+@media (max-width: 600px) {
+  .pageHeader {
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+}
+
 .backButton {
   margin-right: 16px;
 }
@@ -20,6 +27,14 @@
   margin-top: 24px;
   position: relative;
   z-index: 10;
+}
+
+@media (max-width: 600px) {
+  .mainContent {
+    padding-top: 24px;
+    padding-bottom: 24px;
+    margin-top: 16px;
+  }
 }
 
 .categoryCard {
@@ -47,10 +62,24 @@
   flex-grow: 1;
 }
 
+@media (max-width: 600px) {
+  .cardContent {
+    padding: 16px;
+  }
+}
+
 .categoryHeader {
   display: flex;
   align-items: center;
   margin-bottom: 16px;
+}
+
+@media (max-width: 600px) {
+  .categoryHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
 }
 
 .categoryIcon {
@@ -61,6 +90,12 @@
 .categoryTitle {
   margin-left: 12px;
   font-weight: 500;
+}
+
+@media (max-width: 600px) {
+  .categoryTitle {
+    margin-left: 0;
+  }
 }
 
 .accordionContainer {
@@ -91,7 +126,20 @@
   font-weight: 500;
 }
 
+@media (max-width: 600px) {
+  .accordionTitle {
+    font-size: 0.9rem;
+  }
+}
+
 .accordionDetails {
   padding-top: 16px;
   padding-bottom: 16px;
+}
+
+@media (max-width: 600px) {
+  .accordionDetails {
+    padding: 8px;
+    font-size: 0.9rem;
+  }
 }

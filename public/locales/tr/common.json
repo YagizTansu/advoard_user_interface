@@ -1,5 +1,5 @@
 {
-  "appName": "Akıllı Servis Robotu",
+  "appName": "Akıllı Kampüs Robotu",
   "welcome": "Hoş Geldiniz",
   "selectService": "Lütfen aşağıdaki hizmetlerden birini seçin",
   "navigation": {
@@ -34,7 +34,7 @@
     }
   },
   "presentations": {
-    "welcomeTitle": "Akıllı Servis Robotu",
+    "welcomeTitle": "Akıllı Kampüs Robotu",
     "welcomeSubtitle": "Kampüs yaşamınızı kolaylaştırmak için buradayım!",
     "services": {
       "title": "Sipariş Servisi",
@@ -64,7 +64,7 @@
     "examples": "Örnek: 'Ana sayfaya git', 'Sipariş vermek istiyorum', 'Kütüphaneye nasıl giderim?'"
   },
   "voiceRecognitionLang": "tr-TR",
-  "footerText": "Akıllı Servis Robotu - Tüm Hakları Saklıdır",
+  "footerText": "Akıllı Kampüs Robotu - Tüm Hakları Saklıdır",
   "pageTitle": {
     "home": "Ana Sayfa",
     "services": "Sipariş Ver"
@@ -242,8 +242,8 @@
     "categories": {
       "general": {
         "title": "Genel Bilgiler",
-        "q1": "Akıllı Servis Robotu nedir?",
-        "a1": "Akıllı Servis Robotu, kampüs içerisinde yiyecek-içecek siparişi, yol tarifi ve bilgi edinme gibi hizmetleri kolaylaştırmak için tasarlanmış interaktif bir sistemdir.",
+        "q1": "Akıllı Kampüs Robotu nedir?",
+        "a1": "Akıllı Kampüs Robotu, kampüs içerisinde yiyecek-içecek siparişi, yol tarifi ve bilgi edinme gibi hizmetleri kolaylaştırmak için tasarlanmış interaktif bir sistemdir.",
         "q2": "Bu sistemi nasıl kullanabilirim?",
         "a2": "Ana ekrandaki menüden ihtiyacınız olan hizmeti seçerek başlayabilirsiniz. Her hizmet için adım adım yönlendirmeler mevcuttur.",
         "q3": "Sistem hangi dilleri destekliyor?",

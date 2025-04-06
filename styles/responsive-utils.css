@@ -1,0 +1,92 @@
+/* Responsive Utility Classes */
+
+.hideOnMobile {
+  display: block;
+}
+
+.showOnMobile {
+  display: none;
+}
+
+/* Add responsive paddings */
+.responsive-padding {
+  padding: 24px;
+}
+
+/* Responsive typography */
+.responsive-heading {
+  font-size: 2.5rem;
+}
+
+.responsive-subheading {
+  font-size: 1.5rem;
+}
+
+.responsive-body {
+  font-size: 1rem;
+}
+
+/* Media Queries */
+@media screen and (max-width: 600px) {
+  .hideOnMobile {
+    display: none;
+  }
+  
+  .showOnMobile {
+    display: block;
+  }
+  
+  .responsive-padding {
+    padding: 16px;
+  }
+  
+  .responsive-heading {
+    font-size: 1.75rem;
+  }
+  
+  .responsive-subheading {
+    font-size: 1.25rem;
+  }
+  
+  .responsive-body {
+    font-size: 0.875rem;
+  }
+  
+  /* Touch-friendly adjustments */
+  button, 
+  .MuiButtonBase-root {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Improved form elements for mobile */
+  input, select, textarea {
+    font-size: 16px !important; /* Prevents iOS zoom on focus */
+  }
+}
+
+/* Medium devices */
+@media screen and (min-width: 601px) and (max-width: 960px) {
+  .responsive-padding {
+    padding: 20px;
+  }
+  
+  .responsive-heading {
+    font-size: 2rem;
+  }
+}
+
+/* Fix for iOS 100vh issue */
+.full-height {
+  height: 100vh;
+  height: -webkit-fill-available;
+  height: stretch;
+}
+
+/* Fix for touch devices */
+@media (hover: none) {
+  .touch-scroll {
+    -webkit-overflow-scrolling: touch;
+    overflow-y: scroll;
+  }
+}
