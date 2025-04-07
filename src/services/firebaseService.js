@@ -57,23 +57,23 @@ export const dbService = {
   },
   
   // Veri oluşturma - otomatik id ile
-  pushData: (path, data) => {
+  pushData: async (path, data) => {
     const newRef = push(ref(database, path));
-    return set(newRef, data).then(() => newRef.key);
+    await set(newRef, data);
+    return newRef.key;
   },
   setDataWithId: (path, id, data) => {
     const itemRef = ref(database, `${path}/${id}`);
     return set(itemRef, data);
   },
   // Veri okuma - bir kez
-  getData: (path) => {
-    return get(ref(database, path)).then(snapshot => {
-      if (snapshot.exists()) {
-        return snapshot.val();
-      } else {
-        return null;
-      }
-    });
+  getData: async (path) => {
+    const snapshot = await get(ref(database, path));
+    if (snapshot.exists()) {
+      return snapshot.val();
+    } else {
+      return null;
+    }
   },
   
   // Veri okuma - gerçek zamanlı dinleme
