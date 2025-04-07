@@ -9,24 +9,33 @@ interface MapPoint {
   isLandmark?: boolean;
 }
 
-// Collection of known points on the map (buildings and landmarks)
+// Collection of known points on the map (campus landmarks)
 const knownPoints: { [key: string]: MapPoint } = {
-  'entrance': { id: 'entrance', x: 150, y: 450, name: 'Main Entrance', isLandmark: true },
-  'plaza': { id: 'plaza', x: 200, y: 350, name: 'Central Plaza', isLandmark: true },
-  'fountain': { id: 'fountain', x: 250, y: 300, name: 'Fountain', isLandmark: true },
-  'cafeteria': { id: 'cafeteria', x: 300, y: 280, name: 'Cafeteria', isLandmark: true },
-  'library': { id: 'library', x: 150, y: 200, name: 'Library', isLandmark: true },
-  // Add more landmarks as needed
+  'university_entrance': { id: 'university_entrance', x: 200, y: 450, name: 'University Entrance', isLandmark: true },
+  'lobby': { id: 'lobby', x: 200, y: 370, name: 'Main Lobby', isLandmark: true },
+  'conference_hall': { id: 'conference_hall', x: 150, y: 320, name: 'Conference Hall', isLandmark: true },
+  'library': { id: 'library', x: 130, y: 300, name: 'Library', isLandmark: true },
+  'dining_hall': { id: 'dining_hall', x: 150, y: 340, name: 'Dining Hall', isLandmark: true },
+  'canteen': { id: 'canteen', x: 180, y: 370, name: 'Canteen', isLandmark: true },
+  'gathering_area': { id: 'gathering_area', x: 140, y: 310, name: 'Gathering Area', isLandmark: true },
+  'dormitory': { id: 'dormitory', x: 300, y: 370, name: 'Dormitory Building', isLandmark: true },
+  'a1_area': { id: 'a1_area', x: 160, y: 320, name: 'A1 Area', isLandmark: true },
+  'a2_area': { id: 'a2_area', x: 160, y: 330, name: 'A2 Area', isLandmark: true },
+  'm0_area': { id: 'm0_area', x: 175, y: 370, name: 'M0 Area', isLandmark: true },
+  // Add more campus landmarks as needed
 };
 
-// Building positions should match what we use in the map
+// Building positions for academic and administrative buildings
 const buildingPositions: { [key: string]: { x: number, y: number } } = {
-  'acfd1492-7cd8-4de0-bba3-fcfdda9c7402': { x: 230, y: 280 },
-  '12bc7064-7eb2-43d4-9e5c-f2f372a17f85': { x: 270, y: 380 },
-  '7e59f0d2-3f1b-4ccd-af6d-17910f64fd4c': { x: 80, y: 300 },
-  '4f972c6c-36f5-47c6-97ca-1df7992f1f53': { x: 380, y: 160 },
-  '2d7ad5bb-e87d-442a-87d5-b805d790f0ad': { x: 200, y: 100 },
-  // Add more building positions as needed
+  'acfd1492-7cd8-4de0-bba3-fcfdda9c7402': { x: 200, y: 370 }, // Main Block
+  '12bc7064-7eb2-43d4-9e5c-f2f372a17f85': { x: 150, y: 320 }, // Conference Hall
+  '7e59f0d2-3f1b-4ccd-af6d-17910f64fd4c': { x: 130, y: 300 }, // Library
+  '4f972c6c-36f5-47c6-97ca-1df7992f1f53': { x: 110, y: 460 }, // C Block
+  '2d7ad5bb-e87d-442a-87d5-b805d790f0ad': { x: 80, y: 250 },  // D Block
+  'b4a23e1c-5df2-4fbd-8c5a-d26e912e9c7d': { x: 300, y: 370 }, // Dormitory Building
+  'c8e7f90a-39b1-48de-9561-77c5e2cc5fb2': { x: 150, y: 340 }, // Dining Hall
+  '62d47e5b-5838-4c1a-b735-fd218c9f6a48': { x: 180, y: 370 }, // Canteen
+  // Add more campus building positions as needed
 };
 
 // Calculate distance between two points
@@ -96,10 +105,10 @@ const generateDirections = (
   buildings: Building[],
   professors?: ProfessorRoom[]
 ) => {
-  // Default to entrance if no start point specified
+  // Default to university entrance if no start point specified
   const startCoord = startPointId && buildingPositions[startPointId] 
     ? buildingPositions[startPointId] 
-    : knownPoints['entrance'];
+    : knownPoints['university_entrance'];
   
   let destination;
   let destinationDetails: Building | ProfessorRoom | undefined;
