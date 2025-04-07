@@ -54,6 +54,7 @@ import { useTheme } from '@mui/material/styles';
 
 import directionStyles from '../styles/directions.module.css';
 import { getBuildings, getCommonDestinations, getProfessorRooms, Building, CommonDestination, ProfessorRoom } from '../src/lib/supabase';
+import { generateDirections } from '../src/lib/directionUtils';
 
 // Enhanced map component with SVG support
 const CampusMap = ({ selectedBuildingId, buildings, onBuildingSelect }: { 
@@ -516,24 +517,15 @@ export default function Directions() {
     
     if (!item) return;
     
-    // Create mock directions data with hardcoded text instead of translation keys
-    const mockDirections = {
-      destination: {
-        name: type === 'building' ? item.name : `${item.professor_name}'s Office`,
-        id: id
-      },
-      distance: '250m',
-      duration: '3 mins walk',
-      steps: [
-        'Exit current building through the main entrance',
-        'Walk straight for 100m towards the central plaza',
-        'Turn right at the fountain',
-        type === 'building' 
-          ? `Enter ${item.name} building` 
-          : `Enter building and take elevator to ${item.floor}`,
-        type === 'professor' && `Find room ${item.room_number} on the ${item.floor}`
-      ].filter(Boolean)
-    };
+    // Use our new dynamic directions generator
+    // For this example, we pass null as starting point to use default entrance
+    const mockDirections = generateDirections(
+      null, // Starting point - can be replaced with current location/selected building
+      id,
+      type as 'building' | 'professor',
+      buildings,
+      professors
+    );
     
     // Set directions and show the panel
     setDirections(mockDirections);
