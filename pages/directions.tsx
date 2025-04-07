@@ -68,16 +68,29 @@ const CampusMap = ({ selectedBuildingId, buildings, onBuildingSelect }: {
 
   // Position pins based on SVG viewBox (these would ideally come from your building data)
   const buildingPositions = useMemo(() => {
-    const positions: { [key: string]: { x: number, y: number } } = {};
+    // Manual mapping of building IDs to positions
+    // You can edit these positions manually as needed
+    const positions: { [key: string]: { x: number, y: number } } = {
+      // Example positions - replace these with your desired coordinates
+      'acfd1492-7cd8-4de0-bba3-fcfdda9c7402': { x: 230, y: 280 },
+      '12bc7064-7eb2-43d4-9e5c-f2f372a17f85': { x: 270, y: 380 },
+      '7e59f0d2-3f1b-4ccd-af6d-17910f64fd4c': { x: 80, y: 300 },
+      '4f972c6c-36f5-47c6-97ca-1df7992f1f53': { x: 380, y: 160 },
+      '2d7ad5bb-e87d-442a-87d5-b805d790f0ad': { x: 200, y: 100 },
+      'building-6': { x: 200, y: 250 },
+      'building-7': { x: 300, y: 250 },
+      'building-8': { x: 400, y: 250 },
+      // Add more building positions as needed
+    };
     
-    buildings.forEach((building, index) => {
-      const row = Math.floor(index / 4);
-      const col = index % 4;
-      positions[building.id] = {
-        x: 100 + (col * 100) + (Math.sin(index) * 30),
-        y: 100 + (row * 150) + (Math.cos(index) * 30)
-      };
+    // For any buildings that don't have manually defined positions,
+    // assign a default position to avoid errors
+    buildings.forEach(building => {
+      if (!positions[building.id]) {
+        positions[building.id] = { x: 0, y: 0 };
+      }
     });
+    
     return positions;
   }, [buildings]);
 

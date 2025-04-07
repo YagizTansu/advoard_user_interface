@@ -134,7 +134,7 @@
 
 .mapWrapper {
   width: 100%;
-  height: 400px;
+  height: 600px; /* Increased from 400px to 600px */
   border-radius: 16px;
   overflow: hidden;
   position: relative;
@@ -144,7 +144,7 @@
 
 @media (max-width: 600px) {
   .mapWrapper {
-    height: 250px;
+    height: 400px; /* Increased from 250px to 400px for mobile */
     border-radius: 12px;
   }
 }
