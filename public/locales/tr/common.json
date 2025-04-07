@@ -184,8 +184,20 @@
   "home": "Ana Sayfa",
   "backToHome": "Ana Sayfaya Dön",
   "information": {
+    "pageTitle": "Bilgi Merkezi",
+    "pageDescription": "Üniversite hakkında bilgi almanız gereken her şey",
+    "searchPlaceholder": "Bilgi aramak için yazın...",
+    "noResults": "Arama kriterinize uygun sonuç bulunamadı",
+    "tryAnotherSearch": "Lütfen farklı anahtar kelimelerle tekrar deneyin",
+    "categoryNotFound": "Kategori bulunamadı",
+    "listView": "Liste Görünümü",
+    "detailedView": "Detaylı Görünüm",
+    "subitems": "İlgili Öğeler",
+    "relatedInformation": "İlgili Bilgiler",
+    "noItemsAvailable": "Bu kategoride öğe bulunmamaktadır",
     "academic": {
       "title": "Akademik Bilgiler",
+      "description": "Fakülte, bölüm ve programlar hakkında bilgiler",
       "faculties": "Fakülteler",
       "facultiesContent": "Üniversitemizdeki tüm fakülteler ve programlar hakkında detaylı bilgiler.",
       "departments": "Bölümler",
@@ -195,6 +207,7 @@
     },
     "events": {
       "title": "Etkinlikler",
+      "description": "Kampüsteki etkinlikler ve akademik takvim",
       "upcoming": "Yaklaşan Etkinlikler",
       "upcomingContent": "Önümüzdeki haftalarda gerçekleşecek konferans, seminer ve diğer etkinlikler.",
       "calendar": "Akademik Takvim",
@@ -202,6 +215,7 @@
     },
     "resources": {
       "title": "Kaynaklar",
+      "description": "Kütüphane ve çevrimiçi kaynaklara erişim",
       "library": "Kütüphane",
       "libraryContent": "Kütüphane çalışma saatleri ve erişilebilir kaynaklar.",
       "online": "Çevrimiçi Kaynaklar",
@@ -209,6 +223,7 @@
     },
     "student": {
       "title": "Öğrenci Hayatı",
+      "description": "Öğrenci kulüpleri ve hizmetleri hakkında bilgiler",
       "clubs": "Öğrenci Kulüpleri",
       "clubsContent": "Kampüsteki aktif öğrenci kulüpleri ve etkinlikleri.",
       "services": "Öğrenci Hizmetleri",
@@ -216,6 +231,7 @@
     },
     "campus": {
       "title": "Kampüs",
+      "description": "Kampüs haritası ve tesisler hakkında bilgiler",
       "map": "Kampüs Haritası",
       "mapContent": "Binaların konumları ve kampüs içi yönlendirmeler.",
       "facilities": "Tesisler",
@@ -223,6 +239,7 @@
     },
     "contact": {
       "title": "İletişim",
+      "description": "Bölümler ve idari ofislerle iletişim bilgileri",
       "departments": "Bölümlerle İletişim",
       "departmentsContent": "Akademik bölümlerin iletişim bilgileri.",
       "offices": "İdari Ofisler",
@@ -266,5 +283,11 @@
         "a3": "Hataları ve önerilerinizi support@iue.edu.tr adresine e-posta göndererek bildirebilirsiniz. Geri bildirimleriniz sistem geliştirmelerimiz için çok değerlidir."
       }
     }
+  },
+  "common": {
+    "back": "Geri Dön",
+    "learnMore": "Daha Fazla",
+    "clearSearch": "Aramayı Temizle",
+    "backToInformation": "Bilgi Merkezine Dön"
   }
 }

@@ -1,145 +1,330 @@
+/* Common page styles */
 .pageContainer {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  background-color: #f8f9fa;
 }
 
-.pageHeader {
-  margin-bottom: 32px;
-  display: flex;
-  align-items: center;
-}
-
-@media (max-width: 600px) {
-  .pageHeader {
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-  }
-}
-
-.backButton {
-  margin-right: 16px;
-}
-
-.mainContent {
-  padding-top: 48px;
-  padding-bottom: 48px;
-  margin-top: 24px;
+/* Header section for main information page */
+.headerSection {
   position: relative;
-  z-index: 10;
+  background-image: linear-gradient(235deg, #fafafa 0%, #ff9100 100%);
+  padding: 1rem 0 1rem;
+  margin-bottom: 1rem;
+  color: #fff;
+  overflow: hidden;
+  border-radius: 12px 12px 12px 12px;
 }
 
-@media (max-width: 600px) {
-  .mainContent {
-    padding-top: 24px;
-    padding-bottom: 24px;
-    margin-top: 16px;
-  }
-}
-
-.categoryCard {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  border-radius: 16px;
-  overflow: visible;
-  position: relative;
-}
-
-.categoryCard::before {
-  content: "";
+.headerOverlay {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 4px;
-  background: #fe6b01;
-  border-radius: 2px 2px 0 0;
+  bottom: 0;
+  background-image: linear-gradient(135deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0) 100%);
+  z-index: 1;
 }
 
-.cardContent {
-  padding: 24px;
-  flex-grow: 1;
+.headerContent {
+  position: relative;
+  z-index: 2;
+  padding: 0 1rem;
 }
 
-@media (max-width: 600px) {
-  .cardContent {
-    padding: 16px;
-  }
+/* Header section for detail page */
+.detailHeaderSection {
+  position: relative;
+  padding: 3.5rem 0 2.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: background-color 0.3s ease;
 }
 
-.categoryHeader {
+.detailPageTitle {
+  margin: 0.5rem 0;
+  font-weight: 600;
+  font-size: 2rem;
+  line-height: 1.2;
+  color: #212121;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
+}
+
+.detailPageDescription {
+  max-width: 90%;
+  margin-top: 0.5rem;
+  color: #424242;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* Breadcrumb navigation */
+.breadcrumbContainer {
   display: flex;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 1.5rem;
+  padding: 0.75rem 0;
 }
 
-@media (max-width: 600px) {
-  .categoryHeader {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-  }
+.backButton {
+  margin-right: 1rem;
+  color: #616161;
+  transition: all 0.2s ease;
+}
+
+.backButton:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: #1976d2;
+}
+
+/* Main content section */
+.mainContent {
+  padding: 1rem 0 3rem;
+}
+
+.categoriesGrid {
+  width: 100%;
+}
+
+/* Search container */
+.searchContainer {
+  max-width: 600px;
+  margin: 1.5rem 0 0.5rem;
+}
+
+.searchInput {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.searchInput:hover, .searchInput:focus-within {
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.searchIcon {
+  color: #757575;
+}
+
+/* Category cards */
+.categoryCard {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.categoryCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+.cardHeader {
+  padding: 1.5rem 1.5rem 1rem;
+  background-color: #fff;
+}
+
+.categoryIconContainer {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
 }
 
 .categoryIcon {
-  font-size: 40px;
-  color: #fe6b01;
+  font-size: 1.75rem;
 }
 
 .categoryTitle {
-  margin-left: 12px;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #212121;
+}
+
+.cardContent {
+  flex: 1;
+  background-color: #fff;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 0.5rem 0;
+}
+
+.cardFooter {
+  padding: 1rem 1.5rem;
+  background-color: #fafafa;
+  display: flex;
+  justify-content: flex-end;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.moreButton {
+  text-transform: none;
   font-weight: 500;
+  transition: all 0.2s ease;
 }
 
-@media (max-width: 600px) {
-  .categoryTitle {
-    margin-left: 0;
-  }
+.moreButton:hover {
+  background-color: rgba(25, 118, 210, 0.08);
+  transform: translateX(2px);
 }
 
-.accordionContainer {
-  margin-top: 16px;
-}
-
+/* Accordions */
 .accordion {
-  box-shadow: none;
-  margin-bottom: 8px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 8px !important;
+  margin-bottom: 0.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 6px;
   overflow: hidden;
 }
 
-.accordion::before {
-  display: none;
+.accordion:last-child {
+  margin-bottom: 0;
 }
 
 .accordionSummary {
-  background-color: rgba(0, 0, 0, 0.02);
-}
-
-.accordionSummary:hover {
-  background-color: rgba(255, 0, 110, 0.05);
+  padding: 0 1.5rem;
+  min-height: 54px !important;
 }
 
 .accordionTitle {
   font-weight: 500;
-}
-
-@media (max-width: 600px) {
-  .accordionTitle {
-    font-size: 0.9rem;
-  }
+  font-size: 0.95rem;
+  color: #424242;
 }
 
 .accordionDetails {
-  padding-top: 16px;
-  padding-bottom: 16px;
+  padding: 0.5rem 1.5rem 1.5rem;
 }
 
+.accordionContent {
+  font-size: 0.9rem;
+  color: #616161;
+  line-height: 1.6;
+}
+
+.subAccordion {
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: none;
+  background-color: rgba(0, 0, 0, 0.02);
+  transition: background-color 0.2s ease;
+}
+
+.subAccordion:hover {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+/* Detail page tabs and content panels */
+.tabPanel {
+  padding: 1.5rem;
+}
+
+/* Responsive styles */
 @media (max-width: 600px) {
-  .accordionDetails {
-    padding: 8px;
-    font-size: 0.9rem;
+  .headerSection, .detailHeaderSection {
+    padding: 2.5rem 0 1.5rem;
   }
+  
+  .pageTitle {
+    font-size: 1.75rem;
+  }
+  
+  .detailPageTitle {
+    font-size: 1.5rem;
+  }
+  
+  .cardHeader, .cardFooter {
+    padding: 1.25rem 1.25rem;
+  }
+  
+  .accordionSummary {
+    padding: 0 1rem;
+  }
+  
+  .accordionDetails {
+    padding: 0.5rem 1rem 1.25rem;
+  }
+  
+  .categoryIconContainer {
+    width: 3rem;
+    height: 3rem;
+  }
+  
+  .categoryIcon {
+    font-size: 1.5rem;
+  }
+}
+
+/* Detail page item styling */
+.detailItem {
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.2s ease;
+}
+
+.detailItem:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.detailItemTitle {
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #1976d2;
+}
+
+.detailItemContent {
+  color: #424242;
+  line-height: 1.7;
+}
+
+.subitemContainer {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.subitemCard {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background-color: #f5f5f5;
+  border-radius: 6px;
+  transition: transform 0.2s ease;
+}
+
+.subitemCard:hover {
+  transform: translateX(4px);
+  background-color: #f0f2f5;
+}
+
+.subitemTitle {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.fadeIn {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes slideIn {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.slideIn {
+  animation: slideIn 0.4s ease forwards;
 }

@@ -181,6 +181,69 @@
     "getDirections": "Get Directions",
     "commonDestinations": "Popular Destinations"
   },
+  "information": {
+    "pageTitle": "Information Center",
+    "pageDescription": "Everything you need to know about the university",
+    "searchPlaceholder": "Search for information...",
+    "noResults": "No results found matching your search criteria",
+    "tryAnotherSearch": "Please try again with different keywords",
+    "categoryNotFound": "Category not found",
+    "listView": "List View",
+    "detailedView": "Detailed View",
+    "subitems": "Related Items",
+    "relatedInformation": "Related Information",
+    "noItemsAvailable": "No items available in this category",
+    "academic": {
+      "title": "Academic Information",
+      "description": "Information about faculties, departments, and programs",
+      "faculties": "Faculties",
+      "facultiesContent": "Detailed information about all faculties and programs at our university.",
+      "departments": "Departments",
+      "departmentsContent": "List of departments within faculties and their educational programs.",
+      "programs": "Programs",
+      "programsContent": "Information about undergraduate, graduate, and doctoral programs."
+    },
+    "events": {
+      "title": "Events",
+      "description": "Campus events and academic calendar",
+      "upcoming": "Upcoming Events",
+      "upcomingContent": "Conferences, seminars, and other events taking place in the coming weeks.",
+      "calendar": "Academic Calendar",
+      "calendarContent": "Academic calendar including registration, exam periods, and holidays."
+    },
+    "resources": {
+      "title": "Resources",
+      "description": "Access to library and online resources",
+      "library": "Library",
+      "libraryContent": "Library hours and accessible resources.",
+      "online": "Online Resources",
+      "onlineContent": "Digital resources and databases available to students."
+    },
+    "student": {
+      "title": "Student Life",
+      "description": "Information about student clubs and services",
+      "clubs": "Student Clubs",
+      "clubsContent": "Active student clubs on campus and their activities.",
+      "services": "Student Services",
+      "servicesContent": "Information about health, housing, food, and transportation services."
+    },
+    "campus": {
+      "title": "Campus",
+      "description": "Campus map and information about facilities",
+      "map": "Campus Map",
+      "mapContent": "Building locations and campus directions.",
+      "facilities": "Facilities",
+      "facilitiesContent": "Sports facilities, dining halls, cafeterias, and other facilities."
+    },
+    "contact": {
+      "title": "Contact",
+      "description": "Contact information for departments and administrative offices",
+      "departments": "Department Contacts",
+      "departmentsContent": "Contact information for academic departments.",
+      "offices": "Administrative Offices",
+      "officesContent": "University administrative offices and contact information."
+    }
+  },
   "help": {
     "title": "Help Center",
     "subtitle": "Answers to your questions and support information",
@@ -218,5 +281,11 @@
         "a3": "You can report bugs and suggestions by sending an email to support@iue.edu.tr. Your feedback is valuable for our system improvements."
       }
     }
+  },
+  "common": {
+    "back": "Go Back",
+    "learnMore": "Learn More",
+    "clearSearch": "Clear Search",
+    "backToInformation": "Back to Information Center"
   }
 }
