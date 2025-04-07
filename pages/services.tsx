@@ -202,8 +202,8 @@ export default function Services() {
       };
       console.log('Order data:', orderData);
 
-      const orderId = await dbService.pushData('orders', orderData);
-      console.log('Order submitted successfully with ID:', orderId);
+      // const orderId = await dbService.pushData('orders', orderData);
+      // console.log('Order submitted successfully with ID:', orderId);
       
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
       
