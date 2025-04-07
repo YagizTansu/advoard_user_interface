@@ -148,8 +148,8 @@ export async function getAllInformationContent() {
         // Ensure category.items is an array
         if (Array.isArray(category.items)) {
           // Assign subitems to each item
-          category.items = category.items.map(item => {
-            const itemSubitems = allSubitems?.filter(subitem => 
+          category.items = category.items.map((item: InformationItem) => {
+            const itemSubitems = allSubitems?.filter((subitem: InformationSubitem) => 
               subitem.item_id === item.id
             ) || [];
             
@@ -187,8 +187,8 @@ export async function getAllInformationContent() {
       ) || [];
       
       // Associate subitems with their parent items
-      const itemsWithSubitems = categoryItems.map(item => {
-        const itemSubitems = allSubitems?.filter(subitem => 
+      const itemsWithSubitems = categoryItems.map((item: InformationItem) => {
+        const itemSubitems = allSubitems?.filter((subitem: InformationSubitem) => 
           subitem.item_id === item.id
         ) || [];
         

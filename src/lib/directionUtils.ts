@@ -102,7 +102,7 @@ const generateDirections = (
     : knownPoints['entrance'];
   
   let destination;
-  let destinationDetails;
+  let destinationDetails: Building | ProfessorRoom | undefined;
   
   if (destinationType === 'building') {
     destinationDetails = buildings.find(b => b.id === destinationId);
@@ -128,10 +128,16 @@ const generateDirections = (
   
   // Find intermediate landmarks for navigation
   const startPoint = { ...startCoord, id: 'start', name: 'Current Location' };
+  
+  // Determine the appropriate name based on destination type
+  const destinationName = destinationType === 'building' 
+    ? (destinationDetails as Building).name 
+    : `${(destinationDetails as ProfessorRoom).professor_name}'s Office`;
+    
   const endPoint = { 
     ...destination, 
     id: destinationId,
-    name: destinationType === 'building' ? destinationDetails.name : `${destinationDetails.professor_name}'s Office`
+    name: destinationName
   };
   
   // Find landmark points along the way
@@ -163,11 +169,11 @@ const generateDirections = (
   
   // Step 4: Second landmark to destination
   if (destinationType === 'building') {
-    steps.push(`Continue for ${Math.round(distance3)}m and enter ${destinationDetails.name}`);
+    steps.push(`Continue for ${Math.round(distance3)}m and enter ${(destinationDetails as Building).name}`);
   } else {
     // For professors
-    steps.push(`Enter building containing ${destinationDetails.department || 'the department'}`);
-    steps.push(`Take ${destinationDetails.floor.includes('floor') ? '' : 'the '} ${destinationDetails.floor} to find room ${destinationDetails.room_number}`);
+    steps.push(`Enter building containing ${(destinationDetails as ProfessorRoom).department || 'the department'}`);
+    steps.push(`Take ${(destinationDetails as ProfessorRoom).floor.includes('floor') ? '' : 'the '} ${(destinationDetails as ProfessorRoom).floor} to find room ${(destinationDetails as ProfessorRoom).room_number}`);
   }
   
   return {

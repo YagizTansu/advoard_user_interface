@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect, useMemo, useRef, SetStateAction } from 'react';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Head from 'next/head';
@@ -55,6 +55,17 @@ import { useTheme } from '@mui/material/styles';
 import directionStyles from '../styles/directions.module.css';
 import { getBuildings, getCommonDestinations, getProfessorRooms, Building, CommonDestination, ProfessorRoom } from '../src/lib/supabase';
 import { generateDirections } from '../src/lib/directionUtils';
+
+// Add this type definition before the CampusMap component
+interface DirectionsData {
+  destination: {
+    name: any;
+    id: string;
+  };
+  distance: string;
+  duration: string;
+  steps: string[];
+}
 
 // Enhanced map component with SVG support
 const CampusMap = ({ selectedBuildingId, buildings, onBuildingSelect }: { 
@@ -205,7 +216,17 @@ const CampusMap = ({ selectedBuildingId, buildings, onBuildingSelect }: {
 };
 
 // Building card component with improved UX
-const BuildingCard = ({ building, isActive, onSelect, onGetDirections }) => {
+const BuildingCard = ({ 
+  building, 
+  isActive, 
+  onSelect, 
+  onGetDirections 
+}: { 
+  building: Building; 
+  isActive: boolean; 
+  onSelect: (id: string) => void; 
+  onGetDirections: (id: string, type: 'building' | 'professor') => void;
+}) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const { t } = useTranslation('common');
@@ -288,7 +309,17 @@ const BuildingCard = ({ building, isActive, onSelect, onGetDirections }) => {
 };
 
 // Professor card component
-const ProfessorCard = ({ professor, onSelect, isActive, onGetDirections }) => {
+const ProfessorCard = ({ 
+  professor, 
+  onSelect, 
+  isActive, 
+  onGetDirections 
+}: {
+  professor: ProfessorRoom;
+  onSelect: (id: string) => void;
+  isActive: boolean;
+  onGetDirections: (id: string, type: 'building' | 'professor') => void;
+}) => {
   const { t } = useTranslation('common');
   
   return (
@@ -345,22 +376,13 @@ const ProfessorCard = ({ professor, onSelect, isActive, onGetDirections }) => {
                   </Typography>
                 </Box>
               )}
-              
-              {professor.phone && (
-                <Box className={directionStyles.professorDetailItem}>
-                  <PhoneIcon fontSize="small" className={directionStyles.professorDetailIcon} />
-                  <Typography variant="body2">
-                    {professor.phone}
-                  </Typography>
-                </Box>
-              )}
             </motion.div>
           )}
         </CardContent>
         
         <CardActions className={directionStyles.professorCardActions}>
           <Button 
-            variant="contained" 
+            variant="contained"  
             size="small" 
             startIcon={<DirectionsIcon />}
             className={directionStyles.directionsButton}
@@ -379,7 +401,13 @@ const ProfessorCard = ({ professor, onSelect, isActive, onGetDirections }) => {
 };
 
 // Directions Panel Component
-const DirectionsPanel = ({ directions, onClose }) => {
+const DirectionsPanel = ({ 
+  directions, 
+  onClose 
+}: {
+  directions: DirectionsData; // Update the type here
+  onClose: () => void;
+}) => {
   const { t } = useTranslation('common');
   if (!directions) return null;
   
@@ -406,7 +434,7 @@ const DirectionsPanel = ({ directions, onClose }) => {
       </Box>
       
       <Box className={directionStyles.directionsSteps}>
-        {directions.steps.map((step, index) => (
+        {directions.steps.map((step: string, index: number) => (
           <Box key={index} className={directionStyles.directionStep}>
             <Box className={directionStyles.stepNumberContainer}>
               <Typography className={directionStyles.stepNumber}>{index + 1}</Typography>
@@ -425,7 +453,7 @@ export default function Directions() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeTab, setActiveTab] = useState('all');
+  const [activeTab, setActiveTab] = useState<'all' | 'academic' | 'administrative' | 'professors'>('all');
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [selectedItemType, setSelectedItemType] = useState<string | null>(null); // 'building' or 'professor'
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -434,7 +462,7 @@ export default function Directions() {
   const [destinations, setDestinations] = useState<CommonDestination[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showingDirections, setShowingDirections] = useState(false);
-  const [directions, setDirections] = useState(null);
+  const [directions, setDirections] = useState<DirectionsData | null>(null); // Update this line
 
   // Fetch data on component mount
   useEffect(() => {
@@ -464,15 +492,20 @@ export default function Directions() {
   const filteredData = useMemo(() => {
     const filteredBuildings = buildings.filter(building => {
       const matchesSearch = !searchQuery || 
-        building.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        building.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
         (building.code && building.code.toLowerCase().includes(searchQuery.toLowerCase()));
       
+      // First check if we're in professors tab - don't show buildings
+      if (activeTab === 'professors') {
+        return false;
+      }
+      
+      // Otherwise, check other tab filters
       const matchesTab = activeTab === 'all' || 
         (activeTab === 'academic' && building.type === 'academic') || 
         (activeTab === 'administrative' && building.type === 'administrative');
       
-      // Don't show buildings when professors tab is selected
-      return matchesSearch && matchesTab && activeTab !== 'professors';
+      return matchesSearch && matchesTab;
     });
 
     const filteredProfessors = professors.filter(professor => {
@@ -483,7 +516,7 @@ export default function Directions() {
       
       // Show professors in "all" or "professors" tabs only
       const matchesTab = activeTab === 'all' || activeTab === 'professors';
-      
+            
       return matchesSearch && matchesTab;
     });
 
@@ -509,20 +542,20 @@ export default function Directions() {
   };
 
   // Handle getting directions
-  const handleGetDirections = (id, type) => {
+  const handleGetDirections = (id: string, type: 'building' | 'professor') => {
     // Get the selected item details
     const item = type === 'building' 
       ? buildings.find(b => b.id === id)
       : professors.find(p => p.id === id);
     
     if (!item) return;
-    
+        
     // Use our new dynamic directions generator
     // For this example, we pass null as starting point to use default entrance
     const mockDirections = generateDirections(
       null, // Starting point - can be replaced with current location/selected building
       id,
-      type as 'building' | 'professor',
+      type,
       buildings,
       professors
     );
@@ -654,7 +687,7 @@ export default function Directions() {
             {/* Map Section */}
             <Grid item xs={12} md={7} lg={8} order={{ xs: 1, md: 2 }} className={directionStyles.mapSection}>
               <CampusMap 
-                selectedBuildingId={selectedItemType === 'building' ? selectedItem : null}
+                selectedBuildingId={selectedItemType === 'building' ? selectedItem : null} 
                 buildings={buildings}
                 onBuildingSelect={(id: string) => handleItemSelect(id, 'building')}
               />
@@ -849,7 +882,7 @@ export default function Directions() {
                         startIcon={<DirectionsIcon />}
                         className={directionStyles.primaryActionButton}
                         fullWidth
-                        onClick={() => handleGetDirections(selectedItem, 'building')}
+                        onClick={() => selectedItem && handleGetDirections(selectedItem, 'building')}
                       >
                         {t('directions.getDirections')}
                       </Button>
@@ -900,7 +933,7 @@ export default function Directions() {
                         startIcon={<DirectionsIcon />}
                         className={directionStyles.primaryActionButton}
                         fullWidth
-                        onClick={() => handleGetDirections(selectedItem, 'professor')}
+                        onClick={() => selectedItem && handleGetDirections(selectedItem, 'professor')}
                       >
                         {t('directions.findOffice')}
                       </Button>
@@ -967,7 +1000,7 @@ export default function Directions() {
             <Divider sx={{ my: 2 }} />
             
             <Box className={directionStyles.directionsStepsList}>
-              {directions?.steps.map((step, index) => (
+              {directions?.steps.map((step: string, index: number) => (
                 <Box key={index} className={directionStyles.directionsDialogStep}>
                   <div className={directionStyles.timelineConnector}>
                     <Avatar 
