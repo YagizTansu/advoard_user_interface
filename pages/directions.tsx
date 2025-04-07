@@ -453,7 +453,8 @@ export default function Directions() {
         (activeTab === 'academic' && building.type === 'academic') || 
         (activeTab === 'administrative' && building.type === 'administrative');
       
-      return matchesSearch && matchesTab;
+      // Don't show buildings when professors tab is selected
+      return matchesSearch && matchesTab && activeTab !== 'professors';
     });
 
     const filteredProfessors = professors.filter(professor => {
@@ -462,14 +463,15 @@ export default function Directions() {
         professor.department.toLowerCase().includes(searchQuery.toLowerCase()) ||
         professor.room_number.toLowerCase().includes(searchQuery.toLowerCase());
       
-      const matchesTab = activeTab === 'all' || activeTab === 'academic';
+      // Show professors in "all" or "professors" tabs only
+      const matchesTab = activeTab === 'all' || activeTab === 'professors';
       
       return matchesSearch && matchesTab;
     });
 
     return {
       buildings: filteredBuildings,
-      professors: activeTab !== 'administrative' ? filteredProfessors : []
+      professors: filteredProfessors
     };
   }, [searchQuery, activeTab, buildings, professors]);
 
@@ -629,6 +631,12 @@ export default function Directions() {
               value="administrative" 
               icon={<ApartmentIcon />}
               className={activeTab === 'administrative' ? directionStyles.activeTab : ''}
+            />
+            <Tab 
+              label="Professors" 
+              value="professors" 
+              icon={<PersonIcon />}
+              className={activeTab === 'professors' ? directionStyles.activeTab : ''}
             />
           </Tabs>
         </AppBar>
@@ -915,13 +923,24 @@ export default function Directions() {
             className: directionStyles.directionsDialogPaper,
             elevation: 5
           }}
+          TransitionProps={{
+            enter: true,
+            appear: true
+          }}
         >
           <DialogTitle className={directionStyles.directionsDialogTitle}>
             <Box display="flex" justifyContent="space-between" alignItems="center">
-              <Typography variant="h6">
-                Directions to {directions?.destination.name}
-              </Typography>
-              <IconButton onClick={handleCloseDirections} size="small">
+              <Box display="flex" alignItems="center">
+                <LocationOnIcon sx={{ mr: 1 }} color="primary" />
+                <Typography variant="h6">
+                  Directions to {directions?.destination.name}
+                </Typography>
+              </Box>
+              <IconButton 
+                onClick={handleCloseDirections} 
+                size="small"
+                className={directionStyles.closeDialogButton}
+              >
                 <CloseIcon />
               </IconButton>
             </Box>
@@ -929,7 +948,7 @@ export default function Directions() {
           
           <DialogContent className={directionStyles.directionsDialogContent}>
             <Box className={directionStyles.directionsOverviewContainer}>
-              <LocationOnIcon className={directionStyles.directionsDialogIcon} />
+              <NavigationIcon className={directionStyles.directionsDialogIcon} color="primary" />
               <Box>
                 <Typography variant="body1" fontWeight="medium">
                   {directions?.distance} • {directions?.duration}
@@ -942,24 +961,29 @@ export default function Directions() {
             <Box className={directionStyles.directionsStepsList}>
               {directions?.steps.map((step, index) => (
                 <Box key={index} className={directionStyles.directionsDialogStep}>
-                  <Avatar 
-                    className={directionStyles.directionsStepNumber}
-                    sx={{ width: 28, height: 28, fontSize: '0.875rem' }}
-                  >
-                    {index + 1}
-                  </Avatar>
-                  <Typography variant="body2" sx={{ ml: 1.5 }}>
-                    {step}
-                  </Typography>
+                  <div className={directionStyles.timelineConnector}>
+                    <Avatar 
+                      className={directionStyles.directionsStepNumber}
+                    >
+                      {index + 1}
+                    </Avatar>
+                    {index < (directions.steps.length - 1) && (
+                      <div className={directionStyles.stepConnectorLine}></div>
+                    )}
+                  </div>
+                  <Paper className={directionStyles.stepContentPaper}>
+                    <Typography variant="body2">{step}</Typography>
+                  </Paper>
                 </Box>
               ))}
             </Box>
             
-            <Box className={directionStyles.directionsDialogActions} sx={{ mt: 3 }}>
+            <Box className={directionStyles.directionsDialogActions}>
               <Button
                 variant="contained"
                 color="primary"
                 startIcon={<NavigationIcon />}
+                className={directionStyles.startNavigationButton}
                 fullWidth
               >
                 Start Navigation
