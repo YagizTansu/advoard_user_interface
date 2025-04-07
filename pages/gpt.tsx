@@ -79,35 +79,8 @@ export default function GptChat() {
           <Divider sx={{ my: 2 }} />
         </Box>
 
-        {/* Chat messages container */}
-        <Box 
-          ref={chatContainerRef}
-          sx={{ 
-            flexGrow: 1, 
-            overflowY: 'auto', 
-            mb: 2,
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 2
-          }}
-        >
-          {chatHistory.map((msg, index) => (
-            <Box 
-              key={index}
-              sx={{ 
-                alignSelf: msg.type === 'user' ? 'flex-end' : 'flex-start',
-                maxWidth: '80%',
-                backgroundColor: msg.type === 'user' ? '#e1f5fe' : '#f5f5f5',
-                borderRadius: 2,
-                p: 2
-              }}
-            >
-              <Typography>{msg.content}</Typography>
-            </Box>
-          ))}
-        </Box>
-
-        <Box className={styles.inputSection}>
+        {/* Input section - Now placed before chat history */}
+        <Box className={styles.inputSection} sx={{ mb: 3 }}>
           <Paper 
             elevation={1} 
             className={styles.inputContainer}
@@ -173,6 +146,34 @@ export default function GptChat() {
               {message ? <SendIcon /> : <MicIcon />}
             </IconButton>
           </Paper>
+        </Box>
+
+        {/* Chat messages container - Now placed after input */}
+        <Box 
+          ref={chatContainerRef}
+          sx={{ 
+            flexGrow: 1, 
+            overflowY: 'auto', 
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 2
+          }}
+        >
+          {chatHistory.map((msg, index) => (
+            <Box 
+              key={index}
+              sx={{ 
+                alignSelf: msg.type === 'user' ? 'flex-end' : 'flex-start',
+                maxWidth: '80%',
+                backgroundColor: msg.type === 'user' ? '#e1f5fe' : '#f5f5f5',
+                borderRadius: 2,
+                p: 2,
+                mb: 2
+              }}
+            >
+              <Typography>{msg.content}</Typography>
+            </Box>
+          ))}
         </Box>
       </Container>
     </Box>
