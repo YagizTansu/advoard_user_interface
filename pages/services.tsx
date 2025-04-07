@@ -181,30 +181,51 @@ export default function Services() {
       setSubmitError(null);
       
       const orderData = {
-        studentId: formData.studentId,
-        orderItems: selectedItems.map(item => ({
-          id: item.id,
-          name: item.name,
-          price: item.price,
-          quantity: item.quantity,
-          totalPrice: item.price * item.quantity
-        })),
-        category: selectedCategory,
-        totalAmount: calculateTotal(),
-        deliveryDetails: {
-          location: formData.deliveryLocation,
-          time: formData.deliveryTime,
-          specialInstructions: formData.orderDetails || ""
-        },
-        paymentMethod: formData.paymentMethod,
-        status: "pending",
-        createdAt: new Date().toISOString()
+        // studentId: formData.studentId,
+        // orderItems: selectedItems.map(item => ({
+        //   id: item.id,
+        //   name: item.name,
+        //   price: item.price,
+        //   quantity: item.quantity,
+        //   totalPrice: item.price * item.quantity
+        // })),
+        // category: selectedCategory,
+        // totalAmount: calculateTotal(),
+        // deliveryDetails: {
+        //   location: formData.deliveryLocation,
+        //   time: formData.deliveryTime,
+        //   specialInstructions: formData.orderDetails || ""
+        // },
+        // paymentMethod: formData.paymentMethod,
+        // status: "pending",
+        // createdAt: new Date().toISOString(),
+        // robot_request: {
+        //   request: "finish_batch", 
+        //   fleet_name: "showroom", 
+        //   goal_node: "D014", 
+        //   start_batch: true, 
+        //   time_stamp: 212.122, 
+        //   service_name: "command_fleet_goal"
+        // },
+
       };
-      console.log('Order data:', orderData);
 
       // const orderId = await dbService.pushData('orders', orderData);
-      // console.log('Order submitted successfully with ID:', orderId);
-      
+
+      const commandData = {
+          request:{
+            finish_batch: false,
+            fleet_name: "showroom",
+            goal_node: "D014",
+            start_batch: true,
+            time_stamp: 212.122,
+          },
+          service_name: "command_fleet_goal"
+      }
+
+      const orderId = await dbService.setDataWithId('robots_command',"robot3", commandData);
+      console.log('Order submitted successfully with ID:', commandData);
+
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
       
     } catch (error) {

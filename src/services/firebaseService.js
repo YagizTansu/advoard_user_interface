@@ -61,7 +61,10 @@ export const dbService = {
     const newRef = push(ref(database, path));
     return set(newRef, data).then(() => newRef.key);
   },
-  
+  setDataWithId: (path, id, data) => {
+    const itemRef = ref(database, `${path}/${id}`);
+    return set(itemRef, data);
+  },
   // Veri okuma - bir kez
   getData: (path) => {
     return get(ref(database, path)).then(snapshot => {
