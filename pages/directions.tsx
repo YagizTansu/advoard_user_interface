@@ -207,6 +207,7 @@ const CampusMap = ({ selectedBuildingId, buildings, onBuildingSelect }: {
 const BuildingCard = ({ building, isActive, onSelect, onGetDirections }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const { t } = useTranslation('common');
   
   return (
     <motion.div
@@ -232,7 +233,7 @@ const BuildingCard = ({ building, isActive, onSelect, onGetDirections }) => {
                 {building.name}
               </Typography>
               <Typography variant="body2" color="text.secondary" className={directionStyles.buildingCode}>
-                {building.code || "Building " + building.id.substring(0, 3)}
+                {building.code || `${t('directions.building')} ${building.id.substring(0, 3)}`}
               </Typography>
             </Box>
           </Box>
@@ -246,7 +247,7 @@ const BuildingCard = ({ building, isActive, onSelect, onGetDirections }) => {
             />
             <Chip 
               size="small"
-              label={building.type === 'academic' ? 'Academic' : 'Administrative'}
+              label={building.type === 'academic' ? t('directions.academic') : t('directions.administrative')}
               className={`${directionStyles.buildingChip} ${directionStyles.buildingTypeChip}`}
               variant="outlined"
             />
@@ -265,7 +266,7 @@ const BuildingCard = ({ building, isActive, onSelect, onGetDirections }) => {
               onGetDirections(building.id, 'building');
             }}
           >
-            Get Directions
+            {t('directions.getDirections')}
           </Button>
           {!isActive && isMobile && (
             <Button
@@ -287,6 +288,8 @@ const BuildingCard = ({ building, isActive, onSelect, onGetDirections }) => {
 
 // Professor card component
 const ProfessorCard = ({ professor, onSelect, isActive, onGetDirections }) => {
+  const { t } = useTranslation('common');
+  
   return (
     <motion.div
       whileHover={{ y: -4 }}
@@ -329,7 +332,7 @@ const ProfessorCard = ({ professor, onSelect, isActive, onGetDirections }) => {
               <Box className={directionStyles.professorDetailItem}>
                 <AccessTimeIcon fontSize="small" className={directionStyles.professorDetailIcon} />
                 <Typography variant="body2">
-                  Office Hours: {professor.office_hours || "By appointment"}
+                  {t('directions.officeHours')}: {professor.office_hours || t('directions.byAppointment')}
                 </Typography>
               </Box>
               
@@ -366,7 +369,7 @@ const ProfessorCard = ({ professor, onSelect, isActive, onGetDirections }) => {
               onGetDirections(professor.id, 'professor');
             }}
           >
-            Find Office
+            {t('directions.findOffice')}
           </Button>
         </CardActions>
       </Card>
@@ -376,12 +379,13 @@ const ProfessorCard = ({ professor, onSelect, isActive, onGetDirections }) => {
 
 // Directions Panel Component
 const DirectionsPanel = ({ directions, onClose }) => {
+  const { t } = useTranslation('common');
   if (!directions) return null;
   
   return (
     <Paper className={directionStyles.directionsPanel}>
       <Box className={directionStyles.directionsPanelHeader}>
-        <Typography variant="h6">Directions</Typography>
+        <Typography variant="h6">{t('directions.directions')}</Typography>
         <IconButton onClick={onClose}>
           <CloseIcon />
         </IconButton>
@@ -522,13 +526,13 @@ export default function Directions() {
       distance: '250m',
       duration: '3 mins walk',
       steps: [
-        'Exit current building through the main entrance',
-        'Walk straight for 100m towards the central plaza',
-        'Turn right at the fountain',
+        t('directions.exitCurrentBuilding'),
+        t('directions.walkStraight'),
+        t('directions.turnRightAtFountain'),
         type === 'building' 
-          ? `Enter ${item.name} building` 
-          : `Enter building and take elevator to ${item.floor}`,
-        type === 'professor' && `Find room ${item.room_number} on the ${item.floor}`
+          ? `${t('directions.enterBuilding')} ${item.name}` 
+          : `${t('directions.enterBuildingAndTakeElevator')} ${item.floor}`,
+        type === 'professor' && `${t('directions.findRoom')} ${item.room_number} ${t('directions.onFloor')} ${item.floor}`
       ].filter(Boolean)
     };
     
@@ -569,7 +573,7 @@ export default function Directions() {
     <>
       <Head>
         <title>{t('directions.pageTitle')} | Campus Navigator</title>
-        <meta name="description" content="Find your way around campus with our interactive map and building directory" />
+        <meta name="description" content={t('directions.pageDescription')} />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
       </Head>
       
@@ -586,7 +590,7 @@ export default function Directions() {
                 <ArrowBackIcon />
               </IconButton>
               <Typography variant="h6" className={directionStyles.pageTitle}>
-                Campus Navigator
+                {t('directions.campusNavigator')}
               </Typography>
             </Box>
             
@@ -596,7 +600,7 @@ export default function Directions() {
                   <SearchIcon />
                 </InputAdornment>
                 <TextField
-                  placeholder="Search buildings, professors, rooms..."
+                  placeholder={t('directions.searchBuildingsProfessors')}
                   variant="standard"
                   fullWidth
                   value={searchQuery}
@@ -628,25 +632,25 @@ export default function Directions() {
             scrollButtons="auto"
           >
             <Tab 
-              label="All" 
+              label={t('directions.all')} 
               value="all" 
               icon={<FilterListIcon />} 
               className={activeTab === 'all' ? directionStyles.activeTab : ''}
             />
             <Tab 
-              label="Academic" 
+              label={t('directions.academic')} 
               value="academic" 
               icon={<SchoolIcon />}
               className={activeTab === 'academic' ? directionStyles.activeTab : ''}
             />
             <Tab 
-              label="Administrative" 
+              label={t('directions.administrative')} 
               value="administrative" 
               icon={<ApartmentIcon />}
               className={activeTab === 'administrative' ? directionStyles.activeTab : ''}
             />
             <Tab 
-              label="Professors" 
+              label={t('directions.professors')} 
               value="professors" 
               icon={<PersonIcon />}
               className={activeTab === 'professors' ? directionStyles.activeTab : ''}
@@ -673,7 +677,7 @@ export default function Directions() {
               {!showingDirections && (
                 <Paper className={directionStyles.quickAccessPanel}>
                   <Typography variant="subtitle1" className={directionStyles.quickAccessTitle}>
-                    Quick Access
+                    {t('directions.quickAccess')}
                   </Typography>
                   <Box className={directionStyles.quickAccessGrid}>
                     {destinations.slice(0, 6).map(destination => (
@@ -695,12 +699,12 @@ export default function Directions() {
               <Paper className={directionStyles.resultsContainer}>
                 <Box className={directionStyles.resultsHeader}>
                   <Typography variant="subtitle1" className={directionStyles.resultsTitle}>
-                    {filteredData.buildings.length + filteredData.professors.length} Results
+                    {filteredData.buildings.length + filteredData.professors.length} {t('directions.results')}
                   </Typography>
                   
                   {searchQuery && (
                     <Chip 
-                      label={`Searching: "${searchQuery}"`}
+                      label={`${t('directions.searching')}: "${searchQuery}"`}
                       onDelete={() => setSearchQuery('')}
                       size="small"
                       className={directionStyles.searchChip}
@@ -725,10 +729,10 @@ export default function Directions() {
                       <Box className={directionStyles.emptyStateContainer}>
                         <SearchIcon className={directionStyles.emptyStateIcon} />
                         <Typography variant="h6">
-                          No results found
+                          {t('directions.noResultsFound')}
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
-                          Try adjusting your search or filters
+                          {t('directions.tryAdjustingSearch')}
                         </Typography>
                         <Button 
                           variant="outlined" 
@@ -738,7 +742,7 @@ export default function Directions() {
                             setActiveTab('all');
                           }}
                         >
-                          Reset filters
+                          {t('directions.resetFilters')}
                         </Button>
                       </Box>
                     ) : (
@@ -748,7 +752,7 @@ export default function Directions() {
                         {filteredData.buildings.length > 0 && (
                           <Box className={directionStyles.categorySection}>
                             <Typography variant="subtitle2" className={directionStyles.categoryTitle}>
-                              Buildings ({filteredData.buildings.length})
+                              {t('directions.buildingsCount')} ({filteredData.buildings.length})
                             </Typography>
                             {filteredData.buildings.map(building => (
                               <motion.div key={building.id} layout transition={{ duration: 0.3 }}>
@@ -767,7 +771,7 @@ export default function Directions() {
                         {filteredData.professors.length > 0 && (
                           <Box className={directionStyles.categorySection}>
                             <Typography variant="subtitle2" className={directionStyles.categoryTitle}>
-                              Professors ({filteredData.professors.length})
+                              {t('directions.professorsCount')} ({filteredData.professors.length})
                             </Typography>
                             {filteredData.professors.map(professor => (
                               <motion.div key={professor.id} layout transition={{ duration: 0.3 }}>
@@ -824,25 +828,25 @@ export default function Directions() {
                   <Box className={directionStyles.buildingDetails}>
                     <Box className={directionStyles.detailSection}>
                       <Typography variant="subtitle2" className={directionStyles.detailLabel}>
-                        Building Information
+                        {t('directions.buildingInformation')}
                       </Typography>
                       <Box className={directionStyles.detailInfo}>
                         <Box className={directionStyles.detailItem}>
                           <ApartmentIcon className={directionStyles.detailIcon} />
                           <Typography variant="body2">
-                            {(selectedItemDetails as Building).type === 'academic' ? 'Academic Building' : 'Administrative Building'}
+                            {(selectedItemDetails as Building).type === 'academic' ? t('directions.academicBuilding') : t('directions.administrativeBuilding')}
                           </Typography>
                         </Box>
                         <Box className={directionStyles.detailItem}>
                           <LocationOnIcon className={directionStyles.detailIcon} />
                           <Typography variant="body2">
-                            {(selectedItemDetails as Building).floor || 'Multiple floors'}
+                            {(selectedItemDetails as Building).floor || t('directions.multipleFloors')}
                           </Typography>
                         </Box>
                       </Box>
                       
                       <Typography variant="body2" className={directionStyles.buildingDescription}>
-                        {(selectedItemDetails as Building).description || "This building houses various facilities including classrooms, labs and office spaces."}
+                        {(selectedItemDetails as Building).description || t('directions.defaultBuildingDescription')}
                       </Typography>
                     </Box>
                     
@@ -856,7 +860,7 @@ export default function Directions() {
                         fullWidth
                         onClick={() => handleGetDirections(selectedItem, 'building')}
                       >
-                        Get Directions
+                        {t('directions.getDirections')}
                       </Button>
                     </Box>
                   </Box>
@@ -865,7 +869,7 @@ export default function Directions() {
                   <Box className={directionStyles.professorDetails}>
                     <Box className={directionStyles.detailSection}>
                       <Typography variant="subtitle2" className={directionStyles.detailLabel}>
-                        Contact Information
+                        {t('directions.contactInformation')}
                       </Typography>
                       <Box className={directionStyles.detailInfo}>
                         <Box className={directionStyles.detailItem}>
@@ -883,7 +887,7 @@ export default function Directions() {
                         <Box className={directionStyles.detailItem}>
                           <AccessTimeIcon className={directionStyles.detailIcon} />
                           <Typography variant="body2">
-                            Office Hours: {(selectedItemDetails as ProfessorRoom).office_hours || "By appointment"}
+                            {t('directions.officeHours')}: {(selectedItemDetails as ProfessorRoom).office_hours || t('directions.byAppointment')}
                           </Typography>
                         </Box>
                         {(selectedItemDetails as ProfessorRoom).email && (
@@ -907,7 +911,7 @@ export default function Directions() {
                         fullWidth
                         onClick={() => handleGetDirections(selectedItem, 'professor')}
                       >
-                        Find Office
+                        {t('directions.findOffice')}
                       </Button>
                       <Button
                         variant="outlined"
@@ -915,7 +919,7 @@ export default function Directions() {
                         className={directionStyles.secondaryActionButton}
                         fullWidth
                       >
-                        Contact Professor
+                        {t('directions.contactProfessor')}
                       </Button>
                     </Box>
                   </Box>
@@ -946,7 +950,7 @@ export default function Directions() {
               <Box display="flex" alignItems="center">
                 <LocationOnIcon sx={{ mr: 1 }} color="primary" />
                 <Typography variant="h6">
-                  Directions to {directions?.destination.name}
+                  {t('directions.directionsTo')} {directions?.destination.name}
                 </Typography>
               </Box>
               <IconButton 
@@ -999,7 +1003,7 @@ export default function Directions() {
                 className={directionStyles.startNavigationButton}
                 fullWidth
               >
-                Start Navigation
+                {t('directions.startNavigation')}
               </Button>
             </Box>
           </DialogContent>
