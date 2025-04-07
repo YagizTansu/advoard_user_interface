@@ -181,13 +181,6 @@ export default function Home() {
                 button: 'services.help.button',
                 href: '/help',
                 color: '#3a0ca3'
-              },
-              {
-                title: 'AI Assistant',
-                description: 'Chat with our AI assistant for personalized help and information',
-                button: 'Try AI Assistant',
-                href: '/gpt',
-                color: '#00b4d8'
               }
             ].map((service, index) => (
               <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
