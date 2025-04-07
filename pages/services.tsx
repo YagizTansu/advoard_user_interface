@@ -86,7 +86,7 @@ export default function Services() {
     orderDetails: '',
     deliveryLocation: '',
     deliveryTime: 'asap',
-    paymentMethod: 'credit'
+    paymentMethod: 'campus'
   });
   const [categories, setCategories] = useState<Category[]>([]);
   const [menuItems, setMenuItems] = useState<{[key: string]: MenuItemType[]}>({});
