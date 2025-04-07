@@ -277,7 +277,7 @@ export default function Information({ initialData }: { initialData?: Information
                         variants={itemVariants}
                         transition={{ delay: index * 0.1 }}
                       >
-                        <Card className={styles.categoryCard} elevation={0}>
+                        <Card className={styles.categoryCard} >
                           <Box className={styles.cardHeader}>
                             <Box 
                               className={styles.categoryIconContainer}
