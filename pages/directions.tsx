@@ -516,8 +516,7 @@ export default function Directions() {
     
     if (!item) return;
     
-    // Create mock directions data
-    // In a real app, you would call a directions API here
+    // Create mock directions data with hardcoded text instead of translation keys
     const mockDirections = {
       destination: {
         name: type === 'building' ? item.name : `${item.professor_name}'s Office`,
@@ -526,13 +525,13 @@ export default function Directions() {
       distance: '250m',
       duration: '3 mins walk',
       steps: [
-        t('directions.exitCurrentBuilding'),
-        t('directions.walkStraight'),
-        t('directions.turnRightAtFountain'),
+        'Exit current building through the main entrance',
+        'Walk straight for 100m towards the central plaza',
+        'Turn right at the fountain',
         type === 'building' 
-          ? `${t('directions.enterBuilding')} ${item.name}` 
-          : `${t('directions.enterBuildingAndTakeElevator')} ${item.floor}`,
-        type === 'professor' && `${t('directions.findRoom')} ${item.room_number} ${t('directions.onFloor')} ${item.floor}`
+          ? `Enter ${item.name} building` 
+          : `Enter building and take elevator to ${item.floor}`,
+        type === 'professor' && `Find room ${item.room_number} on the ${item.floor}`
       ].filter(Boolean)
     };
     
