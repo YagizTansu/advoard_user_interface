@@ -146,13 +146,13 @@ export default function Home() {
     
       </Box>
 
-      <Container maxWidth="lg" sx={{ py: { xs: 3, sm: 4, md: 6 } }}>
+      <Container maxWidth="lg" sx={{ py: { xs: 3, sm: 5, md: 6 } }}>
         <motion.div 
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
-          <Grid container spacing={{ xs: 2, sm: 3, md: 4 }}>
+          <Grid container spacing={{ xs: 2, sm: 3, md: 5 }}>
             {[
               {
                 title: 'services.order.title',
@@ -181,6 +181,13 @@ export default function Home() {
                 button: 'services.help.button',
                 href: '/help',
                 color: '#3a0ca3'
+              },
+              {
+                title: 'AI Assistant',
+                description: 'Chat with our AI assistant for personalized help and information',
+                button: 'Try AI Assistant',
+                href: '/gpt',
+                color: '#00b4d8'
               }
             ].map((service, index) => (
               <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
