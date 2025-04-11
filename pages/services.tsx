@@ -1,8 +1,9 @@
-import { SetStateAction, useState, useEffect } from 'react';
+import { SetStateAction, useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { motion } from 'framer-motion';
 import styles from '../styles/service.module.css';
+import { useRouter } from 'next/router';
 import { 
   Box, 
   Container, 
@@ -78,6 +79,7 @@ function useWindowSize() {
 
 export default function Services() {
   const { t, i18n } = useTranslation('common');
+  const router = useRouter();
   const [activeStep, setActiveStep] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedItems, setSelectedItems] = useState<{id: string, quantity: number, name: string, price: number}[]>([]);
@@ -94,6 +96,49 @@ export default function Services() {
   const isMobile = width !== undefined && width < 600;
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const inactivityTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Function to handle inactivity timeout
+  const resetInactivityTimer = () => {
+    if (inactivityTimeoutRef.current) {
+      clearTimeout(inactivityTimeoutRef.current);
+    }
+    
+    // Set timeout for 20 seconds of inactivity
+    inactivityTimeoutRef.current = setTimeout(() => {
+      router.push('/');
+    }, 20000); // 20 seconds
+  };
+
+  // Set up event listeners for user activity
+  useEffect(() => {
+    // Initial setup of the timer
+    resetInactivityTimer();
+    
+    // Event listeners for user interaction
+    const userActivityEvents = ['mousedown', 'mousemove', 'keydown', 'scroll', 'touchstart'];
+    
+    // Function to handle user activity
+    const handleUserActivity = () => {
+      resetInactivityTimer();
+    };
+    
+    // Add event listeners
+    userActivityEvents.forEach(event => {
+      document.addEventListener(event, handleUserActivity);
+    });
+    
+    // Clean up
+    return () => {
+      if (inactivityTimeoutRef.current) {
+        clearTimeout(inactivityTimeoutRef.current);
+      }
+      
+      userActivityEvents.forEach(event => {
+        document.removeEventListener(event, handleUserActivity);
+      });
+    };
+  }, [router]);
 
   useEffect(() => {
     i18n.reloadResources(i18n.language, ['common']);

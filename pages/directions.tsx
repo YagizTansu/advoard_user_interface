@@ -5,6 +5,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import Image from 'next/image';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useRouter } from 'next/router';
 import { 
   Box, 
   Typography, 
@@ -450,6 +451,7 @@ const DirectionsPanel = ({
 // Main page component
 export default function Directions() {
   const { t } = useTranslation('common');
+  const router = useRouter();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [searchQuery, setSearchQuery] = useState('');
@@ -462,7 +464,50 @@ export default function Directions() {
   const [destinations, setDestinations] = useState<CommonDestination[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showingDirections, setShowingDirections] = useState(false);
-  const [directions, setDirections] = useState<DirectionsData | null>(null); // Update this line
+  const [directions, setDirections] = useState<DirectionsData | null>(null);
+  const inactivityTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Function to handle inactivity timeout
+  const resetInactivityTimer = () => {
+    if (inactivityTimeoutRef.current) {
+      clearTimeout(inactivityTimeoutRef.current);
+    }
+    
+    // Set timeout for 20 seconds of inactivity
+    inactivityTimeoutRef.current = setTimeout(() => {
+      router.push('/');
+    }, 20000); // 20 seconds
+  };
+
+  // Set up event listeners for user activity
+  useEffect(() => {
+    // Initial setup of the timer
+    resetInactivityTimer();
+    
+    // Event listeners for user interaction
+    const userActivityEvents = ['mousedown', 'mousemove', 'keydown', 'scroll', 'touchstart'];
+    
+    // Function to handle user activity
+    const handleUserActivity = () => {
+      resetInactivityTimer();
+    };
+    
+    // Add event listeners
+    userActivityEvents.forEach(event => {
+      document.addEventListener(event, handleUserActivity);
+    });
+    
+    // Clean up
+    return () => {
+      if (inactivityTimeoutRef.current) {
+        clearTimeout(inactivityTimeoutRef.current);
+      }
+      
+      userActivityEvents.forEach(event => {
+        document.removeEventListener(event, handleUserActivity);
+      });
+    };
+  }, [router]);
 
   // Fetch data on component mount
   useEffect(() => {

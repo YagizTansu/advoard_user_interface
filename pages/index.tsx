@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { motion } from 'framer-motion';
@@ -10,29 +10,51 @@ import styles from '../styles/index.module.css';
 export default function Home() {
   const { t } = useTranslation('common');
   const [isIdle, setIsIdle] = useState(true);
+  const idleTimerRef = useRef<NodeJS.Timeout | null>(null);
+  
+  // Reset the idle timer
+  const resetIdleTimer = () => {
+    // Clear any existing timer
+    if (idleTimerRef.current) {
+      clearTimeout(idleTimerRef.current);
+    }
+    
+    // Set new timer - return to PresentationModule after 20 seconds of inactivity
+    idleTimerRef.current = setTimeout(() => {
+      setIsIdle(true);
+    }, 20000); // 20 seconds
+  };
   
   // Set to presentation mode after inactivity
   useEffect(() => {
-    const idleTimer = setTimeout(() => {
-      setIsIdle(true);
-    }, 60000); // 1 minute
-    
+    // Handle user activity
     const handleActivity = () => {
-      setIsIdle(false);
-      clearTimeout(idleTimer);
+      if (isIdle) {
+        setIsIdle(false);
+      }
+      resetIdleTimer();
     };
     
+    // Set up event listeners
     window.addEventListener('click', handleActivity);
     window.addEventListener('touchstart', handleActivity);
     // window.addEventListener('mousemove', handleActivity);
     
+    // Initial timer setup
+    if (!isIdle) {
+      resetIdleTimer();
+    }
+    
+    // Cleanup
     return () => {
-      clearTimeout(idleTimer);
+      if (idleTimerRef.current) {
+        clearTimeout(idleTimerRef.current);
+      }
       window.removeEventListener('click', handleActivity);
       window.removeEventListener('touchstart', handleActivity);
       // window.removeEventListener('mousemove', handleActivity);
     };
-  }, []);
+  }, [isIdle]);
 
   if (isIdle) {
     return <PresentationModule onInteraction={() => setIsIdle(false)} />;
