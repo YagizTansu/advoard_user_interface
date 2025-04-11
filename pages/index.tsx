@@ -22,7 +22,7 @@ export default function Home() {
           1: stop_boolean,
           2: stop_boolean,
         },
-        service_name: "command_emergency_stop",
+        service_name: "command_emergency",
       };
 
       const orderId = await dbService.setDataWithId('robots_command', "robot3", commandData);
