@@ -61,7 +61,7 @@ const PresentationModule: React.FC<PresentationModuleProps> = ({ onInteraction }
           setCurrentIndex((prevIndex) => (prevIndex + 1) % presentations.length);
           setShowVideo(true); // Show video when changing presentation
         }
-      }, 20000); // Change every 20 seconds when not showing video
+      }, 10000); // Change every 20 seconds when not showing video
     }
     
     return () => {

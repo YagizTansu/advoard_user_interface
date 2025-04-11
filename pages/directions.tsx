@@ -476,7 +476,7 @@ export default function Directions() {
     // Set timeout for 20 seconds of inactivity
     inactivityTimeoutRef.current = setTimeout(() => {
       router.push('/');
-    }, 20000); // 20 seconds
+    }, 10000); // 20 seconds
   };
 
   // Set up event listeners for user activity
