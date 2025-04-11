@@ -6,11 +6,31 @@ import { Box, Typography, Button, Grid, Container, Fade, IconButton, Divider } f
 import PresentationModule from '../components/modules/presentation/PresentationModule';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import styles from '../styles/index.module.css';
+import { dbService } from '../src/services/firebaseService';
 
 export default function Home() {
   const { t } = useTranslation('common');
   const [isIdle, setIsIdle] = useState(true);
   const idleTimerRef = useRef<NodeJS.Timeout | null>(null);
+  
+  // Send robot command function to avoid duplicate code
+  const sendRobotCommand = async (stop_boolean: boolean) => {
+    try {
+      const commandData = {
+        request:{
+          0: stop_boolean,
+          1: stop_boolean,
+          2: stop_boolean,
+        },
+        service_name: "command_emergency_stop",
+      };
+
+      const orderId = await dbService.setDataWithId('robots_command', "robot3", commandData);
+      console.log('Robot command sent successfully:', orderId);
+    } catch (error) {
+      console.error('Error sending robot command:', error);
+    }
+  };
   
   // Reset the idle timer
   const resetIdleTimer = () => {
@@ -20,7 +40,9 @@ export default function Home() {
     }
     
     // Set new timer - return to PresentationModule after 20 seconds of inactivity
-    idleTimerRef.current = setTimeout(() => {
+    idleTimerRef.current = setTimeout(async () => {
+      // Send robot command before entering presentation mode
+      await sendRobotCommand(false);
       setIsIdle(true);
     }, 20000); // 20 seconds
   };
@@ -28,9 +50,12 @@ export default function Home() {
   // Set to presentation mode after inactivity
   useEffect(() => {
     // Handle user activity
-    const handleActivity = () => {
+    const handleActivity = async () => {
       if (isIdle) {
         setIsIdle(false);
+        
+        // Send command to robot when user interacts with screen
+        await sendRobotCommand(true);
       }
       resetIdleTimer();
     };
@@ -57,6 +82,7 @@ export default function Home() {
   }, [isIdle]);
 
   if (isIdle) {
+  
     return <PresentationModule onInteraction={() => setIsIdle(false)} />;
   }
   
