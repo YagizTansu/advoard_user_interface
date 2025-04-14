@@ -188,6 +188,20 @@ export default function Home() {
               >
                 {t('selectService')}
               </Typography>
+              
+              <Button
+                variant="contained"
+                href="/gpt"
+                className={styles.uniGptHeroButton}
+                endIcon={<ArrowForwardIcon />}
+                sx={{
+                  width: '100%',
+                  mx: { xs: 0, sm: -2, md: -4 }, // Negative margins to make it wider
+                  px: { xs: 2, sm: 4, md: 6 },   // Increased horizontal padding
+                }}
+              >
+                UniGPT
+              </Button>
             </motion.div>
           </motion.div>
         </Container>

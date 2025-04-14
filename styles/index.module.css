@@ -99,7 +99,33 @@
   }
 }
 
+.uniGptHeroButton {
+  background: linear-gradient(90deg, #FF8C00 0%, #fa7747 100%);
+  color: white;
+  padding: 0.75rem 2.5rem;
+  font-size: 1.4rem;
+  font-weight: 500;
+  border-radius: 12px;
+  text-transform: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 15px rgba(255, 140, 0, 0.25);
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
 
+.uniGptHeroButton:hover {
+  filter: brightness(1.1);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 20px rgba(243, 94, 7, 0.3);
+}
+
+@media (max-width: 600px) {
+  .uniGptHeroButton {
+    font-size: 1.1rem;
+    padding: 0.6rem 1.2rem;
+  }
+}
 
 @media (min-width: 768px) {
   .universityNameTurkish {

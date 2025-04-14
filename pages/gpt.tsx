@@ -16,15 +16,13 @@ import {
   useMediaQuery,
   useTheme,
   CircularProgress,
-  FormControl,
-  Select,
-  MenuItem
 } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
 import SearchIcon from '@mui/icons-material/Search';
 import MicIcon from '@mui/icons-material/Mic';
 import SendIcon from '@mui/icons-material/Send';
+import StopIcon from '@mui/icons-material/Stop';
 import styles from '../styles/gpt.module.css';
+import { SpeechRecognition } from '../types/speech-recognition';
 
 // Define interface for chat messages
 interface ChatMessage {
@@ -40,14 +38,88 @@ export default function GptChat() {
   const [message, setMessage] = useState('');
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [language, setLanguage] = useState('tr'); // Default language
+  const [isListening, setIsListening] = useState(false);
   const inputRef = useRef(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
+  const recognitionRef = useRef<SpeechRecognition | null>(null);
 
-  const handleSendMessage = async () => {
-    if (message.trim() && !isLoading) {
+  useEffect(() => {
+    // Initialize speech recognition
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      recognitionRef.current = new SpeechRecognition();
+      
+      if (recognitionRef.current) { // Add null check here
+        recognitionRef.current.continuous = false;
+        recognitionRef.current.interimResults = false;
+        recognitionRef.current.lang = 'tr-TR'; // Set to Turkish
+
+        recognitionRef.current.onresult = (event) => {
+          const transcript = event.results[0][0].transcript;
+          setMessage(transcript);
+          
+          // Auto-send after voice recognition completes
+          setTimeout(() => {
+            handleSendMessage(transcript);
+          }, 500);
+        };
+
+        recognitionRef.current.onend = () => {
+          setIsListening(false);
+        };
+
+        recognitionRef.current.onerror = (event) => {
+          console.error('Speech recognition error', event);
+          setIsListening(false);
+        };
+      }
+    }
+
+    return () => {
+      // Cleanup
+      if (recognitionRef.current) {
+        try {
+          // Check if abort method exists before calling it
+          if (typeof recognitionRef.current.abort === 'function') {
+            recognitionRef.current.abort();
+          } else {
+            // Fallback to stop if abort isn't available
+            recognitionRef.current.stop();
+          }
+        } catch (error) {
+          console.error('Error aborting speech recognition:', error);
+        }
+      }
+    };
+  }, []);
+
+  const toggleSpeechRecognition = () => {
+    if (!recognitionRef.current) {
+      alert(t('Speech recognition is not supported in your browser'));
+      return;
+    }
+
+    try {
+      if (isListening) {
+        recognitionRef.current.stop();
+        setIsListening(false);
+      } else {
+        recognitionRef.current.start();
+        setIsListening(true);
+      }
+    } catch (error) {
+      console.error('Speech recognition error:', error);
+      setIsListening(false);
+      alert(t('Speech recognition failed. Please try again.'));
+    }
+  };
+
+  const handleSendMessage = async (voiceMessage?: string) => {
+    const messageToSend = voiceMessage || message;
+    
+    if (messageToSend.trim() && !isLoading) {
       // Store the current message to use in the API call
-      const currentMessage = message;
+      const currentMessage = messageToSend;
       
       // Add user message to chat
       setChatHistory(prev => [...prev, { type: 'user', content: currentMessage }]);
@@ -62,7 +134,7 @@ export default function GptChat() {
         // Prepare form data
         const formData = new URLSearchParams();
         formData.append('question', encodeURIComponent(currentMessage));
-        formData.append('lang', language);
+        formData.append('lang', 'tr'); // Fixed language to Turkish
         formData.append('source', 'robot');
         formData.append('ekoid', 'abc');
         formData.append('hash', 'abc');
@@ -124,20 +196,13 @@ export default function GptChat() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <Typography variant="h4" component="h1" className={styles.chatTitle}>
-              {t('What can I help with?')}
+            <Typography variant="h3" component="h1" className={`${styles.chatTitle} ${styles.uniGptTitle}`}>
+              UniGPT
+            </Typography>
+            <Typography variant="subtitle1" className={styles.uniGptSubtitle}>
+              {t('Your AI assistant for university information')}
             </Typography>
           </motion.div>
-          <FormControl variant="outlined" size="small" sx={{ minWidth: 120, ml: 2 }}>
-            <Select
-              value={language}
-              onChange={(e) => setLanguage(e.target.value)}
-              sx={{ height: 35 }}
-            >
-              <MenuItem value="tr">Turkish</MenuItem>
-              <MenuItem value="eng">English</MenuItem>
-            </Select>
-          </FormControl>
           <Divider sx={{ my: 2 }} />
         </Box>
 
@@ -147,19 +212,16 @@ export default function GptChat() {
             elevation={1} 
             className={styles.inputContainer}
           >
-            <IconButton size="small" className={styles.iconButton}>
-              <AddIcon />
-            </IconButton>
             
             <TextField
               ref={inputRef}
               fullWidth
               variant="standard"
-              placeholder={t('Ask anything')}
+              placeholder={isListening ? t('Listening...') : t('Ask UniGPT anything...')}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && !isLoading && handleSendMessage()}
-              disabled={isLoading}
+              disabled={isLoading || isListening}
               InputProps={{
                 disableUnderline: true,
                 startAdornment: (
@@ -173,27 +235,32 @@ export default function GptChat() {
               sx={{ my: 0 }}
             />
 
-
-
             <IconButton 
               size="medium" 
-              className={styles.micButton}
-              onClick={message && !isLoading ? handleSendMessage : undefined}
+              className={`${styles.micButton} ${styles.uniGptButton}`}
+              onClick={message && !isListening ? () => handleSendMessage() : toggleSpeechRecognition}
               disabled={isLoading}
               sx={{
-                bgcolor: 'black',
+                bgcolor: isListening ? '#f44336' : '#2a3eb1', // Red when listening, blue otherwise
                 color: 'white',
                 '&:hover': {
-                  bgcolor: 'rgba(0, 0, 0, 0.8)',
+                  bgcolor: isListening ? '#d32f2f' : '#1a237e',
+                },
+                animation: isListening ? 'pulse 1.5s infinite' : 'none',
+                '@keyframes pulse': {
+                  '0%': { boxShadow: '0 0 0 0 rgba(244, 67, 54, 0.7)' },
+                  '70%': { boxShadow: '0 0 0 10px rgba(244, 67, 54, 0)' },
+                  '100%': { boxShadow: '0 0 0 0 rgba(244, 67, 54, 0)' }
                 }
               }}
             >
-              {isLoading ? <CircularProgress size={24} color="inherit" /> : (message ? <SendIcon /> : <MicIcon />)}
+              {isLoading ? <CircularProgress size={24} color="inherit" /> : 
+                (message ? <SendIcon /> : (isListening ? <StopIcon /> : <MicIcon />))}
             </IconButton>
           </Paper>
         </Box>
 
-        {/* Chat messages container - Now placed after input */}
+        {/* Chat messages container */}
         <Box 
           ref={chatContainerRef}
           sx={{ 
@@ -210,7 +277,7 @@ export default function GptChat() {
               sx={{ 
                 alignSelf: msg.type === 'user' ? 'flex-end' : 'flex-start',
                 maxWidth: '80%',
-                backgroundColor: msg.type === 'user' ? '#e1f5fe' : '#f5f5f5',
+                backgroundColor: msg.type === 'user' ? '#e1f5fe' : (msg.type === 'ai' ? '#ede7f6' : '#f5f5f5'),
                 borderRadius: 2,
                 p: 2,
                 mb: 2
@@ -218,7 +285,7 @@ export default function GptChat() {
             >
               {msg.isLoading ? (
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                  <CircularProgress size={24} />
+                  <CircularProgress size={24} sx={{ color: '#2a3eb1' }} />
                 </Box>
               ) : (
                 <Typography>{msg.content}</Typography>
