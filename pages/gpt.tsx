@@ -173,26 +173,7 @@ export default function GptChat() {
               sx={{ my: 0 }}
             />
 
-            {!isMobile && (
-              <Button 
-                variant="text" 
-                color="inherit"
-                className={styles.reasonButton}
-                disableElevation
-                sx={{
-                  textTransform: 'none',
-                  bgcolor: 'rgba(0, 0, 0, 0.05)',
-                  borderRadius: '20px',
-                  px: 2,
-                  mr: 1,
-                  '&:hover': {
-                    bgcolor: 'rgba(0, 0, 0, 0.08)',
-                  }
-                }}
-              >
-                {t('Reason')}
-              </Button>
-            )}
+
 
             <IconButton 
               size="medium" 
