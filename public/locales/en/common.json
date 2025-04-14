@@ -2,6 +2,7 @@
   "appName": "Smart Campus Robot",
   "welcome": "Welcome",
   "selectService": "Please select a service",
+  "examSchedule": "Exam Schedule",
   "navigation": {
     "home": "Home",
     "services": "Services",
@@ -311,5 +312,24 @@
     "learnMore": "Learn More",
     "clearSearch": "Clear Search",
     "backToInformation": "Back to Information Center"
+  },
+  "exams": {
+    "title": "Exam Schedule",
+    "searchPlaceholder": "Search by course code, location or supervisor...",
+    "loading": "Loading exam data...",
+    "errorTitle": "Excel file not found",
+    "errorMessage": "An error occurred while loading exam data.",
+    "noResults": "No search results found",
+    "emptyList": "Exam list is empty",
+    "totalExams": "Total {{count}} Exams",
+    "headers": {
+      "examDate": "Exam Date",
+      "courseCode": "Course Code",
+      "startTime": "Start Time",
+      "endTime": "End Time",
+      "instructor": "Instructor",
+      "examLocation": "Exam Location",
+      "supervisor": "Supervisor"
+    }
   }
 }

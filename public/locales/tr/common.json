@@ -2,6 +2,7 @@
   "appName": "Akıllı Kampüs Robotu",
   "welcome": "Hoş Geldiniz",
   "selectService": "Lütfen aşağıdaki hizmetlerden birini seçin",
+  "examSchedule": "Sınav Takvimi",
   "navigation": {
     "home": "Ana Sayfa",
     "services": "Hizmetler",
@@ -313,5 +314,24 @@
     "learnMore": "Daha Fazla",
     "clearSearch": "Aramayı Temizle",
     "backToInformation": "Bilgi Merkezine Dön"
+  },
+  "exams": {
+    "title": "Sınav Programı",
+    "searchPlaceholder": "Ders kodu, sınav yeri veya gözetmen ara...",
+    "loading": "Sınav verileri yükleniyor...",
+    "errorTitle": "Excel dosyası bulunamadı",
+    "errorMessage": "Sınav verileri yüklenirken bir hata oluştu.",
+    "noResults": "Arama sonucu bulunamadı",
+    "emptyList": "Sınav listesi boş",
+    "totalExams": "Toplam {{count}} Sınav",
+    "headers": {
+      "examDate": "Sınav Tarihi",
+      "courseCode": "Ders Kodu",
+      "startTime": "Başlangıç Saati",
+      "endTime": "Bitiş Saati",
+      "instructor": "Öğretim Elemanı",
+      "examLocation": "Sınav Yeri",
+      "supervisor": "Gözetmen"
+    }
   }
 }
