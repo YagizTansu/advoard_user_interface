@@ -1,5 +1,5 @@
 import { ReactNode, useState, useEffect } from 'react';
-import { AppBar, Toolbar, IconButton, Typography, Box, Container, useMediaQuery, useTheme } from '@mui/material';
+import { AppBar, Toolbar, Typography, Box, Container, useMediaQuery, useTheme } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import TranslateIcon from '@mui/icons-material/Translate';
@@ -74,40 +74,77 @@ export default function Layout({ children }: LayoutProps) {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <AppBar position="static" sx={{ bgcolor: '#fe6b01' }}>
-        <Toolbar sx={{ flexDirection: isMobile ? 'column' : 'row', py: isMobile ? 1 : 0 }}>
-          <Typography 
-            variant={isMobile ? "h6" : "h6"} 
-            component="div" 
-            sx={{ 
-              flexGrow: 1, 
-              mb: isMobile ? 1 : 0,
-              fontSize: isMobile ? '1.0rem' : '1.0rem'
-            }}
-          >
-            {t('appName')}
-          </Typography>
-          <Box>
-            <IconButton 
-              color="inherit"
-              onClick={toggleLanguage} 
+        <Toolbar sx={{ 
+          display: 'flex', 
+          justifyContent: 'center', // Changed to center everything
+          py: isMobile ? 1 : 0 
+        }}>
+          {/* Center section - Modern styled buttons */}
+          <Box sx={{ 
+            display: 'flex', 
+            justifyContent: 'center',
+            gap: 2,
+            width: isMobile ? '100%' : 'auto' 
+          }}>
+            <Box
+              component="button"
+              onClick={toggleLanguage}
               aria-label="change language"
-              size={isMobile ? "small" : "medium"}
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                bgcolor: 'rgba(255, 255, 255, 0.15)',
+                color: 'white',
+                border: 'none',
+                borderRadius: '8px',
+                padding: '8px 16px',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                '&:hover': {
+                  bgcolor: 'rgba(255, 255, 255, 0.25)',
+                  transform: 'translateY(-2px)'
+                },
+                '&:active': {
+                  transform: 'translateY(0)',
+                }
+              }}
             >
-              <TranslateIcon fontSize={isMobile ? "small" : "medium"} />
-            </IconButton>
-            <IconButton 
-              color="inherit"
-              onClick={() => setVoiceCommandActive(prev => !prev)} 
+              <TranslateIcon sx={{ mr: 1 }} />
+              {i18n.language === 'tr' ? 'EN' : 'TR'}
+            </Box>
+            
+            <Box
+              component="button"
+              onClick={() => setVoiceCommandActive(prev => !prev)}
               aria-label="voice commands"
-              size={isMobile ? "small" : "medium"}
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                bgcolor: 'rgba(255, 255, 255, 0.15)',
+                color: 'white',
+                border: 'none',
+                borderRadius: '8px',
+                padding: '8px 16px',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                '&:hover': {
+                  bgcolor: 'rgba(255, 255, 255, 0.25)',
+                  transform: 'translateY(-2px)'
+                },
+                '&:active': {
+                  transform: 'translateY(0)',
+                }
+              }}
             >
-              <MicIcon fontSize={isMobile ? "small" : "medium"} />
-            </IconButton>
+              <MicIcon sx={{ mr: 1 }} />
+              {t('voiceCommand')}
+            </Box>
           </Box>
         </Toolbar>
       </AppBar>
       
-    
       <Container component="main" sx={{ 
         mt: isMobile ? 2 : 4, 
         mb: isMobile ? 2 : 4, 
