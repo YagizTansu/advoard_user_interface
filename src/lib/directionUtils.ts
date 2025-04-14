@@ -1,6 +1,6 @@
 import { Building, ProfessorRoom } from './supabase';
 
-// Hardcoded mock directions for buildings
+// Hardcoded mock directions for buildings - shorter implementation
 const BUILDING_DIRECTIONS: { [key: string]: string[] } = {
   'acfd1492-7cd8-4de0-bba3-fcfdda9c7402': [
     'Exit current building through the main entrance',
@@ -52,24 +52,7 @@ const BUILDING_DIRECTIONS: { [key: string]: string[] } = {
   ]
 };
 
-// Hardcoded mock directions for professors (additional steps to reach their offices)
-const PROFESSOR_DIRECTIONS: { [key: string]: string[] } = {
-  // These would be populated with real professor IDs and directions
-  'prof-1': [
-    'Enter the Science Building',
-    'Take the elevator to the 3rd floor',
-    'Turn right out of the elevator',
-    'Office is the 4th door on the left, Room 312'
-  ],
-  'prof-2': [
-    'Enter the Engineering Building',
-    'Take the stairs to the 2nd floor',
-    'Turn left and continue to the end of the hallway',
-    'Office is the last door on the right, Room 224'
-  ]
-};
-
-// Generate directions between two points using hardcoded directions
+// Simplified function with better type safety and fewer redundant operations
 const generateDirections = (
   startPointId: string | null, 
   destinationId: string,
@@ -78,70 +61,29 @@ const generateDirections = (
   professors?: ProfessorRoom[]
 ) => {
   // Find the destination details
-  let destinationDetails: Building | ProfessorRoom | undefined;
   let buildingId = destinationId;
+  let destinationName = "Unknown Destination";
   
   if (destinationType === 'building') {
-    destinationDetails = buildings.find(b => b.id === destinationId);
+    const building = buildings.find(b => b.id === destinationId);
+    if (building) destinationName = building.name;
   } else {
-    destinationDetails = professors?.find(p => p.id === destinationId);
-    // For professors, we need to find their building
-    buildingId = destinationDetails?.building_id || '';
-  }
-  
-  if (!destinationDetails) {
-    return {
-      destination: {
-        name: "Unknown Destination",
-        id: destinationId
-      },
-      steps: ["Could not generate directions to this destination"]
-    };
-  }
-  
-  // Get the appropriate hardcoded directions
-  let steps: string[] = [];
-  
-  // Start with the building directions
-  if (BUILDING_DIRECTIONS[buildingId]) {
-    steps = [...BUILDING_DIRECTIONS[buildingId]];
-  } else {
-    // Fallback generic directions if building not found
-    steps = [
-      'Exit current building through the main entrance',
-      'Follow the campus map signs',
-      'The building should be visible from the main walkway'
-    ];
-  }
-  
-  // For professors, add additional steps to navigate inside the building
-  if (destinationType === 'professor' && destinationDetails) {
-    // Add steps to find the professor's office
-    const professorInfo = destinationDetails as ProfessorRoom;
-    
-    if (PROFESSOR_DIRECTIONS[destinationId]) {
-      // Use specific directions if available
-      steps = [...steps, ...PROFESSOR_DIRECTIONS[destinationId]];
-    } else {
-      // Generic office-finding directions
-      steps.push(`Enter the building and look for directory signs`);
-      steps.push(`Take ${professorInfo.floor.includes('floor') ? '' : 'the '} ${professorInfo.floor} to find room ${professorInfo.room_number}`);
-      steps.push(`The office will be marked with Prof. ${professorInfo.professor_name}'s nameplate`);
+    const professor = professors?.find(p => p.id === destinationId);
+    if (professor) {
+      destinationName = `${professor.professor_name}'s Office`;
+      buildingId = professor?.building_id || '';
     }
   }
   
-  // Determine the appropriate name based on destination type
-  const destinationName = destinationType === 'building' 
-    ? (destinationDetails as Building).name 
-    : `${(destinationDetails as ProfessorRoom).professor_name}'s Office`;
-  
+  // Get directions for the building
+  const steps = BUILDING_DIRECTIONS[buildingId] || ["Could not generate directions to this destination"];
   
   return {
     destination: {
       name: destinationName,
       id: destinationId
     },
-    steps: steps
+    steps
   };
 };
 
