@@ -10,6 +10,7 @@ import TouchAppIcon from '@mui/icons-material/TouchApp';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import CloseIcon from '@mui/icons-material/Close';
 import styles from '../../../styles/PresentationModule.module.css';
+import { dbService } from '../../../src/services/firebaseService';
 
 interface PresentationModuleProps {
   onInteraction: () => void;
@@ -40,6 +41,36 @@ const PresentationModule: React.FC<PresentationModuleProps> = ({ onInteraction }
   const [showVideo, setShowVideo] = useState(true); // Start with video playing
   const [isPaused, setIsPaused] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  
+  // Send robot command function 
+  const sendRobotCommand = async (stop_boolean: boolean) => {
+    try {
+      const commandData = {
+        request:{
+          0: stop_boolean,
+          1: stop_boolean,
+          2: stop_boolean,
+        },
+        service_name: "command_emergency",
+      };
+
+      const orderId = await dbService.setDataWithId('robots_command', "robot3", commandData);
+      console.log('Robot command sent successfully:', orderId);
+    } catch (error) {
+      console.error('Error sending robot command:', error);
+    }
+  };
+  
+  // Send command when component mounts (presentation mode is opened)
+  useEffect(() => {
+    // Send stop_boolean as false when presentation mode opens
+    sendRobotCommand(false);
+    
+    // Cleanup function when component unmounts
+    return () => {
+      // Optional: You can add cleanup logic here if needed
+    };
+  }, []); // Empty dependency array means this runs once on mount
   
   // Handle video end and transition to next presentation
   const handleVideoEnd = () => {

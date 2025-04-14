@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { motion } from 'framer-motion';
@@ -6,35 +6,83 @@ import { Box, Typography, Button, Grid, Container, Fade, IconButton, Divider } f
 import PresentationModule from '../components/modules/presentation/PresentationModule';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import styles from '../styles/index.module.css';
+import { dbService } from '../src/services/firebaseService';
 
 export default function Home() {
   const { t } = useTranslation('common');
   const [isIdle, setIsIdle] = useState(true);
+  const idleTimerRef = useRef<NodeJS.Timeout | null>(null);
+  
+  // Send robot command function to avoid duplicate code
+  const sendRobotCommand = async (stop_boolean: boolean) => {
+    try {
+      const commandData = {
+        request:{
+          0: stop_boolean,
+          1: stop_boolean,
+          2: stop_boolean,
+        },
+        service_name: "command_emergency",
+      };
+
+      const orderId = await dbService.setDataWithId('robots_command', "robot3", commandData);
+      console.log('Robot command sent successfully:', orderId);
+    } catch (error) {
+      console.error('Error sending robot command:', error);
+    }
+  };
+  
+  // Reset the idle timer
+  const resetIdleTimer = () => {
+    // Clear any existing timer
+    if (idleTimerRef.current) {
+      clearTimeout(idleTimerRef.current);
+    }
+    
+    // Set new timer - return to PresentationModule after 20 seconds of inactivity
+    idleTimerRef.current = setTimeout(async () => {
+      // Send robot command before entering presentation mode
+      await sendRobotCommand(false);
+      setIsIdle(true);
+    }, 10000); // 20 seconds
+  };
   
   // Set to presentation mode after inactivity
   useEffect(() => {
-    const idleTimer = setTimeout(() => {
-      setIsIdle(true);
-    }, 60000); // 1 minute
-    
-    const handleActivity = () => {
-      setIsIdle(false);
-      clearTimeout(idleTimer);
+    // Handle user activity
+    const handleActivity = async () => {
+      if (isIdle) {
+        setIsIdle(false);
+        
+        // Send command to robot when user interacts with screen
+        await sendRobotCommand(true);
+      }
+      resetIdleTimer();
     };
     
+    // Set up event listeners
     window.addEventListener('click', handleActivity);
     window.addEventListener('touchstart', handleActivity);
     // window.addEventListener('mousemove', handleActivity);
     
+    // Initial timer setup
+    if (!isIdle) {
+      resetIdleTimer();
+    }
+    
+    // Cleanup
     return () => {
-      clearTimeout(idleTimer);
+      if (idleTimerRef.current) {
+        clearTimeout(idleTimerRef.current);
+      }
       window.removeEventListener('click', handleActivity);
       window.removeEventListener('touchstart', handleActivity);
       // window.removeEventListener('mousemove', handleActivity);
     };
-  }, []);
+  }, [isIdle]);
 
   if (isIdle) {
+  
     return <PresentationModule onInteraction={() => setIsIdle(false)} />;
   }
   
