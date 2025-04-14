@@ -134,7 +134,7 @@
 
 .mapWrapper {
   width: 100%;
-  height: 600px; /* Increased from 400px to 600px */
+  height: 600px;
   border-radius: 16px;
   overflow: hidden;
   position: relative;

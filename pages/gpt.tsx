@@ -3,6 +3,8 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 import { motion } from 'framer-motion';
 import axios from 'axios';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { 
   Box, 
   Container, 
@@ -16,11 +18,14 @@ import {
   useMediaQuery,
   useTheme,
   CircularProgress,
+  Breadcrumbs,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import MicIcon from '@mui/icons-material/Mic';
 import SendIcon from '@mui/icons-material/Send';
 import StopIcon from '@mui/icons-material/Stop';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import HomeIcon from '@mui/icons-material/Home';
 import styles from '../styles/gpt.module.css';
 import { SpeechRecognition } from '../types/speech-recognition';
 
@@ -34,6 +39,7 @@ interface ChatMessage {
 export default function GptChat() {
   const { t } = useTranslation('common');
   const theme = useTheme();
+  const router = useRouter();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [message, setMessage] = useState('');
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
@@ -203,6 +209,34 @@ export default function GptChat() {
   return (
     <Box className={styles.pageContainer}>
       <Container maxWidth="md" sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+        {/* Breadcrumb navigation - Fixed hydration issue */}
+        <Box className={styles.breadcrumbContainer}>
+          <Breadcrumbs aria-label="breadcrumb">
+            <Link href="/" legacyBehavior>
+              <a className={styles.breadcrumbLink}>
+                <HomeIcon fontSize="small" sx={{ mr: 0.5 }} />
+                {t('Home')}
+              </a>
+            </Link>
+            <Typography color="text.primary" sx={{ display: 'flex', alignItems: 'center' }}>
+              UniGPT
+            </Typography>
+          </Breadcrumbs>
+          <Box sx={{ ml: 'auto' }}>
+            <IconButton
+              size="small"
+              aria-label="go back"
+              onClick={() => router.back()}
+              sx={{ color: '#555' }}
+            >
+              <ArrowBackIcon fontSize="small" />
+              <Typography variant="body2" sx={{ ml: 0.5 }}>
+                {t('Back')}
+              </Typography>
+            </IconButton>
+          </Box>
+        </Box>
+
         <Box className={styles.headerSection}>
           <motion.div 
             initial={{ opacity: 0, y: -20 }}
