@@ -46,9 +46,49 @@ export default function GptChat() {
   const [isLoading, setIsLoading] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [hasStartedChat, setHasStartedChat] = useState(false);
+  const inactivityTimerRef = useRef<NodeJS.Timeout | null>(null); // Use ref for timer ID
   const inputRef = useRef(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<SpeechRecognition | null>(null);
+
+  // Inactivity tracker - redirect after 30 seconds of no interaction
+  useEffect(() => {
+    const events = ['mousedown', 'mousemove', 'touchstart', 'keydown', 'scroll'];
+
+    // Function to reset the timer
+    const resetTimer = () => {
+      // Clear existing timer if any
+      if (inactivityTimerRef.current) {
+        clearTimeout(inactivityTimerRef.current);
+      }
+
+      // Set new timer for 30 seconds (30000 ms)
+      inactivityTimerRef.current = setTimeout(() => {
+        // Redirect to home page after inactivity
+        router.push('/');
+      }, 30000); // 30 seconds
+    };
+
+    // Add event listeners
+    events.forEach(event => {
+      window.addEventListener(event, resetTimer);
+    });
+
+    // Initial timer start
+    resetTimer();
+
+    // Cleanup function
+    return () => {
+      // Clear the timer when the component unmounts
+      if (inactivityTimerRef.current) {
+        clearTimeout(inactivityTimerRef.current);
+      }
+      // Remove event listeners
+      events.forEach(event => {
+        window.removeEventListener(event, resetTimer);
+      });
+    };
+  }, [router]); // Add router to dependency array as it's used inside the effect
 
   useEffect(() => {
     // Initialize speech recognition
