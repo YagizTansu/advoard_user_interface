@@ -47,24 +47,21 @@ export default function Layout({ children }: LayoutProps) {
       'service': '/services',
       'services': '/services',
       'servis': '/services',
-      'about': '/about',
-      'hakkında': '/about',
-      'contact': '/contact',
-      'iletişim': '/contact',
       'help': '/help',
       'yardım': '/help',
-      'profile': '/profile',
-      'profil': '/profile',
-      'settings': '/settings',
-      'ayarlar': '/settings',
       'directions': '/directions',
       'yönlendirmeler': '/directions',
+      'gpt': '/gpt',
+      'chatgpt': '/gpt',
+      'uniGPT': '/gpt',
+      'uni gpt': '/gpt',
+      'bilgi merkezi': '/informations',
+      'information center': '/informations',
     };
     
     // Check if any of the keywords are present in the command
     for (const [keyword, route] of Object.entries(routeMap)) {
       if (lowerCommand.includes(keyword)) {
-        console.log(`Keyword "${keyword}" found in command, navigating to ${route}`);
         router.push(route);
         return true;
       }
