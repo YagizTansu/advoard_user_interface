@@ -69,12 +69,6 @@ const PROFESSOR_DIRECTIONS: { [key: string]: string[] } = {
   ]
 };
 
-// Calculate estimated time and distance - simple fixed values
-const calculateEstimatedTimeAndDistance = (destinationId: string): { distance: string, duration: string } => {
-  // Fixed values for all destinations
-  return { distance: "200m", duration: "3 minutes" };
-};
-
 // Generate directions between two points using hardcoded directions
 const generateDirections = (
   startPointId: string | null, 
