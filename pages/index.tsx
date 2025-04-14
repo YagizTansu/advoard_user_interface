@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Box, Typography, Button, Grid, Container, Fade, IconButton, Divider } from '@mui/material';
 import PresentationModule from '../components/modules/presentation/PresentationModule';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import WarningIcon from '@mui/icons-material/Warning'; // Import warning icon for exclamation mark
 import styles from '../styles/index.module.css';
 import { dbService } from '../src/services/firebaseService';
 
@@ -176,19 +177,6 @@ export default function Home() {
                 }} 
               />
 
-              <Typography 
-                variant="h5" 
-                component="p" 
-                className={styles.heroSubtitle}
-                sx={{ 
-                  mt: 2, 
-                  fontWeight: 400,
-                  fontSize: { xs: '1.1rem', sm: '1.5rem' }
-                }}
-              >
-                {t('selectService')}
-              </Typography>
-              
               <Button
                 variant="contained"
                 href="/gpt"
@@ -202,6 +190,32 @@ export default function Home() {
                 }}
               >
                 UniGPT
+              </Button>
+              
+              {/* New Exam Schedule Button */}
+              <Button
+                variant="outlined"
+                href="/exams"
+                startIcon={<WarningIcon />}
+                sx={{
+                  width: '100%',
+                  mx: { xs: 0, sm: -2, md: -4 },
+                  px: { xs: 2, sm: 4, md: 6 },
+                  mb: 3,
+                  borderColor: '#FF8C00',
+                  color: '#FF8C00',
+                  backgroundColor: 'rgba(255, 140, 0, 0.05)',
+                  borderWidth: '1px',
+                  borderRadius: '12px',
+                  fontWeight: 500,
+                  textTransform: 'none',
+                  '&:hover': {
+                    backgroundColor: 'rgba(255, 140, 0, 0.1)',
+                    borderColor: '#FF8C00',
+                  }
+                }}
+              >
+                {t('examSchedule')}
               </Button>
             </motion.div>
           </motion.div>
