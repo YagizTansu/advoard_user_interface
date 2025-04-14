@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Dialog, DialogTitle, DialogContent, Typography, CircularProgress, IconButton } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, Typography, CircularProgress, IconButton, List, ListItem } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import MicIcon from '@mui/icons-material/Mic';
 import { useTranslation } from 'next-i18next';
@@ -71,6 +71,7 @@ const VoiceCommandListener: React.FC<VoiceCommandListenerProps> = ({ onCommand, 
         return;
       }
 
+      let finalTranscript = '';
       const recognition = new SpeechRecognition();
       recognition.continuous = false;
       recognition.interimResults = true;
@@ -78,21 +79,31 @@ const VoiceCommandListener: React.FC<VoiceCommandListenerProps> = ({ onCommand, 
 
       recognition.onstart = () => {
         setIsListening(true);
+        finalTranscript = ''; // Reset transcript when starting
       };
 
       recognition.onresult = (event) => {
-        const currentTranscript = Array.from(event.results)
-          .map(result => result[0])
-          .map(result => result.transcript)
-          .join('');
-          
-        setTranscript(currentTranscript);
+        let interimTranscript = '';
+        
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          const transcript = event.results[i][0].transcript;
+          if (event.results[i].isFinal) {
+            finalTranscript += transcript;
+          } else {
+            interimTranscript += transcript;
+          }
+        }
+        
+        // Update the visible transcript with both final and interim results
+        setTranscript(finalTranscript + interimTranscript);
       };
 
       recognition.onend = () => {
         setIsListening(false);
-        if (transcript) {
-          onCommand(transcript);
+        console.log("Final transcript:", finalTranscript || transcript);
+        if (finalTranscript || transcript) {
+          // Use the final transcript if available, otherwise use the current state
+          onCommand(finalTranscript || transcript);
         }
       };
 
@@ -147,6 +158,12 @@ const VoiceCommandListener: React.FC<VoiceCommandListenerProps> = ({ onCommand, 
           <Typography variant="body2" className="mt-4 text-gray-600">
             {t('voiceCommands.examples')}
           </Typography>
+          
+          <List dense sx={{ width: '100%', mt: 1 }}>
+            <ListItem>• "Go to services page"</ListItem>
+            <ListItem>• "Navigate to home"</ListItem>
+            <ListItem>• "Open contact page"</ListItem>
+          </List>
         </div>
       </DialogContent>
     </Dialog>

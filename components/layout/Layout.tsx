@@ -35,6 +35,45 @@ export default function Layout({ children }: LayoutProps) {
     router.push(router.pathname, router.asPath, { locale: newLang });
   };
 
+  // Parse voice commands for navigation
+  const parseVoiceCommand = (command: string) => {
+    const lowerCommand = command.toLowerCase().trim();
+    console.log("Processing command:", lowerCommand);
+    
+    // Map common page names to routes
+    const routeMap: {[key: string]: string} = {
+      'home': '/',
+      'anasayfa': '/',
+      'service': '/services',
+      'services': '/services',
+      'servis': '/services',
+      'about': '/about',
+      'hakkında': '/about',
+      'contact': '/contact',
+      'iletişim': '/contact',
+      'help': '/help',
+      'yardım': '/help',
+      'profile': '/profile',
+      'profil': '/profile',
+      'settings': '/settings',
+      'ayarlar': '/settings',
+      'directions': '/directions',
+      'yönlendirmeler': '/directions',
+    };
+    
+    // Check if any of the keywords are present in the command
+    for (const [keyword, route] of Object.entries(routeMap)) {
+      if (lowerCommand.includes(keyword)) {
+        console.log(`Keyword "${keyword}" found in command, navigating to ${route}`);
+        router.push(route);
+        return true;
+      }
+    }
+    
+    console.log("No navigation keywords found in command");
+    return false;
+  };
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <AppBar position="static" sx={{ bgcolor: '#fe6b01' }}>
@@ -84,8 +123,16 @@ export default function Layout({ children }: LayoutProps) {
       {voiceCommandActive && (
         <VoiceCommandListener 
           onCommand={(command) => {
-            // Handle voice commands
             console.log("Voice command received:", command);
+            
+            // Try to parse the command for navigation
+            const handled = parseVoiceCommand(command);
+            
+            if (!handled) {
+              // Handle other types of commands here if needed
+              console.log("Command not recognized or not related to navigation");
+            }
+            
             setVoiceCommandActive(false);
           }}
           onClose={() => setVoiceCommandActive(false)}
