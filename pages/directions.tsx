@@ -1,9 +1,8 @@
-import { useState, useEffect, useMemo, useRef, SetStateAction } from 'react';
+import { useState, useEffect, useMemo, useRef} from 'react';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Head from 'next/head';
 import Link from 'next/link';
-import Image from 'next/image';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useRouter } from 'next/router';
 import { 
@@ -39,16 +38,12 @@ import NavigationIcon from '@mui/icons-material/Navigation';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import DirectionsIcon from '@mui/icons-material/Directions';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import PinDropIcon from '@mui/icons-material/PinDrop';
 import ApartmentIcon from '@mui/icons-material/Apartment';
 import SchoolIcon from '@mui/icons-material/School';
 import PersonIcon from '@mui/icons-material/Person';
 import InfoIcon from '@mui/icons-material/Info';
-import MapIcon from '@mui/icons-material/Map';
-import HomeIcon from '@mui/icons-material/Home';
 import CloseIcon from '@mui/icons-material/Close';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import PhoneIcon from '@mui/icons-material/Phone';
 import EmailIcon from '@mui/icons-material/Email';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { useTheme } from '@mui/material/styles';
@@ -63,8 +58,6 @@ interface DirectionsData {
     name: any;
     id: string;
   };
-  distance: string;
-  duration: string;
   steps: string[];
 }
 
@@ -74,39 +67,14 @@ const CampusMap = ({ selectedBuildingId, buildings, onBuildingSelect }: {
   buildings: Building[], 
   onBuildingSelect: (id: string) => void 
 }) => {
+  const { t } = useTranslation('common');
   const [mapLoaded, setMapLoaded] = useState(false);
   const mapRef = useRef(null);
   const [zoomLevel, setZoomLevel] = useState(1);
   const [panPosition, setPanPosition] = useState({ x: 0, y: 0 });
 
-  // Position pins based on SVG viewBox (these would ideally come from your building data)
-  const buildingPositions = useMemo(() => {
-    // Manual mapping of building IDs to positions
-    // You can edit these positions manually as needed
-    const positions: { [key: string]: { x: number, y: number } } = {
-      // Example positions - replace these with your desired coordinates
-      'acfd1492-7cd8-4de0-bba3-fcfdda9c7402': { x: 230, y: 280 },
-      '12bc7064-7eb2-43d4-9e5c-f2f372a17f85': { x: 270, y: 380 },
-      '7e59f0d2-3f1b-4ccd-af6d-17910f64fd4c': { x: 80, y: 300 },
-      '4f972c6c-36f5-47c6-97ca-1df7992f1f53': { x: 380, y: 160 },
-      '2d7ad5bb-e87d-442a-87d5-b805d790f0ad': { x: 200, y: 100 },
-      'building-6': { x: 200, y: 250 },
-      'building-7': { x: 300, y: 250 },
-      'building-8': { x: 400, y: 250 },
-      // Add more building positions as needed
-    };
-    
-    // For any buildings that don't have manually defined positions,
-    // assign a default position to avoid errors
-    buildings.forEach(building => {
-      if (!positions[building.id]) {
-        positions[building.id] = { x: 0, y: 0 };
-      }
-    });
-    
-    return positions;
-  }, [buildings]);
-
+  // Define the current user position (you can replace with actual coordinates)
+  const userPosition = { x: 400, y: 480 }; // Set at university entrance
   // Handle SVG load
   const handleSvgLoad = () => {
     setMapLoaded(true);
@@ -140,16 +108,7 @@ const CampusMap = ({ selectedBuildingId, buildings, onBuildingSelect }: {
 
   return (
     <div className={directionStyles.mapWrapper}>
-      <div className={directionStyles.mapOverlay}>
-        <div className={directionStyles.mapControls}>
-          <IconButton className={directionStyles.mapControlButton}>
-            <MapIcon />
-          </IconButton>
-          <IconButton className={directionStyles.mapControlButton}>
-            <LocationOnIcon />
-          </IconButton>
-        </div>
-        
+      <div className={directionStyles.mapOverlay}>        
         <div 
           className={directionStyles.mapImageContainer} 
           ref={mapRef}
@@ -167,24 +126,21 @@ const CampusMap = ({ selectedBuildingId, buildings, onBuildingSelect }: {
             aria-label="Campus Map"
           />
           
-          {mapLoaded && buildings.map(building => {
-            const position = buildingPositions[building.id] || { x: 0, y: 0 };
-            return (
-              <Tooltip key={building.id} title={building.name}>
-                <div 
-                  className={`${directionStyles.mapPin} ${selectedBuildingId === building.id ? directionStyles.mapPinActive : ''}`}
-                  style={{ 
-                    top: `${position.y}px`,
-                    left: `${position.x}px`,
-                  }}
-                  onClick={() => onBuildingSelect(building.id)}
-                >
-                  <div className={directionStyles.mapPinDot} />
-                  <div className={directionStyles.mapPinLabel}>{building.name.substring(0, 1)}</div>
-                </div>
-              </Tooltip>
-            );
-          })}
+          {/* "You Are Here" marker */}
+          {mapLoaded && (
+            <div 
+              className={directionStyles.youAreHereMarker}
+              style={{ 
+                top: `${userPosition.y}px`,
+                left: `${userPosition.x}px`,
+              }}
+            >
+              <div className={directionStyles.youAreHereRing}></div>
+              <div className={directionStyles.youAreHerePoint}></div>
+              <div className={directionStyles.youAreHereLabel}>{t('directions.youAreHere', 'You are here')}</div>
+            </div>
+          )}
+        
         </div>
       </div>
       
@@ -427,9 +383,6 @@ const DirectionsPanel = ({
           <LocationOnIcon />
           <Box>
             <Typography variant="subtitle1">{directions.destination.name}</Typography>
-            <Typography variant="body2" color="text.secondary">
-              {directions.distance} • {directions.duration}
-            </Typography>
           </Box>
         </Box>
       </Box>
@@ -741,26 +694,6 @@ export default function Directions() {
               {showingDirections && directions && (
                 <DirectionsPanel directions={directions} onClose={handleCloseDirections} />
               )}
-              
-              {/* Quick Access - Common Destinations */}
-              {!showingDirections && (
-                <Paper className={directionStyles.quickAccessPanel}>
-                  <Typography variant="subtitle1" className={directionStyles.quickAccessTitle}>
-                    {t('directions.quickAccess')}
-                  </Typography>
-                  <Box className={directionStyles.quickAccessGrid}>
-                    {destinations.slice(0, 6).map(destination => (
-                      <Button 
-                        key={destination.id}
-                        className={directionStyles.quickAccessButton}
-                        startIcon={<LocationOnIcon className={directionStyles.quickAccessIcon} />}
-                      >
-                        {destination.name}
-                      </Button>
-                    ))}
-                  </Box>
-                </Paper>
-              )}
             </Grid>
             
             {/* Results Section */}
@@ -1033,15 +966,6 @@ export default function Directions() {
           </DialogTitle>
           
           <DialogContent className={directionStyles.directionsDialogContent}>
-            <Box className={directionStyles.directionsOverviewContainer}>
-              <NavigationIcon className={directionStyles.directionsDialogIcon} color="primary" />
-              <Box>
-                <Typography variant="body1" fontWeight="medium">
-                  {directions?.distance} • {directions?.duration}
-                </Typography>
-              </Box>
-            </Box>
-            
             <Divider sx={{ my: 2 }} />
             
             <Box className={directionStyles.directionsStepsList}>

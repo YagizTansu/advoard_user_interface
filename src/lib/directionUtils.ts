@@ -1,103 +1,81 @@
 import { Building, ProfessorRoom } from './supabase';
 
-// Define map coordinates and routing points
-interface MapPoint {
-  id: string;
-  x: number;
-  y: number;
-  name: string;
-  isLandmark?: boolean;
-}
-
-// Collection of known points on the map (campus landmarks)
-const knownPoints: { [key: string]: MapPoint } = {
-  'university_entrance': { id: 'university_entrance', x: 200, y: 450, name: 'University Entrance', isLandmark: true },
-  'lobby': { id: 'lobby', x: 200, y: 370, name: 'Main Lobby', isLandmark: true },
-  'conference_hall': { id: 'conference_hall', x: 150, y: 320, name: 'Conference Hall', isLandmark: true },
-  'library': { id: 'library', x: 130, y: 300, name: 'Library', isLandmark: true },
-  'dining_hall': { id: 'dining_hall', x: 150, y: 340, name: 'Dining Hall', isLandmark: true },
-  'canteen': { id: 'canteen', x: 180, y: 370, name: 'Canteen', isLandmark: true },
-  'gathering_area': { id: 'gathering_area', x: 140, y: 310, name: 'Gathering Area', isLandmark: true },
-  'dormitory': { id: 'dormitory', x: 300, y: 370, name: 'Dormitory Building', isLandmark: true },
-  'a1_area': { id: 'a1_area', x: 160, y: 320, name: 'A1 Area', isLandmark: true },
-  'a2_area': { id: 'a2_area', x: 160, y: 330, name: 'A2 Area', isLandmark: true },
-  'm0_area': { id: 'm0_area', x: 175, y: 370, name: 'M0 Area', isLandmark: true },
-  // Add more campus landmarks as needed
+// Hardcoded mock directions for buildings
+const BUILDING_DIRECTIONS: { [key: string]: string[] } = {
+  'acfd1492-7cd8-4de0-bba3-fcfdda9c7402': [
+    'Exit current building through the main entrance',
+    'Walk straight ahead for 50 meters to the main courtyard',
+    'Main Block will be directly in front of you',
+    'Enter through the glass doors at the front entrance'
+  ],
+  '12bc7064-7eb2-43d4-9e5c-f2f372a17f85': [
+    'Exit current building through the main entrance',
+    'Turn right and follow the path for 100 meters',
+    'At the fountain, turn left and walk 50 meters',
+    'Conference Hall will be on your right side'
+  ],
+  '7e59f0d2-3f1b-4ccd-af6d-17910f64fd4c': [
+    'Exit current building through the main entrance',
+    'Turn left and walk 75 meters along the main walkway',
+    'At the intersection, turn right and continue for 50 meters',
+    'The Library is the large building with columns at the entrance'
+  ],
+  '4f972c6c-36f5-47c6-97ca-1df7992f1f53': [
+    'Exit current building through the main entrance',
+    'Walk straight for 100 meters past the main square',
+    'Turn right at the signpost and continue for 75 meters',
+    'C Block is the three-story building with red brick exterior'
+  ],
+  '2d7ad5bb-e87d-442a-87d5-b805d790f0ad': [
+    'Exit current building through the main entrance',
+    'Turn left and follow the curved path for 150 meters',
+    'Cross the small bridge over the pond',
+    'D Block is directly ahead past the gardens'
+  ],
+  'b4a23e1c-5df2-4fbd-8c5a-d26e912e9c7d': [
+    'Exit current building through the main entrance',
+    'Turn right and follow the main road for 200 meters',
+    'At the traffic circle, take the second exit',
+    'Dormitory Building is the large complex on the right'
+  ],
+  'c8e7f90a-39b1-48de-9561-77c5e2cc5fb2': [
+    'Exit current building through the main entrance',
+    'Walk straight for 80 meters to the central plaza',
+    'Turn right at the statue and walk 40 meters',
+    'Dining Hall is the building with large windows on the ground floor'
+  ],
+  '62d47e5b-5838-4c1a-b735-fd218c9f6a48': [
+    'Exit current building through the main entrance',
+    'Walk 50 meters and take the path on the left',
+    'Follow the path for 30 meters past the gardens',
+    'The Canteen is located on the ground floor of the building ahead'
+  ]
 };
 
-// Building positions for academic and administrative buildings
-const buildingPositions: { [key: string]: { x: number, y: number } } = {
-  'acfd1492-7cd8-4de0-bba3-fcfdda9c7402': { x: 200, y: 370 }, // Main Block
-  '12bc7064-7eb2-43d4-9e5c-f2f372a17f85': { x: 150, y: 320 }, // Conference Hall
-  '7e59f0d2-3f1b-4ccd-af6d-17910f64fd4c': { x: 130, y: 300 }, // Library
-  '4f972c6c-36f5-47c6-97ca-1df7992f1f53': { x: 110, y: 460 }, // C Block
-  '2d7ad5bb-e87d-442a-87d5-b805d790f0ad': { x: 80, y: 250 },  // D Block
-  'b4a23e1c-5df2-4fbd-8c5a-d26e912e9c7d': { x: 300, y: 370 }, // Dormitory Building
-  'c8e7f90a-39b1-48de-9561-77c5e2cc5fb2': { x: 150, y: 340 }, // Dining Hall
-  '62d47e5b-5838-4c1a-b735-fd218c9f6a48': { x: 180, y: 370 }, // Canteen
-  // Add more campus building positions as needed
+// Hardcoded mock directions for professors (additional steps to reach their offices)
+const PROFESSOR_DIRECTIONS: { [key: string]: string[] } = {
+  // These would be populated with real professor IDs and directions
+  'prof-1': [
+    'Enter the Science Building',
+    'Take the elevator to the 3rd floor',
+    'Turn right out of the elevator',
+    'Office is the 4th door on the left, Room 312'
+  ],
+  'prof-2': [
+    'Enter the Engineering Building',
+    'Take the stairs to the 2nd floor',
+    'Turn left and continue to the end of the hallway',
+    'Office is the last door on the right, Room 224'
+  ]
 };
 
-// Calculate distance between two points
-const calculateDistance = (p1: {x: number, y: number}, p2: {x: number, y: number}): number => {
-  return Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
+// Calculate estimated time and distance - simple fixed values
+const calculateEstimatedTimeAndDistance = (destinationId: string): { distance: string, duration: string } => {
+  // Fixed values for all destinations
+  return { distance: "200m", duration: "3 minutes" };
 };
 
-// Find the nearest landmark to a point
-const findNearestLandmark = (point: {x: number, y: number}, excludeIds: string[] = []): MapPoint => {
-  let nearest: MapPoint | null = null;
-  let minDistance = Infinity;
-  
-  Object.values(knownPoints).forEach(landmark => {
-    if (landmark.isLandmark && !excludeIds.includes(landmark.id)) {
-      const distance = calculateDistance(point, landmark);
-      if (distance < minDistance) {
-        minDistance = distance;
-        nearest = landmark;
-      }
-    }
-  });
-  
-  return nearest!;
-};
-
-// Get orientation instruction (left, right, straight)
-const getOrientation = (from: MapPoint, via: MapPoint, to: MapPoint): string => {
-  // Calculate vectors
-  const v1 = { x: via.x - from.x, y: via.y - from.y };
-  const v2 = { x: to.x - via.x, y: to.y - via.y };
-  
-  // Calculate the cross product to determine left/right
-  const cross = v1.x * v2.y - v1.y * v2.x;
-  
-  // Calculate the dot product to determine straight
-  const dot = v1.x * v2.x + v1.y * v2.y;
-  const magV1 = Math.sqrt(v1.x * v1.x + v1.y * v1.y);
-  const magV2 = Math.sqrt(v2.x * v2.x + v2.y * v2.y);
-  
-  // Calculate the angle between vectors
-  const angle = Math.acos(dot / (magV1 * magV2)) * 180 / Math.PI;
-  
-  if (angle < 30) return 'straight';
-  if (cross > 0) return 'left';
-  return 'right';
-};
-
-// Calculate estimated time based on distance (assuming 1.4 meters/second walking speed)
-const calculateTime = (distance: number): string => {
-  // Assume 1 unit in our coordinates = 1 meter
-  const speedMetersPerSecond = 1.4;
-  const timeSeconds = distance / speedMetersPerSecond;
-  
-  if (timeSeconds < 60) {
-    return 'less than a minute';
-  } else {
-    const minutes = Math.ceil(timeSeconds / 60);
-    return `${minutes} minute${minutes > 1 ? 's' : ''}`;
-  }
-};
-
-// Generate directions between two points
+// Generate directions between two points using hardcoded directions
 const generateDirections = (
   startPointId: string | null, 
   destinationId: string,
@@ -105,22 +83,16 @@ const generateDirections = (
   buildings: Building[],
   professors?: ProfessorRoom[]
 ) => {
-  // Default to university entrance if no start point specified
-  const startCoord = startPointId && buildingPositions[startPointId] 
-    ? buildingPositions[startPointId] 
-    : knownPoints['university_entrance'];
-  
-  let destination;
+  // Find the destination details
   let destinationDetails: Building | ProfessorRoom | undefined;
+  let buildingId = destinationId;
   
   if (destinationType === 'building') {
     destinationDetails = buildings.find(b => b.id === destinationId);
-    destination = buildingPositions[destinationId] || { x: 0, y: 0 };
   } else {
     destinationDetails = professors?.find(p => p.id === destinationId);
-    // For professors, we need to find their building first
-    const professorBuilding = destinationDetails?.building_id;
-    destination = professorBuilding ? buildingPositions[professorBuilding] : { x: 0, y: 0 };
+    // For professors, we need to find their building
+    buildingId = destinationDetails?.building_id || '';
   }
   
   if (!destinationDetails) {
@@ -129,69 +101,52 @@ const generateDirections = (
         name: "Unknown Destination",
         id: destinationId
       },
-      distance: "Unknown",
-      duration: "Unknown",
       steps: ["Could not generate directions to this destination"]
     };
   }
   
-  // Find intermediate landmarks for navigation
-  const startPoint = { ...startCoord, id: 'start', name: 'Current Location' };
+  // Get the appropriate hardcoded directions
+  let steps: string[] = [];
+  
+  // Start with the building directions
+  if (BUILDING_DIRECTIONS[buildingId]) {
+    steps = [...BUILDING_DIRECTIONS[buildingId]];
+  } else {
+    // Fallback generic directions if building not found
+    steps = [
+      'Exit current building through the main entrance',
+      'Follow the campus map signs',
+      'The building should be visible from the main walkway'
+    ];
+  }
+  
+  // For professors, add additional steps to navigate inside the building
+  if (destinationType === 'professor' && destinationDetails) {
+    // Add steps to find the professor's office
+    const professorInfo = destinationDetails as ProfessorRoom;
+    
+    if (PROFESSOR_DIRECTIONS[destinationId]) {
+      // Use specific directions if available
+      steps = [...steps, ...PROFESSOR_DIRECTIONS[destinationId]];
+    } else {
+      // Generic office-finding directions
+      steps.push(`Enter the building and look for directory signs`);
+      steps.push(`Take ${professorInfo.floor.includes('floor') ? '' : 'the '} ${professorInfo.floor} to find room ${professorInfo.room_number}`);
+      steps.push(`The office will be marked with Prof. ${professorInfo.professor_name}'s nameplate`);
+    }
+  }
   
   // Determine the appropriate name based on destination type
   const destinationName = destinationType === 'building' 
     ? (destinationDetails as Building).name 
     : `${(destinationDetails as ProfessorRoom).professor_name}'s Office`;
-    
-  const endPoint = { 
-    ...destination, 
-    id: destinationId,
-    name: destinationName
-  };
   
-  // Find landmark points along the way
-  const landmark1 = findNearestLandmark(startPoint);
-  const landmark2 = findNearestLandmark(endPoint, [landmark1.id]);
-  
-  // Calculate total distance
-  const distance1 = calculateDistance(startPoint, landmark1);
-  const distance2 = calculateDistance(landmark1, landmark2);
-  const distance3 = calculateDistance(landmark2, endPoint);
-  const totalDistance = distance1 + distance2 + distance3;
-  
-  // Round to nearest 10m
-  const roundedDistance = Math.round(totalDistance / 10) * 10;
-  
-  // Generate steps
-  const steps = [];
-  
-  // Step 1: Exit building
-  steps.push(`Exit current building through the main entrance`);
-  
-  // Step 2: First landmark
-  const distanceToLandmark1 = Math.round(distance1);
-  steps.push(`Walk ${distanceToLandmark1}m towards ${landmark1.name}`);
-  
-  // Step 3: Navigation between landmarks
-  const orientation = getOrientation(startPoint, landmark1, landmark2);
-  steps.push(`Turn ${orientation} at ${landmark1.name} towards ${landmark2.name}`);
-  
-  // Step 4: Second landmark to destination
-  if (destinationType === 'building') {
-    steps.push(`Continue for ${Math.round(distance3)}m and enter ${(destinationDetails as Building).name}`);
-  } else {
-    // For professors
-    steps.push(`Enter building containing ${(destinationDetails as ProfessorRoom).department || 'the department'}`);
-    steps.push(`Take ${(destinationDetails as ProfessorRoom).floor.includes('floor') ? '' : 'the '} ${(destinationDetails as ProfessorRoom).floor} to find room ${(destinationDetails as ProfessorRoom).room_number}`);
-  }
   
   return {
     destination: {
-      name: endPoint.name,
+      name: destinationName,
       id: destinationId
     },
-    distance: `${roundedDistance}m`,
-    duration: `${calculateTime(totalDistance)} walk`,
     steps: steps
   };
 };
