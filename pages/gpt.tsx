@@ -39,6 +39,7 @@ export default function GptChat() {
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isListening, setIsListening] = useState(false);
+  const [hasStartedChat, setHasStartedChat] = useState(false);
   const inputRef = useRef(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<SpeechRecognition | null>(null);
@@ -118,6 +119,11 @@ export default function GptChat() {
     const messageToSend = voiceMessage || message;
     
     if (messageToSend.trim() && !isLoading) {
+      // Set chat as started on first message
+      if (!hasStartedChat) {
+        setHasStartedChat(true);
+      }
+      
       // Store the current message to use in the API call
       const currentMessage = messageToSend;
       
@@ -149,6 +155,13 @@ export default function GptChat() {
             }
           }
         );
+
+        //mock API response
+        // const response = {
+        //   data: 'Mock response from the bot API'
+        // };
+        // // Simulate a delay for the AI response
+        // await new Promise(resolve => setTimeout(resolve, 1000));
         
         // Update chat with AI response
         setChatHistory(prev => {
@@ -206,59 +219,61 @@ export default function GptChat() {
           <Divider sx={{ my: 2 }} />
         </Box>
 
-        {/* Input section - Now placed before chat history */}
-        <Box className={styles.inputSection} sx={{ mb: 3 }}>
-          <Paper 
-            elevation={1} 
-            className={styles.inputContainer}
-          >
-            
-            <TextField
-              ref={inputRef}
-              fullWidth
-              variant="standard"
-              placeholder={isListening ? t('Listening...') : t('Ask UniGPT anything...')}
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && !isLoading && handleSendMessage()}
-              disabled={isLoading || isListening}
-              InputProps={{
-                disableUnderline: true,
-                startAdornment: (
-                  <InputAdornment position="start" sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>
-                    <SearchIcon sx={{ color: 'text.secondary', mx: 1 }} />
-                  </InputAdornment>
-                ),
-                className: styles.inputField,
-                sx: { height: '40px' }
-              }}
-              sx={{ my: 0 }}
-            />
-
-            <IconButton 
-              size="medium" 
-              className={`${styles.micButton} ${styles.uniGptButton}`}
-              onClick={message && !isListening ? () => handleSendMessage() : toggleSpeechRecognition}
-              disabled={isLoading}
-              sx={{
-                bgcolor: isListening ? '#f44336' : '#2a3eb1', // Red when listening, blue otherwise
-                color: 'white',
-                '&:hover': {
-                  bgcolor: isListening ? '#d32f2f' : '#1a237e',
-                },
-                animation: isListening ? 'pulse 1.5s infinite' : 'none',
-                '@keyframes pulse': {
-                  '0%': { boxShadow: '0 0 0 0 rgba(244, 67, 54, 0.7)' },
-                  '70%': { boxShadow: '0 0 0 10px rgba(244, 67, 54, 0)' },
-                  '100%': { boxShadow: '0 0 0 0 rgba(244, 67, 54, 0)' }
-                }
-              }}
+        {/* Conditionally place input before or after chat based on hasStartedChat */}
+        {!hasStartedChat && (
+          <Box className={styles.inputSection} sx={{ mb: 3 }}>
+            <Paper 
+              elevation={1} 
+              className={styles.inputContainer}
             >
-              {isLoading ? <CircularProgress size={24} color="inherit" /> : 
-                (message ? <SendIcon /> : (isListening ? <StopIcon /> : <MicIcon />))}
-            </IconButton>
-          </Paper>
-        </Box>
+              {/* Input field code */}
+              <TextField
+                ref={inputRef}
+                fullWidth
+                variant="standard"
+                placeholder={isListening ? t('Listening...') : t('Ask UniGPT anything...')}
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && !isLoading && handleSendMessage()}
+                disabled={isLoading || isListening}
+                InputProps={{
+                  disableUnderline: true,
+                  startAdornment: (
+                    <InputAdornment position="start" sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>
+                      <SearchIcon sx={{ color: 'text.secondary', mx: 1 }} />
+                    </InputAdornment>
+                  ),
+                  className: styles.inputField,
+                  sx: { height: '40px' }
+                }}
+                sx={{ my: 0 }}
+              />
+
+              <IconButton 
+                size="medium" 
+                className={`${styles.micButton} ${styles.uniGptButton}`}
+                onClick={message && !isListening ? () => handleSendMessage() : toggleSpeechRecognition}
+                disabled={isLoading}
+                sx={{
+                  bgcolor: isListening ? '#f44336' : '#2a3eb1',
+                  color: 'white',
+                  '&:hover': {
+                    bgcolor: isListening ? '#d32f2f' : '#1a237e',
+                  },
+                  animation: isListening ? 'pulse 1.5s infinite' : 'none',
+                  '@keyframes pulse': {
+                    '0%': { boxShadow: '0 0 0 0 rgba(244, 67, 54, 0.7)' },
+                    '70%': { boxShadow: '0 0 0 10px rgba(244, 67, 54, 0)' },
+                    '100%': { boxShadow: '0 0 0 0 rgba(244, 67, 54, 0)' }
+                  }
+                }}
+              >
+                {isLoading ? <CircularProgress size={24} color="inherit" /> : 
+                  (message ? <SendIcon /> : (isListening ? <StopIcon /> : <MicIcon />))}
+              </IconButton>
+            </Paper>
+          </Box>
+        )}
 
         {/* Chat messages container */}
         <Box 
@@ -293,6 +308,61 @@ export default function GptChat() {
             </Box>
           ))}
         </Box>
+
+        {/* Input section at bottom after chat has started */}
+        {hasStartedChat && (
+          <Box className={styles.inputSection} sx={{ mt: 'auto', pt: 2 }}>
+            <Paper 
+              elevation={1} 
+              className={styles.inputContainer}
+            >
+              <TextField
+                ref={inputRef}
+                fullWidth
+                variant="standard"
+                placeholder={isListening ? t('Listening...') : t('Ask UniGPT anything...')}
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && !isLoading && handleSendMessage()}
+                disabled={isLoading || isListening}
+                InputProps={{
+                  disableUnderline: true,
+                  startAdornment: (
+                    <InputAdornment position="start" sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>
+                      <SearchIcon sx={{ color: 'text.secondary', mx: 1 }} />
+                    </InputAdornment>
+                  ),
+                  className: styles.inputField,
+                  sx: { height: '40px' }
+                }}
+                sx={{ my: 0 }}
+              />
+
+              <IconButton 
+                size="medium" 
+                className={`${styles.micButton} ${styles.uniGptButton}`}
+                onClick={message && !isListening ? () => handleSendMessage() : toggleSpeechRecognition}
+                disabled={isLoading}
+                sx={{
+                  bgcolor: isListening ? '#f44336' : '#2a3eb1',
+                  color: 'white',
+                  '&:hover': {
+                    bgcolor: isListening ? '#d32f2f' : '#1a237e',
+                  },
+                  animation: isListening ? 'pulse 1.5s infinite' : 'none',
+                  '@keyframes pulse': {
+                    '0%': { boxShadow: '0 0 0 0 rgba(244, 67, 54, 0.7)' },
+                    '70%': { boxShadow: '0 0 0 10px rgba(244, 67, 54, 0)' },
+                    '100%': { boxShadow: '0 0 0 0 rgba(244, 67, 54, 0)' }
+                  }
+                }}
+              >
+                {isLoading ? <CircularProgress size={24} color="inherit" /> : 
+                  (message ? <SendIcon /> : (isListening ? <StopIcon /> : <MicIcon />))}
+              </IconButton>
+            </Paper>
+          </Box>
+        )}
       </Container>
     </Box>
   );
