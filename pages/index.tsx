@@ -198,6 +198,7 @@ export default function Home() {
                   width: '100%',
                   mx: { xs: 0, sm: -2, md: -4 }, // Negative margins to make it wider
                   px: { xs: 2, sm: 4, md: 6 },   // Increased horizontal padding
+                  mb: 2,
                 }}
               >
                 UniGPT

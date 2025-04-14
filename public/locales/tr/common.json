@@ -55,7 +55,8 @@
     "watchDemo": "Demo İzle",
     "exitButton": "Sunum Modundan Çık",
     "touchToInteract": "Etkileşim için dokunun",
-    "nowPlaying": "Şimdi oynatılıyor"
+    "nowPlaying": "Şimdi oynatılıyor",
+    "touchForInfo": "Bilgi almak için ekrana dokununuz"
   },
   "voiceCommands": {
     "title": "Sesli Komut",

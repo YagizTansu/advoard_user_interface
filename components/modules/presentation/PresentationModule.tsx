@@ -147,6 +147,13 @@ const PresentationModule: React.FC<PresentationModuleProps> = ({ onInteraction }
             onEnded={handleVideoEnd}
             style={{ opacity: 1, transition: "opacity 0.5s ease-in-out" }}
           />
+          
+          {/* Touch info overlay text */}
+          <Box className={styles.touchInfoOverlay}>
+            <TouchAppIcon fontSize="medium" />
+            <Typography variant="h6">{t('presentations.touchForInfo')}</Typography>
+          </Box>
+          
           <IconButton
             className={styles.exitFullscreenBtn}
             onClick={(e) => {
@@ -157,7 +164,6 @@ const PresentationModule: React.FC<PresentationModuleProps> = ({ onInteraction }
             <CloseIcon />
           </IconButton>
           <Box className={styles.videoOverlay}>
-
             <Chip 
               label={t('presentations.nowPlaying')} 
               size="small"

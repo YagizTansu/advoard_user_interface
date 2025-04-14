@@ -1,6 +1,10 @@
 .pageContainer {
   width: 100%;
-  min-height: 100vh;
+  max-height : 80vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
   background: linear-gradient(to bottom, var(--background), rgba(var(--background-rgb), 0.95));
 }
 
@@ -140,7 +144,7 @@
 .serviceCard {
   display: flex;
   flex-direction: column;
-  height: 350px; /* Fixed height for all cards */
+  height: 300px; /* Fixed height for all cards */
   transition: all 0.3s ease;
   background: rgba(255,255,255,0.03);
   backdrop-filter: blur(10px);

@@ -55,7 +55,8 @@
     "watchDemo": "Watch Demo",
     "exitButton": "Exit Presentation Mode",
     "touchToInteract": "Touch to interact",
-    "nowPlaying": "Now playing"
+    "nowPlaying": "Now playing",
+    "touchForInfo": "Touch the screen for information"
   },
   "voiceCommands": {
     "title": "Voice Command",
