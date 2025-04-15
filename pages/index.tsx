@@ -223,13 +223,13 @@ export default function Home() {
     
       </Box>
 
-      <Container maxWidth="lg" sx={{ py: { xs: 3, sm: 5, md: 6 } }}>
+      <Container maxWidth="lg" sx={{ py: { xs: 2, sm: 3, md: 4 } }}>
         <motion.div 
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
-          <Grid container spacing={{ xs: 2, sm: 3, md: 5 }}>
+          <Grid container spacing={{ xs: 2, sm: 2, md: 3 }}>
             {[
               {
                 title: 'services.order.title',
@@ -275,10 +275,14 @@ export default function Home() {
                           variant="h5"
                           component="h2"
                           className={styles.cardTitle}
+                          sx={{ fontSize: { xs: '1.1rem', sm: '1.25rem' } }}
                         >
                           {t(service.title)}
                         </Typography>
-                        <Typography className={styles.cardDescription}>
+                        <Typography 
+                          className={styles.cardDescription}
+                          sx={{ fontSize: { xs: '0.9rem', sm: '1rem' } }}
+                        >
                           {t(service.description)}
                         </Typography>
                       </div>
@@ -297,7 +301,9 @@ export default function Home() {
                             '&:hover': {
                               background: service.color,
                               filter: 'brightness(1.1)'
-                            }
+                            },
+                            fontSize: { xs: '0.9rem', sm: '1rem' },
+                            py: { xs: 0.7, sm: 0.75 }
                           }}
                         >
                           {t(service.button)}

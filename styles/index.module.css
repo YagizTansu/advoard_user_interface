@@ -1,20 +1,19 @@
 .pageContainer {
   width: 100%;
-  max-height : 80vh;
-  overflow: hidden;
+  max-height: 100vh;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
-
   background: linear-gradient(to bottom, var(--background), rgba(var(--background-rgb), 0.95));
 }
 
 .heroSection {
   position: relative;
   overflow: hidden;
-  padding: 1rem 0;
+  padding: 1.5rem 1rem;
   background: linear-gradient(135deg, #ffffff 0%, #fff4e8 50%, #fff0e0 100%);
   border-bottom: 1px solid rgba(255, 140, 0, 0.15);
-  min-height: 40vh;
+  min-height: 30vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -56,7 +55,7 @@
 .heroTitle {
   margin-bottom: 1rem;
   font-weight: 700;
-  font-size: 2.75rem;
+  font-size: 2.5rem;
   background: linear-gradient(90deg, #FF8000 0%, #FF4500 100%);
   background-clip: text;
   -webkit-background-clip: text;
@@ -67,7 +66,7 @@
 
 @media (max-width: 600px) {
   .heroTitle {
-    font-size: 2rem;
+    font-size: 1.8rem;
     margin-bottom: 0.75rem;
   }
 }
@@ -106,14 +105,15 @@
 .uniGptHeroButton {
   background: linear-gradient(90deg, #FF8C00 0%, #fa7747 100%);
   color: white;
-  padding: 0.75rem 2.5rem;
-  font-size: 1.4rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 1.2rem;
   font-weight: 500;
   border-radius: 12px;
   text-transform: none;
   transition: all 0.3s ease;
   box-shadow: 0 8px 15px rgba(255, 140, 0, 0.25);
   width: 100%;
+  max-width: 90vw;
   margin-left: auto;
   margin-right: auto;
 }
@@ -144,7 +144,8 @@
 .serviceCard {
   display: flex;
   flex-direction: column;
-  height: 300px; /* Fixed height for all cards */
+  height: auto;
+  min-height: 230px;
   transition: all 0.3s ease;
   background: rgba(255,255,255,0.03);
   backdrop-filter: blur(10px);
@@ -153,6 +154,7 @@
   box-shadow: 0 10px 30px rgba(0,0,0,0.1);
   position: relative;
   overflow: hidden;
+  margin-bottom: 1rem;
 }
 
 @media (max-width: 600px) {
@@ -225,6 +227,44 @@
 
 .cardButton:hover {
   filter: brightness(1.1);
+}
+
+@media (orientation: portrait) {
+  .pageContainer {
+    max-height: 100vh;
+    overflow-y: auto;
+  }
+  
+  .heroSection {
+    min-height: 25vh;
+    padding: 1.2rem 0.8rem;
+  }
+  
+  .heroContent {
+    padding: 0 1rem;
+  }
+  
+  .heroTitle {
+    font-size: 1.75rem;
+  }
+  
+  .heroSubtitle {
+    font-size: 1rem;
+    margin-bottom: 1.2rem;
+  }
+  
+  .uniGptHeroButton {
+    padding: 0.6rem 1rem;
+    font-size: 1.1rem;
+  }
+  
+  .serviceCard {
+    min-height: 200px;
+  }
+  
+  .cardContent {
+    padding: 1.2rem;
+  }
 }
 
 @keyframes pulse {
