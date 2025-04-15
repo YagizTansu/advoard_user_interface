@@ -190,12 +190,12 @@ export default function GptChat() {
       setIsLoading(true);
       
       try {
-        // Make API call with GET request using query parameters - don't pre-encode the question
+        // Use our proxy API route instead of calling the external API directly
         const response = await axios.get(
-          'http://10.0.73.66/ekobot/sendQuestion_ekobot.php',
+          '/api/proxy-bot',
           {
             params: {
-              question: currentMessage, // Axios will handle encoding
+              question: currentMessage,
               lang: 'tr',
               source: 'robot',
               ekoid: 'abc',
