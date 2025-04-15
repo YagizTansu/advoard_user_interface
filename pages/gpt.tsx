@@ -51,6 +51,13 @@ export default function GptChat() {
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<SpeechRecognition | null>(null);
 
+  // Add HTML entity decoder function
+  const decodeHtmlEntities = (text: string) => {
+    const textArea = document.createElement('textarea');
+    textArea.innerHTML = text;
+    return textArea.value;
+  };
+
   // Inactivity tracker - redirect after 30 seconds of no interaction
   useEffect(() => {
     const events = ['mousedown', 'mousemove', 'touchstart', 'keydown', 'scroll'];
@@ -190,7 +197,7 @@ export default function GptChat() {
         formData.append('source', 'robot');
         formData.append('ekoid', 'abc');
         formData.append('hash', 'abc');
-        
+          
         // Make API call
         const response = await axios.post(
           'http://10.0.73.66/ekobot/sendQuestion_ekobot.php',
@@ -202,12 +209,27 @@ export default function GptChat() {
           }
         );
 
-        //mock API response
-        // const response = {
-        //   data: 'Mock response from the bot API'
-        // };
-        // // Simulate a delay for the AI response
-        // await new Promise(resolve => setTimeout(resolve, 1000));
+        // Extract Result field from JSON response and decode HTML entities
+        let result = '';
+        if (response.data) {
+          if (typeof response.data === 'string') {
+            try {
+              const parsedData = JSON.parse(response.data);
+              if (parsedData.Result) {
+                result = decodeHtmlEntities(parsedData.Result);
+              }
+            } catch (error) {
+              console.error('Error parsing JSON response:', error);
+              result = response.data;
+            }
+          } else if (typeof response.data === 'object' && response.data.Result) {
+            result = decodeHtmlEntities(response.data.Result);
+          } else {
+            result = typeof response.data === 'string' ? response.data : JSON.stringify(response.data);
+          }
+        } else {
+          result = 'No response received';
+        }
         
         // Update chat with AI response
         setChatHistory(prev => {
@@ -215,7 +237,7 @@ export default function GptChat() {
           // Replace the loading message with the actual response
           updatedHistory[updatedHistory.length - 1] = {
             type: 'ai',
-            content: response.data || 'No response received'
+            content: result
           };
           return updatedHistory;
         });
