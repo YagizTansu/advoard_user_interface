@@ -152,6 +152,17 @@
   transition: background-color 0.2s ease;
 }
 
+.blinkingCursor {
+  animation: blink 1s infinite;
+  font-weight: bold;
+  color: #2a3eb1;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
 @media (max-width: 600px) {
   .headerSection {
     padding-top: 1rem;

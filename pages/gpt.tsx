@@ -34,6 +34,7 @@ interface ChatMessage {
   type: 'user' | 'ai';
   content: string;
   isLoading?: boolean;
+  isTyping?: boolean; // Add new property to track typing state
 }
 
 export default function GptChat() {
@@ -50,6 +51,9 @@ export default function GptChat() {
   const inputRef = useRef(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const [typingIndex, setTypingIndex] = useState<number | null>(null);
+  const [displayedText, setDisplayedText] = useState<string>('');
+  const typingSpeedRef = useRef<number>(30); // milliseconds per character
 
   // Add HTML entity decoder function
   const decodeHtmlEntities = (text: string) => {
@@ -236,10 +240,16 @@ export default function GptChat() {
           const updatedHistory = [...prev];
           updatedHistory[updatedHistory.length - 1] = {
             type: 'ai',
-            content: result
+            content: result,
+            isTyping: true // Set as typing
           };
           return updatedHistory;
         });
+
+        // Start typing effect for the latest message
+        const newIndex = chatHistory.length;
+        setTypingIndex(newIndex);
+        setDisplayedText('');
         
       } catch (error) {
         console.error('Error calling bot API:', error);
@@ -259,6 +269,33 @@ export default function GptChat() {
       }
     }
   };
+
+  // Typing effect implementation
+  useEffect(() => {
+    if (typingIndex !== null && chatHistory[typingIndex]?.isTyping) {
+      const fullText = chatHistory[typingIndex].content;
+      
+      if (displayedText.length < fullText.length) {
+        const timeout = setTimeout(() => {
+          // Add next character to displayed text
+          setDisplayedText(fullText.substring(0, displayedText.length + 1));
+        }, typingSpeedRef.current);
+        
+        return () => clearTimeout(timeout);
+      } else {
+        // Typing complete, update the message
+        setChatHistory(prev => {
+          const updatedHistory = [...prev];
+          updatedHistory[typingIndex] = {
+            ...updatedHistory[typingIndex],
+            isTyping: false
+          };
+          return updatedHistory;
+        });
+        setTypingIndex(null);
+      }
+    }
+  }, [typingIndex, displayedText, chatHistory]);
 
   useEffect(() => {
     // Scroll to bottom whenever chat history updates
@@ -390,7 +427,9 @@ export default function GptChat() {
                 backgroundColor: msg.type === 'user' ? '#e1f5fe' : (msg.type === 'ai' ? '#ede7f6' : '#f5f5f5'),
                 borderRadius: 2,
                 p: 2,
-                mb: 2
+                mb: 2,
+                wordBreak: 'break-word', // Prevent text overflow
+                overflowWrap: 'break-word', // Ensure long words wrap
               }}
             >
               {msg.isLoading ? (
@@ -398,7 +437,13 @@ export default function GptChat() {
                   <CircularProgress size={24} sx={{ color: '#2a3eb1' }} />
                 </Box>
               ) : (
-                <Typography>{msg.content}</Typography>
+                <Typography sx={{ 
+                  whiteSpace: 'pre-wrap',  // Preserve line breaks
+                  '& a': { wordBreak: 'break-all' } // Break URLs if needed
+                }}>
+                  {msg.isTyping && index === typingIndex ? displayedText : msg.content}
+                  {msg.isTyping && index === typingIndex && <span className={styles.blinkingCursor}>|</span>}
+                </Typography>
               )}
             </Box>
           ))}
