@@ -13,7 +13,7 @@
   },
   "services": {
     "order": {
-      "title": "Order Service",
+      "title": "Order",
       "description": "Order food, coffee and other services and track their status.",
       "fullDescription": "Quickly and easily order products anywhere on campus. Cafes, canteens, stationery and more.",
       "button": "Place Order"
@@ -24,12 +24,12 @@
       "button": "Get Directions"
     },
     "information": {
-      "title": "Information Service",
+      "title": "Informations",
       "description": "Access events, announcements and important information.",
       "button": "Get Info"
     },
     "help": {
-      "title": "Student Counseling",
+      "title": "Help",
       "description": "Access campus guide, registration procedures and academic support information.",
       "button": "Get Help"
     }
