@@ -29,7 +29,7 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
-  Toolbar, // Added missing Toolbar component
+  Toolbar,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import NavigationIcon from '@mui/icons-material/Navigation';
@@ -44,6 +44,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import EmailIcon from '@mui/icons-material/Email';
 import FilterListIcon from '@mui/icons-material/FilterList';
+import PhoneIcon from '@mui/icons-material/Phone'; // Added for displaying phone/internal number
 import { useTheme } from '@mui/material/styles';
 
 import directionStyles from '../styles/directions.module.css';
@@ -248,7 +249,7 @@ const BuildingCard = ({
   );
 };
 
-// ProfessorCard bileşeni{
+// ProfessorCard bileşeni
 const ProfessorCard = ({ 
   professor, 
   isActive, 
@@ -273,11 +274,11 @@ const ProfessorCard = ({
         <CardContent className={directionStyles.professorCardContent}>
           <Box className={directionStyles.professorHeader}>
             <Avatar className={directionStyles.professorAvatar}>
-              {professor.professor_name.substring(0, 1)}
+              {professor.name.substring(0, 1)}
             </Avatar>
             <Box className={directionStyles.professorInfo}>
               <Typography variant="subtitle1" className={directionStyles.professorName}>
-                {professor.professor_name}
+                {professor.professor_name || `${professor.title} ${professor.name}`}
               </Typography>
               <Typography variant="body2" color="text.secondary" className={directionStyles.professorDepartment}>
                 {professor.department}
@@ -288,7 +289,7 @@ const ProfessorCard = ({
           <Box className={directionStyles.professorLocation}>
             <LocationOnIcon fontSize="small" className={directionStyles.professorLocationIcon} />
             <Typography variant="body2" className={directionStyles.professorRoomNumber}>
-              {professor.room_number} • {professor.floor}
+              {professor.room_number} • {professor.floor}. {t('directions.floor')} • {professor.block} {t('directions.block')}
             </Typography>
           </Box>
 
@@ -304,6 +305,13 @@ const ProfessorCard = ({
                 <AccessTimeIcon fontSize="small" className={directionStyles.professorDetailIcon} />
                 <Typography variant="body2">
                   {t('directions.officeHours')}: {professor.office_hours || t('directions.byAppointment')}
+                </Typography>
+              </Box>
+
+              <Box className={directionStyles.professorDetailItem}>
+                <PhoneIcon fontSize="small" className={directionStyles.professorDetailIcon} />
+                <Typography variant="body2">
+                  {t('directions.internalNumber')}: {professor.internal_number}
                 </Typography>
               </Box>
 
@@ -461,9 +469,12 @@ export default function Directions() {
     const filteredProfessors = professors.filter((professor) => {
       const matchesSearch =
         !searchQuery ||
-        professor.professor_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (professor.professor_name && professor.professor_name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        professor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         professor.department.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        professor.room_number.toLowerCase().includes(searchQuery.toLowerCase());
+        professor.room_number.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        professor.faculty.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        professor.internal_number.toLowerCase().includes(searchQuery.toLowerCase());
 
       const matchesTab = activeTab === 'all' || activeTab === 'professors';
 
@@ -709,7 +720,8 @@ export default function Directions() {
                   <Typography variant="h6" className={directionStyles.detailsTitle}>
                     {selectedItemType === 'building'
                       ? (selectedItemDetails as Building).name
-                      : (selectedItemDetails as ProfessorRoom).professor_name}
+                      : (selectedItemDetails as ProfessorRoom).professor_name || 
+                        `${(selectedItemDetails as ProfessorRoom).title} ${(selectedItemDetails as ProfessorRoom).name}`}
                   </Typography>
                   <IconButton
                     className={directionStyles.closeButton}
@@ -735,11 +747,31 @@ export default function Directions() {
                 ) : (
                   // Profesör detayları
                   <Box className={directionStyles.professorDetails}>
+                    <Typography variant="body2" color="text.secondary" className={directionStyles.professorFaculty}>
+                      {(selectedItemDetails as ProfessorRoom).faculty} - {(selectedItemDetails as ProfessorRoom).department}
+                    </Typography>
+                    
+                    <Box className={directionStyles.professorLocation} sx={{ mt: 2 }}>
+                      <LocationOnIcon fontSize="small" className={directionStyles.professorLocationIcon} />
+                      <Typography variant="body2">
+                        {(selectedItemDetails as ProfessorRoom).block} {t('directions.block')} - 
+                        {(selectedItemDetails as ProfessorRoom).room_number} ({(selectedItemDetails as ProfessorRoom).floor}. {t('directions.floor')})
+                      </Typography>
+                    </Box>
+                    
+                    <Box className={directionStyles.professorDetailItem} sx={{ mt: 1 }}>
+                      <PhoneIcon fontSize="small" className={directionStyles.professorDetailIcon} />
+                      <Typography variant="body2">
+                        {t('directions.internalNumber')}: {(selectedItemDetails as ProfessorRoom).internal_number}
+                      </Typography>
+                    </Box>
+                    
                     <Button
                       variant="contained"
                       startIcon={<DirectionsIcon />}
                       className={directionStyles.primaryActionButton}
                       fullWidth
+                      sx={{ mt: 2 }}
                       onClick={() => selectedItem && handleGetDirections(selectedItem, 'professor')}
                     >
                       {t('directions.findOffice')}

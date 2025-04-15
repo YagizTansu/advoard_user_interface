@@ -58,23 +58,21 @@ export async function getCommonDestinations() {
   return data;
 }
 
-export async function getProfessorRooms(buildingId?: string) {
-  let query = supabase
-    .from('professor_rooms')
-    .select(`
-      *,
-      buildings:building_id (
-        name
-      )
-    `);
+export async function getProfessorRooms(): Promise<ProfessorRoom[]> {
+  const { data, error } = await supabase
+    .from('professors')
+    .select('*');
   
-  if (buildingId) {
-    query = query.eq('building_id', buildingId);
+  if (error) {
+    console.error('Error fetching professors:', error);
+    return [];
   }
-  
-  const { data, error } = await query;
-  if (error) throw error;
-  return data;
+
+  // Map the data to match the expected format in the UI
+  return data.map(prof => ({
+    ...prof,
+    professor_name: `${prof.title} ${prof.name}`, // Create professor_name for compatibility
+  }));
 }
 
 // Helper functions for information content
@@ -248,14 +246,18 @@ export interface CommonDestination {
 }
 
 export interface ProfessorRoom {
-  email: any;
   id: string;
-  professor_name: string;
-  room_number: string;
-  floor: string;
+  title: string;
+  name: string;
+  faculty: string;
   department: string;
-  office_hours: string;
-  building_id: string;
+  internal_number: string;
+  block: string;
+  floor: string;
+  room_number: string;
+  email?: string;
+  office_hours?: string;
+  professor_name?: string; // For backward compatibility
 }
 
 // Types for information content
