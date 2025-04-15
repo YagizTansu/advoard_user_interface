@@ -223,13 +223,22 @@ export default function Home() {
     
       </Box>
 
-      <Container maxWidth="lg" sx={{ py: { xs: 2, sm: 3, md: 4 } }}>
+      <Container 
+        maxWidth="lg" 
+        sx={{ 
+          py: { xs: 3, sm: 4, md: 5 },  // Increased vertical padding 
+          mb: { xs: 4, sm: 5 }          // Added bottom margin
+        }}
+      >
         <motion.div 
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
-          <Grid container spacing={{ xs: 2, sm: 2, md: 3 }}>
+          <Grid 
+            container 
+            spacing={{ xs: 3, sm: 3, md: 4 }}  // Increased spacing between grid items
+          >
             {[
               {
                 title: 'services.order.title',
