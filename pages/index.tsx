@@ -135,7 +135,7 @@ export default function Home() {
                     src="/images/logo2.png" 
                     alt="Logo 2"
                     sx={{ 
-                      height: { xs: '40px', sm: '50px', md: '100px' },
+                      height: { xs: '60px', sm: '70px', md: '120px' },
                       width: 'auto',
                       filter: 'drop-shadow(0px 2px 4px rgba(0,0,0,0.2))'
                     }}
