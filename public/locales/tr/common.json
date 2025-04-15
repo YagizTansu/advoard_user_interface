@@ -204,7 +204,15 @@
     "findOffice": "Ofisi Bul",
     "contactProfessor": "Profesörle İletişime Geç",
     "directionsTo": "Yol Tarifi",
-    "startNavigation": "Navigasyonu Başlat"
+    "startNavigation": "Navigasyonu Başlat",
+    "roomLocation": "Oda Konumu",
+    "routeInstructions": "Yol Tarifi Adımları",
+    "internalNumber": "Dahili Numara",
+    "floor": "Kat",
+    "block": "Blok",
+    "directions": "Yol Tarifi",
+    "youAreHere": "Buradasınız",
+    "building": "Bina"
   },
   "home": "Ana Sayfa",
   "backToHome": "Ana Sayfaya Dön",

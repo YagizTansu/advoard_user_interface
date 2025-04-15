@@ -204,7 +204,15 @@
     "findOffice": "Find Office",
     "contactProfessor": "Contact Professor",
     "directionsTo": "Directions to",
-    "startNavigation": "Start Navigation"
+    "startNavigation": "Start Navigation",
+    "roomLocation": "Room Location",
+    "routeInstructions": "Route Instructions",
+    "internalNumber": "Internal Number",
+    "floor": "Floor",
+    "block": "Block",
+    "directions": "Directions",
+    "youAreHere": "You are here",
+    "building": "Building"
   },
   "information": {
     "pageTitle": "Information Center",

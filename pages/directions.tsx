@@ -806,6 +806,76 @@ export default function Directions() {
           </DialogTitle>
 
           <DialogContent>
+            {/* Professor information panel */}
+            {selectedItemType === 'professor' && selectedItemDetails && (
+              <Paper 
+                elevation={0} 
+                sx={{ 
+                  p: 2, 
+                  mb: 3, 
+                  backgroundColor: 'rgba(0, 0, 0, 0.02)', 
+                  borderRadius: 2,
+                  border: '1px solid rgba(0, 0, 0, 0.08)'
+                }}
+              >
+                <Box display="flex" alignItems="flex-start" mb={1.5}>
+                  <Avatar 
+                    sx={{ 
+                      bgcolor: 'primary.main', 
+                      color: 'white', 
+                      width: 56, 
+                      height: 56,
+                      mr: 2 
+                    }}
+                  >
+                    {(selectedItemDetails as ProfessorRoom).name.substring(0, 1)}
+                  </Avatar>
+                  
+                  <Box>
+                    <Typography variant="h6" fontWeight="500">
+                      {(selectedItemDetails as ProfessorRoom).professor_name || 
+                       `${(selectedItemDetails as ProfessorRoom).title} ${(selectedItemDetails as ProfessorRoom).name}`}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {(selectedItemDetails as ProfessorRoom).faculty}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {(selectedItemDetails as ProfessorRoom).department}
+                    </Typography>
+                  </Box>
+                </Box>
+
+                <Divider sx={{ my: 1.5 }} />
+                
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                  <LocationOnIcon fontSize="small" sx={{ mr: 1, color: 'text.secondary' }} />
+                  <Typography variant="body2">
+                    {t('directions.roomLocation')}: {(selectedItemDetails as ProfessorRoom).block} {t('directions.block')} - {(selectedItemDetails as ProfessorRoom).room_number} ({(selectedItemDetails as ProfessorRoom).floor}. {t('directions.floor')})
+                  </Typography>
+                </Box>
+                
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                  <PhoneIcon fontSize="small" sx={{ mr: 1, color: 'text.secondary' }} />
+                  <Typography variant="body2">
+                    {t('directions.internalNumber')}: {(selectedItemDetails as ProfessorRoom).internal_number}
+                  </Typography>
+                </Box>
+                
+                {(selectedItemDetails as ProfessorRoom).email && (
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <EmailIcon fontSize="small" sx={{ mr: 1, color: 'text.secondary' }} />
+                    <Typography variant="body2">
+                      {(selectedItemDetails as ProfessorRoom).email}
+                    </Typography>
+                  </Box>
+                )}
+              </Paper>
+            )}
+            
+            <Typography variant="subtitle1" fontWeight="500" sx={{ mb: 2 }}>
+              {t('directions.routeInstructions')}
+            </Typography>
+            
             <Box className={directionStyles.directionsStepsList}>
               {directions?.steps.map((step, index) => (
                 <Box key={index} className={directionStyles.directionsDialogStep}>
