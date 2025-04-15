@@ -209,7 +209,7 @@ const VoiceCommandListener: React.FC<VoiceCommandListenerProps> = ({ onCommand, 
               <span className="text-indigo-500 mr-2">•</span> "Navigate to home"
             </ListItem>
             <ListItem className="hover:bg-gray-100 transition-colors duration-200 rounded pl-4">
-              <span className="text-indigo-500 mr-2">•</span> "Open contact page"
+              <span className="text-indigo-500 mr-2">•</span> "Open exams page"
             </ListItem>
           </List>
         </div>

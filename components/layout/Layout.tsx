@@ -59,8 +59,27 @@ export default function Layout({ children }: LayoutProps) {
       'uniGPT': '/gpt',
       'chat': '/gpt',
       'uni gpt': '/gpt',
+      'uni': '/gpt',
       'bilgi merkezi': '/informations',
       'information center': '/informations',
+      'informations': '/informations',
+      'bilgiler': '/informations',
+      'bilgi': '/informations',
+      'exams': '/exams',
+      'sınavlar': '/exams',
+      'exam': '/exams',
+      'sınav': '/exams',
+      'sipariş': '/services',
+      'order': '/services',
+      'siparişler': '/services',
+      'orders': '/services',
+      'sipariş ver': '/services',
+      'order now': '/services',
+      'sipariş al': '/services',
+      'take order': '/services',
+
+
+
     };
     
     // Check if any of the keywords are present in the command
