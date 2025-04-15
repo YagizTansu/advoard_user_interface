@@ -259,8 +259,8 @@
   }
   
   .serviceCard {
-    min-height: 250px;  /* Increased from 200px */
-    margin-bottom: 1.5rem;
+    min-height: 270px;  /* Increased from 200px */
+    margin-bottom: 0.0rem;
   }
   
   .cardContent {
