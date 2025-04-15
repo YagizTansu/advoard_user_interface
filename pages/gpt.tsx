@@ -190,21 +190,16 @@ export default function GptChat() {
       setIsLoading(true);
       
       try {
-        // Prepare form data
-        const formData = new URLSearchParams();
-        formData.append('question', encodeURIComponent(currentMessage));
-        formData.append('lang', 'tr'); // Fixed language to Turkish
-        formData.append('source', 'robot');
-        formData.append('ekoid', 'abc');
-        formData.append('hash', 'abc');
-          
-        // Make API call
-        const response = await axios.post(
+        // Make API call with GET request using query parameters - don't pre-encode the question
+        const response = await axios.get(
           'http://10.0.73.66/ekobot/sendQuestion_ekobot.php',
-          formData,
           {
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded'
+            params: {
+              question: currentMessage, // Axios will handle encoding
+              lang: 'tr',
+              source: 'robot',
+              ekoid: 'abc',
+              hash: 'abc'
             }
           }
         );
@@ -212,7 +207,12 @@ export default function GptChat() {
         // Extract Result field from JSON response and decode HTML entities
         let result = '';
         if (response.data) {
-          if (typeof response.data === 'string') {
+          // Handle if response is already a JSON object
+          if (typeof response.data === 'object' && response.data.Result) {
+            result = decodeHtmlEntities(response.data.Result);
+          } 
+          // Handle if response is a string containing JSON
+          else if (typeof response.data === 'string') {
             try {
               const parsedData = JSON.parse(response.data);
               if (parsedData.Result) {
@@ -222,10 +222,10 @@ export default function GptChat() {
               console.error('Error parsing JSON response:', error);
               result = response.data;
             }
-          } else if (typeof response.data === 'object' && response.data.Result) {
-            result = decodeHtmlEntities(response.data.Result);
-          } else {
-            result = typeof response.data === 'string' ? response.data : JSON.stringify(response.data);
+          } 
+          // Fallback for any other format
+          else {
+            result = 'Unexpected response format received';
           }
         } else {
           result = 'No response received';
@@ -234,7 +234,6 @@ export default function GptChat() {
         // Update chat with AI response
         setChatHistory(prev => {
           const updatedHistory = [...prev];
-          // Replace the loading message with the actual response
           updatedHistory[updatedHistory.length - 1] = {
             type: 'ai',
             content: result
