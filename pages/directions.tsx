@@ -872,11 +872,13 @@ export default function Directions() {
               </Paper>
             )}
             
-            <Typography variant="subtitle1" fontWeight="500" sx={{ mb: 2 }}>
-              {t('directions.routeInstructions')}
-            </Typography>
-            
-            <Box className={directionStyles.directionsStepsList}>
+            {selectedItemType !== 'professor'&& (
+              <>
+                <Typography variant="subtitle1" fontWeight="500" sx={{ mb: 2 }}>
+                  {t('directions.routeInstructions')}
+                </Typography>
+
+                <Box className={directionStyles.directionsStepsList}>
               {directions?.steps.map((step, index) => (
                 <Box key={index} className={directionStyles.directionsDialogStep}>
                   <div className={directionStyles.timelineConnector}>
@@ -891,6 +893,10 @@ export default function Directions() {
                 </Box>
               ))}
             </Box>
+              </>
+            )}
+
+
 
             <Box className={directionStyles.directionsDialogActions}>
               <Button
