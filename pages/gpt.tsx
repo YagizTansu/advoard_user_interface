@@ -64,7 +64,7 @@ export default function GptChat() {
 
   // Inactivity tracker - redirect after 30 seconds of no interaction
   useEffect(() => {
-    const events = ['mousedown', 'mousemove', 'touchstart', 'keydown', 'scroll'];
+    const events = ['mousedown', 'mousemove', 'touchstart', 'keydown', 'scroll', 'wheel', 'touchmove', 'touchend'];
 
     // Function to reset the timer
     const resetTimer = () => {
@@ -77,7 +77,7 @@ export default function GptChat() {
       inactivityTimerRef.current = setTimeout(() => {
         // Redirect to home page after inactivity
         router.push('/');
-      }, 30000); // 30 seconds
+      }, 50000); // 30 seconds
     };
 
     // Add event listeners
