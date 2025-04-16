@@ -11,6 +11,7 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import CloseIcon from '@mui/icons-material/Close';
 import styles from '../../../styles/PresentationModule.module.css';
 import { dbService } from '../../../src/services/firebaseService';
+import rosConnection from '../../../src/lib/ros_connecitons';
 
 interface PresentationModuleProps {
   onInteraction: () => void;
@@ -54,7 +55,9 @@ const PresentationModule: React.FC<PresentationModuleProps> = ({ onInteraction }
         service_name: "command_emergency",
       };
 
-      const orderId = await dbService.setDataWithId('robots_command', "robot3", commandData);
+      const orderId = await dbService.setDataWithId('robots_command', "robot4", commandData);
+      // Send the same emergency stop command via ROS
+      rosConnection.publishEmergencyStop(stop_boolean);
       console.log('Robot command sent successfully:', orderId);
     } catch (error) {
       console.error('Error sending robot command:', error);

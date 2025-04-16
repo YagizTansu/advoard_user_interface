@@ -8,6 +8,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import WarningIcon from '@mui/icons-material/Warning'; // Import warning icon for exclamation mark
 import styles from '../styles/index.module.css';
 import { dbService } from '../src/services/firebaseService';
+import rosConnection from '../src/lib/ros_connecitons';
 
 export default function Home() {
   const { t } = useTranslation('common');
@@ -26,7 +27,8 @@ export default function Home() {
         service_name: "command_emergency",
       };
 
-      const orderId = await dbService.setDataWithId('robots_command', "robot3", commandData);
+      const orderId = await dbService.setDataWithId('robots_command', "robot4", commandData);
+      rosConnection.publishEmergencyStop(stop_boolean);
       console.log('Robot command sent successfully:', orderId);
     } catch (error) {
       console.error('Error sending robot command:', error);

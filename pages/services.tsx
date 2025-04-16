@@ -268,7 +268,7 @@ export default function Services() {
           service_name: "command_fleet_goal"
       }
 
-      const orderId = await dbService.setDataWithId('robots_command',"robot3", commandData);
+      const orderId = await dbService.setDataWithId('robots_command',"robot4", commandData);
       console.log('Order submitted successfully with ID:', commandData);
 
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
