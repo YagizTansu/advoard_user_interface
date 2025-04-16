@@ -407,7 +407,7 @@ export default function Directions() {
   // Hareketsizlik zamanlayıcısını sıfırlama
   const resetInactivityTimer = () => {
     if (inactivityTimeoutRef.current) clearTimeout(inactivityTimeoutRef.current);
-    inactivityTimeoutRef.current = setTimeout(() => router.push('/'), 100000);
+    inactivityTimeoutRef.current = setTimeout(() => router.push('/'), 10000);
   };
 
   // Kullanıcı aktivitesi için olay dinleyicileri

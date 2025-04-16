@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { read, utils } from 'xlsx';
 import { Search, Home, ChevronRight, Calendar, ChevronLeft, ChevronRight as ChevronRightIcon } from 'lucide-react';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 interface ExamData {
   'Sınav Tarihi': string;
@@ -20,12 +21,54 @@ interface ExamData {
 const ITEMS_PER_PAGE = 15;
 
 export default function ExamsPage() {
+  const router = useRouter();
   const { t } = useTranslation('common');
   const [exams, setExams] = useState<ExamData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const inactivityTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Function to reset the inactivity timer
+  const resetInactivityTimer = () => {
+    if (inactivityTimerRef.current) {
+      clearTimeout(inactivityTimerRef.current);
+    }
+
+    inactivityTimerRef.current = setTimeout(() => {
+      router.push('/');
+    }, 10000); // 10 seconds
+  };
+
+  // Set up the inactivity timer and event listeners
+  useEffect(() => {
+    // Initialize the timer
+    resetInactivityTimer();
+
+    // Add event listeners for user activity
+    const userActivityEvents = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'];
+
+    const handleUserActivity = () => {
+      resetInactivityTimer();
+    };
+
+    // Register all event listeners
+    userActivityEvents.forEach(event => {
+      document.addEventListener(event, handleUserActivity);
+    });
+
+    // Clean up event listeners and timer on component unmount
+    return () => {
+      if (inactivityTimerRef.current) {
+        clearTimeout(inactivityTimerRef.current);
+      }
+
+      userActivityEvents.forEach(event => {
+        document.removeEventListener(event, handleUserActivity);
+      });
+    };
+  }, [router]);
 
   useEffect(() => {
     async function loadExamData() {
