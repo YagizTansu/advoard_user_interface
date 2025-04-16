@@ -66,7 +66,7 @@ const generateDirections = (
     const professor = professors?.find(p => p.id === destinationId);
     if (professor) {
       destinationName = `${professor.professor_name}'s Office`;
-      buildingId = professor?.building_id || '';
+      buildingId = professor?.block || '';
     }
   }
   
