@@ -25,15 +25,15 @@ const presentations = [
     image: '/images/service-demo.jpg',
     videoSrc: '/videos/service-demo.mp4',
     color: '#3a86ff',
-  },
-  {
-    id: 2,
-    title: 'presentations.directions.title',
-    description: 'presentations.directions.description',
-    image: '/images/directions-demo.jpg',
-    videoSrc: '/videos/directions-demo.mp4',
-    color: '#8338ec',
   }
+  // {
+  //   id: 2,
+  //   title: 'presentations.directions.title',
+  //   description: 'presentations.directions.description',
+  //   image: '/images/directions-demo.jpg',
+  //   videoSrc: '/videos/directions-demo.mp4',
+  //   color: '#8338ec',
+  // }
 ];
 
 const PresentationModule: React.FC<PresentationModuleProps> = ({ onInteraction }) => {
