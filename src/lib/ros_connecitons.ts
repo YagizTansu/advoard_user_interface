@@ -4,7 +4,7 @@ class ROSConnection {
   ros: ROSLIB.Ros;
   isConnected: boolean = false;
   
-  constructor(url: string = 'ws://localhost:9090') {
+  constructor(url: string = 'ws://localhost:8080') {
     // Connect to rosbridge
     this.ros = new ROSLIB.Ros({
       url: url,
