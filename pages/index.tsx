@@ -27,9 +27,9 @@ export default function Home() {
         service_name: "command_emergency",
       };
 
-      const orderId = await dbService.setDataWithId('robots_command', "robot4", commandData);
+      // const orderId = await dbService.setDataWithId('robots_command', "robot4", commandData);
       rosConnection.publishEmergencyStop(stop_boolean);
-      console.log('Robot command sent successfully:', orderId);
+      // console.log('Robot command sent successfully:', orderId);
     } catch (error) {
       console.error('Error sending robot command:', error);
     }
