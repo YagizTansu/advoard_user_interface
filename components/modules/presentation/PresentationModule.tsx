@@ -153,8 +153,17 @@ const PresentationModule: React.FC<PresentationModuleProps> = ({ onInteraction }
           
           {/* Touch info overlay text */}
           <Box className={styles.touchInfoOverlay} sx={{ justifyContent: 'center' }}>
-            <TouchAppIcon fontSize="medium" />
-            <Typography variant="h6" sx={{ textAlign: 'center' }}>{t('presentations.touchForInfo')}</Typography>
+            <TouchAppIcon fontSize="large" />
+            <Typography 
+              variant="h4" 
+              sx={{ 
+                textAlign: 'center',
+                fontSize: '1.8rem',
+                fontWeight: 500
+              }}
+            >
+              {t('presentations.touchForInfo')}
+            </Typography>
           </Box>
           
           <IconButton
