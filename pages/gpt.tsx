@@ -37,6 +37,24 @@ interface ChatMessage {
   isTyping?: boolean; // Add new property to track typing state
 }
 
+// Sabit sorular ve cevaplar sözlüğü
+const staticQnA: { [key: string]: string } = {
+  'transkript nasıl alırım': `Transkript almak için OASIS-Öğrenci Bilgi Sistemi üzerinden talep başvurusu yapmanız gerekmektedir. Detaylı açıklamalar için ilgili dokümana ulaşmak için şu linki kullanabilirsiniz: https://phoenix.ieu.edu.tr/betanix/uploads/cms/oim.ieu.edu.tr/4227_1675165247.pdf. Ayrıca, bu konuda daha fazla bilgi almak isterseniz Mısra ORUÇ ile iletişime geçebilirsiniz. İletişim bilgileri: 0 232 488 83 68, misra.oruc@ieu.edu.tr.\nDaha fazlası için https://www.ieu.edu.tr/tr/students adresindeki Öğrenci Portalı'na bakabilirsiniz.`,
+  'yüksek şeref öğrencisi olmak için ortalamam kaç olmalı': `Yüksek şeref öğrencisi olmak için dönem sonu not ortalamanızın en az 3,50 olması gerekmektedir.\nDaha fazlası için https://www.ieu.edu.tr/tr/students adresindeki Öğrenci Portalı'na bakabilirsiniz.`,
+  'disiplin cezası alırsam şeref öğrencisi olabilir miyim': `Disiplin cezası alan öğrenciler şeref öğrencisi olamazlar. Bu nedenle disiplin cezası alırsanız şeref öğrencisi olamazsınız.\nDaha fazlası için https://www.ieu.edu.tr/tr/students adresindeki Öğrenci Portalı'na bakabilirsiniz.`,
+  'not ortalamam diplomamda görünecek mi': `Mezuniyet dereceleri diplomaya yazılmaz. Bu nedenle not ortalamanız diplomanızda görünmeyecektir.\nDaha fazlası için https://www.ieu.edu.tr/tr/students adresindeki Öğrenci Portalı'na bakabilirsiniz.`,
+  'kaç dönem kayıt dondurma hakkım var': `Yabancı dil hazırlık sınıfında en fazla iki dönem, önlisans programlarında üç dönem ve lisans programlarında dört dönem kayıt dondurma hakkınız vardır. Zorunlu hallerde Üniversite Yönetim Kurulu kararı ile bu süreler aşılabilir.\nDaha fazlası için https://www.ieu.edu.tr/tr/students adresindeki Öğrenci Portalı'na bakabilirsiniz.`
+};
+
+// Normalize fonksiyonu: küçük harfe çevir, noktalama ve boşlukları temizle
+function normalizeQuestion(q: string) {
+  return q
+    .toLocaleLowerCase('tr')
+    .replace(/[^a-zA-Z0-9ğüşöçıİĞÜŞÖÇ\s]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 export default function GptChat() {
   const { t } = useTranslation('common');
   const theme = useTheme();
@@ -174,7 +192,23 @@ export default function GptChat() {
 
   const handleSendMessage = async (voiceMessage?: string) => {
     const messageToSend = voiceMessage || message;
-    
+
+    // Soru normalize edilip sabit cevaplardan biriyle eşleşiyorsa API'ye gitmeden cevapla
+    const normalized = normalizeQuestion(messageToSend);
+    const staticAnswer = staticQnA[normalized];
+    if (staticAnswer) {
+      if (!hasStartedChat) setHasStartedChat(true);
+      setChatHistory(prev => [
+        ...prev,
+        { type: 'user', content: messageToSend },
+        { type: 'ai', content: staticAnswer, isTyping: true }
+      ]);
+      setTypingIndex(chatHistory.length + 1); // Start typing effect for static answer
+      setDisplayedText('');
+      setMessage('');
+      return;
+    }
+
     if (messageToSend.trim() && !isLoading) {
       // Set chat as started on first message
       if (!hasStartedChat) {
@@ -274,16 +308,12 @@ export default function GptChat() {
   useEffect(() => {
     if (typingIndex !== null && chatHistory[typingIndex]?.isTyping) {
       const fullText = chatHistory[typingIndex].content;
-      
       if (displayedText.length < fullText.length) {
         const timeout = setTimeout(() => {
-          // Add next character to displayed text
           setDisplayedText(fullText.substring(0, displayedText.length + 1));
         }, typingSpeedRef.current);
-        
         return () => clearTimeout(timeout);
       } else {
-        // Typing complete, update the message
         setChatHistory(prev => {
           const updatedHistory = [...prev];
           updatedHistory[typingIndex] = {
