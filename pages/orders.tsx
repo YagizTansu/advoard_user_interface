@@ -61,6 +61,7 @@ import {
 } from '@mui/icons-material';
 import { supabase } from '../src/lib/supabase';
 import { format } from 'date-fns';
+import { dbService } from '../src/services/firebaseService';
 
 // Define type for order data from Supabase
 interface Order {
@@ -106,6 +107,11 @@ export default function Orders() {
   // Pagination
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(10);
+
+  // State for sending order to table
+  const [isSendingToTable, setIsSendingToTable] = useState<boolean>(false);
+  const [sendToTableSuccess, setSendToTableSuccess] = useState<boolean>(false);
+  const [sendToTableError, setSendToTableError] = useState<string | null>(null);
 
   // Function to fetch orders from Supabase
   const fetchOrders = async () => {
@@ -229,6 +235,60 @@ export default function Orders() {
     } catch (error) {
       console.error('Error updating order status:', error);
       setError('Failed to update order status. Please try again.');
+    }
+  };
+
+  // Handle sending order to table via robot
+  const handleSendToTable = async (orderId: string, location: string) => {
+    try {
+      setIsSendingToTable(true);
+      setSendToTableSuccess(false);
+      setSendToTableError(null);
+      
+      // Determine goal_node based on location
+      let goalNode = "D014"; // Default value
+      
+      // Check if location contains a table number
+      if (location.toLowerCase().includes('table')) {
+        // Extract table number
+        const tableMatch = location.toLowerCase().match(/table(\d+)/);
+        if (tableMatch && tableMatch[1]) {
+          const tableNum = parseInt(tableMatch[1], 10);
+          if (tableNum >= 1 && tableNum <= 10) {
+            // Format: t_01, t_02, etc.
+            goalNode = `t_${tableNum.toString().padStart(2, '0')}`;
+          }
+        }
+      }
+
+      const commandData = {
+        request: {
+          finish_batch: false,
+          fleet_name: "ieü",
+          goal_node: goalNode,
+          start_batch: true,
+          time_stamp: 212.567,
+        },
+        service_name: "command_fleet_goal"
+      };
+
+      // Send command to Firebase for robot
+      const robotCommandId = await dbService.setDataWithId('robots_command', "robot4", commandData);
+      console.log('Robot command sent for order delivery, command ID:', robotCommandId);
+      
+      // Update order status to completed
+      await handleUpdateOrderStatus(orderId, 'completed');
+      
+      setSendToTableSuccess(true);
+      
+      // Close the dialog immediately
+      handleCloseOrderDetails();
+      
+    } catch (error) {
+      console.error('Error sending order to table:', error);
+      setSendToTableError('Failed to send the order to table. Please try again.');
+    } finally {
+      setIsSendingToTable(false);
     }
   };
 
@@ -652,10 +712,56 @@ export default function Orders() {
               </Grid>
             </DialogContent>
             <DialogActions>
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<RoomIcon />}
+                onClick={() => handleSendToTable(selectedOrder.id, selectedOrder.delivery_details.location)}
+                disabled={isSendingToTable || selectedOrder.status === 'completed' || selectedOrder.status === 'cancelled'}
+              >
+                {isSendingToTable ? (
+                  <>
+                    <CircularProgress size={20} color="inherit" sx={{ mr: 1 }} />
+                    {t('orders.sendingToTable')}
+                  </>
+                ) : (
+                  t('orders.sendToTable')
+                )}
+              </Button>
               <Button onClick={handleCloseOrderDetails}>
                 {t('common.close')}
               </Button>
             </DialogActions>
+            
+            {/* Success message for sending to table */}
+            <Snackbar
+              open={sendToTableSuccess}
+              autoHideDuration={2000}
+              onClose={() => setSendToTableSuccess(false)}
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            >
+              <Alert 
+                severity="success"
+                sx={{ width: '100%' }}
+              >
+                {t('orders.sentToTableSuccess')}
+              </Alert>
+            </Snackbar>
+            
+            {/* Error message for sending to table */}
+            <Snackbar
+              open={!!sendToTableError}
+              autoHideDuration={4000}
+              onClose={() => setSendToTableError(null)}
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            >
+              <Alert 
+                severity="error"
+                sx={{ width: '100%' }}
+              >
+                {sendToTableError}
+              </Alert>
+            </Snackbar>
           </>
         )}
       </Dialog>

@@ -157,7 +157,12 @@
     "table2": "Table 2",
     "table3": "Table 3",
     "table4": "Table 4",
-    "table5": "Table 5"
+    "table5": "Table 5",
+    "table6": "Table 6",
+    "table7": "Table 7",
+    "table8": "Table 8",
+    "table9": "Table 9",
+    "table10": "Table 10"
   },
   "times": {
     "asap": "As soon as possible",
@@ -372,7 +377,10 @@
     "deliveryDetails": "Delivery Details",
     "orderedAt": "Ordered At",
     "updateStatus": "Update Order Status",
-    "newOrderReceived": "New order received!"
+    "newOrderReceived": "New order received!",
+    "sendToTable": "Send to Table",
+    "sendingToTable": "Sending...",
+    "sentToTableSuccess": "Order successfully sent to table!"
   },
   "table": {
     "rowsPerPage": "Rows per page",

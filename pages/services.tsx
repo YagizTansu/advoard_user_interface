@@ -260,8 +260,8 @@ export default function Services() {
       const commandData = {
           request:{
             finish_batch: false,
-            fleet_name: "showroom",
-            goal_node: "D014",
+            fleet_name: "ieü",
+            goal_node: "s_01",
             start_batch: true,
             time_stamp: 212.122,
           },
@@ -629,6 +629,11 @@ export default function Services() {
                       <MenuItem value="table3">{t('locations.table3') || 'Table 3'}</MenuItem>
                       <MenuItem value="table4">{t('locations.table4') || 'Table 4'}</MenuItem>
                       <MenuItem value="table5">{t('locations.table5') || 'Table 5'}</MenuItem>
+                      <MenuItem value="table6">{t('locations.table6') || 'Table 6'}</MenuItem>
+                      <MenuItem value="table7">{t('locations.table7') || 'Table 7'}</MenuItem>
+                      <MenuItem value="table8">{t('locations.table8') || 'Table 8'}</MenuItem>
+                      <MenuItem value="table9">{t('locations.table9') || 'Table 9'}</MenuItem>
+                      <MenuItem value="table10">{t('locations.table10') || 'Table 10'}</MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>
