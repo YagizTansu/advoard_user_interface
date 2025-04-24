@@ -115,7 +115,8 @@
       "title": "Siparişiniz alındı!",
       "message": "Siparişiniz başarıyla alındı. Siparişinizin durumu hakkında bilgilendirme alacaksınız."
     },
-    "returnHome": "Ana Sayfaya Dön"
+    "returnHome": "Ana Sayfaya Dön",
+    "newOrder": "Yeni Sipariş Ver"
   },
   "form": {
     "name": "Ad Soyad",

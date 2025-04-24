@@ -115,7 +115,8 @@
       "title": "Order received!",
       "message": "Your order has been successfully received. You will be notified about the status of your order."
     },
-    "returnHome": "Return to Home"
+    "returnHome": "Return to Home",
+    "newOrder": "Place New Order"
   },
   "form": {
     "name": "Full Name",

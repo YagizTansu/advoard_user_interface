@@ -110,6 +110,25 @@ export default function Services() {
     }, 10000); // 20 seconds
   };
 
+  // Add this new function to reset all state
+  const handleStartNewOrder = () => {
+    setActiveStep(0);
+    setSelectedCategory('');
+    setSelectedItems([]);
+    setFormData({
+      studentId: '',
+      orderDetails: '',
+      deliveryLocation: '',
+      deliveryTime: 'asap',
+      paymentMethod: 'campus'
+    });
+    // Reset any error state
+    setSubmitError(null);
+    setIsSubmitting(false);
+    // Reset inactivity timer
+    resetInactivityTimer();
+  };
+
   // Set up event listeners for user activity
   useEffect(() => {
     // Initial setup of the timer
@@ -806,15 +825,26 @@ export default function Services() {
                 {t('order.success.message')}
               </Typography>
               
-              <Button 
-                component={Link} 
-                href="/"
-                variant="contained" 
-                color="primary"
-                size="large"
-              >
-                {t('order.returnHome')}
-              </Button>
+              <Box sx={{ display: 'flex', gap: 2, mt: 2, flexWrap: 'wrap', justifyContent: 'center' }}>
+                <Button 
+                  component={Link} 
+                  href="/"
+                  variant="outlined"
+                  color="primary"
+                  size="large"
+                >
+                  {t('order.returnHome')}
+                </Button>
+                
+                <Button 
+                  onClick={handleStartNewOrder}
+                  variant="contained" 
+                  color="primary"
+                  size="large"
+                >
+                  {t('order.newOrder') || 'Place New Order'}
+                </Button>
+              </Box>
             </Box>
           </motion.div>
         );
