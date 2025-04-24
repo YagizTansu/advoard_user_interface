@@ -220,69 +220,6 @@ export default function Services() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const submitOrderToFirebase = async () => {
-    try {
-      setIsSubmitting(true);
-      setSubmitError(null);
-      
-      const orderData = {
-        studentId: formData.studentId,
-        orderItems: selectedItems.map(item => ({
-          id: item.id,
-          name: item.name,
-          price: item.price,
-          quantity: item.quantity,
-          totalPrice: item.price * item.quantity
-        })),
-        category: selectedCategory,
-        totalAmount: calculateTotal(),
-        deliveryDetails: {
-          location: formData.deliveryLocation,
-          time: formData.deliveryTime,
-          specialInstructions: formData.orderDetails || ""
-        },
-        paymentMethod: formData.paymentMethod,
-        status: "pending",
-        createdAt: new Date().toISOString(),
-        robot_request: {
-          request: "finish_batch", 
-          fleet_name: "showroom", 
-          goal_node: "D014", 
-          start_batch: true, 
-          time_stamp: 212.122, 
-          service_name: "command_fleet_goal"
-        },
-
-      };
-
-      // const orderId = await dbService.pushData('orders', orderData);
-
-      const commandData = {
-          request:{
-            finish_batch: false,
-            fleet_name: "ieü",
-            goal_node: "s_01",
-            start_batch: true,
-            time_stamp: 212.122,
-          },
-          service_name: "command_fleet_goal"
-      }
-
-      const orderId = await dbService.setDataWithId('robots_command',"robot4", commandData);
-      console.log('Order submitted successfully with ID:', commandData);
-
-      setActiveStep((prevActiveStep) => prevActiveStep + 1);
-      
-    } catch (error) {
-      console.error('Error submitting order:', error);
-      setSubmitError(typeof error === 'object' && error !== null && 'message' in error 
-        ? String(error.message) 
-        : 'An unexpected error occurred while submitting your order.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   const submitOrderToSupabase = async () => {
     try {
       setIsSubmitting(true);
@@ -320,15 +257,16 @@ export default function Services() {
       
       // Send command to robot via Firebase
       const commandData = {
-        request:{
-          finish_batch: false,
-          fleet_name: "showroom",
-          goal_node: "D014",
-          start_batch: true,
-          time_stamp: 212.122,
-        },
-        service_name: "command_fleet_goal"
-      };
+          request:{
+            finish_batch: false,
+            fleet_name: "ieü",
+            goal_node: "s_01",
+            start_batch: true,
+            time_stamp: 212.122,
+          },
+          service_name: "command_fleet_goal"
+      }
+
 
       // Also submit to Firebase for robot control
       const robotId = await dbService.setDataWithId('robots_command', "robot4", commandData);
@@ -488,9 +426,9 @@ export default function Services() {
                           <Typography className={styles.menuItemName}>
                             {item.name}
                           </Typography>
-                          <Typography className={styles.menuItemPrice}>
+                          {/* <Typography className={styles.menuItemPrice}>
                             {item.price} ₺
-                          </Typography>
+                          </Typography> */}
                         </Box>
                         <Typography className={styles.menuItemDescription}>
                           {item.description}
@@ -533,13 +471,13 @@ export default function Services() {
                     <ListItem key={item.id} sx={{ py: 1 }}>
                       <ListItemText 
                         primary={item.name} 
-                        secondary={`${item.quantity} x ${item.price} ₺`}
+                        secondary={`${item.quantity} x`}
                       />
-                      <ListItemSecondaryAction>
+                      {/* <ListItemSecondaryAction>
                         <Typography variant="body1" sx={{ fontWeight: 500 }}>
                           {item.quantity * item.price} ₺
                         </Typography>
-                      </ListItemSecondaryAction>
+                      </ListItemSecondaryAction> */}
                     </ListItem>
                   ))}
                   <Divider sx={{ my: 1 }} />
@@ -551,11 +489,11 @@ export default function Services() {
                         </Typography>
                       } 
                     />
-                    <ListItemSecondaryAction>
+                    {/* <ListItemSecondaryAction>
                       <Typography variant="subtitle1" sx={{ fontWeight: 700, color: 'primary.main' }}>
                         {calculateTotal()} ₺
                       </Typography>
-                    </ListItemSecondaryAction>
+                    </ListItemSecondaryAction> */}
                   </ListItem>
                 </List>
               </Paper>
@@ -707,9 +645,9 @@ export default function Services() {
                       <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
                         {t('menu.total')}:
                       </Typography>
-                      <Typography variant="subtitle1" sx={{ fontWeight: 700, color: 'primary.main' }}>
+                      {/* <Typography variant="subtitle1" sx={{ fontWeight: 700, color: 'primary.main' }}>
                         {calculateTotal()} ₺
-                      </Typography>
+                      </Typography> */}
                     </Box>
                   </Paper>
                 </Grid>
@@ -755,11 +693,11 @@ export default function Services() {
                           <ListItem key={item.id} sx={{ py: 1 }}>
                             <ListItemText 
                               primary={item.name} 
-                              secondary={`${item.quantity} x ${item.price} ₺`}
+                              secondary={`${item.quantity} x`}
                             />
-                            <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                            {/* <Typography variant="body2" sx={{ fontWeight: 500 }}>
                               {item.quantity * item.price} ₺
-                            </Typography>
+                            </Typography> */}
                           </ListItem>
                         ))}
                         <Divider sx={{ my: 1 }} />
@@ -771,9 +709,9 @@ export default function Services() {
                               </Typography>
                             } 
                           />
-                          <Typography variant="subtitle2" sx={{ fontWeight: 700, color: 'primary.main' }}>
+                          {/* <Typography variant="subtitle2" sx={{ fontWeight: 700, color: 'primary.main' }}>
                             {calculateTotal()} ₺
-                          </Typography>
+                          </Typography> */}
                         </ListItem>
                       </List>
                     </Paper>
@@ -992,7 +930,7 @@ export default function Services() {
                   className={styles.cartIcon}
                   sx={{ fontSize: { xs: '1.2rem', sm: '1.5rem' } }}
                 />
-                <Typography 
+                {/* <Typography 
                   variant="subtitle1" 
                   sx={{ 
                     fontWeight: 600,
@@ -1000,7 +938,7 @@ export default function Services() {
                   }}
                 >
                   {calculateTotal()} ₺
-                </Typography>
+                </Typography> */}
               </Paper>
             </Badge>
           </Box>
