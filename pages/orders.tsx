@@ -94,7 +94,6 @@ export default function Orders() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [newOrderAlert, setNewOrderAlert] = useState<boolean>(false);
-  const [newOrderIds, setNewOrderIds] = useState<string[]>([]); // Add this new state for highlighting
   
   // State for filters
   const [statusFilter, setStatusFilter] = useState<string>('all');
@@ -149,42 +148,15 @@ export default function Orders() {
         'postgres_changes', 
         { event: '*', schema: 'public', table: 'orders' }, 
         (payload) => {
-          console.log('Real-time change received:', payload);
-          
-          // When a new order is inserted
-          if (payload.eventType === 'INSERT' && payload.new) {
-            const newOrder = payload.new as Order;
-            console.log('New order received:', newOrder);
-            
-            // Add new order to state directly without refetching all orders
-            setOrders(prevOrders => {
-              // Add to beginning of array to show newest first
-              return [newOrder, ...prevOrders];
-            });
-            
-            // Add to highlighted orders and set timer to remove highlight
-            setNewOrderIds(prev => [...prev, newOrder.id]);
-            setTimeout(() => {
-              setNewOrderIds(prev => prev.filter(id => id !== newOrder.id));
-            }, 5000); // Remove highlight after 5 seconds
-            
+          console.log('Change received!', payload);
+          // Show alert when new order comes in
+          if (payload.eventType === 'INSERT') {
             setNewOrderAlert(true);
-          } 
-          // When an order is updated
-          else if (payload.eventType === 'UPDATE' && payload.new) {
-            const updatedOrder = payload.new as Order;
-            setOrders(prevOrders => 
-              prevOrders.map(order => 
-                order.id === updatedOrder.id ? updatedOrder : order
-              )
-            );
-          } 
-          // When an order is deleted
-          else if (payload.eventType === 'DELETE' && payload.old) {
-            const deletedOrderId = payload.old.id;
-            setOrders(prevOrders => 
-              prevOrders.filter(order => order.id !== deletedOrderId)
-            );
+            // Refresh orders
+            fetchOrders();
+          } else if (payload.eventType === 'UPDATE' || payload.eventType === 'DELETE') {
+            // Just refresh orders for updates and deletes
+            fetchOrders();
           }
         }
       )
@@ -192,15 +164,8 @@ export default function Orders() {
     
     // Clean up subscription
     return () => {
-      console.log('Cleaning up real-time subscription');
       supabase.removeChannel(subscription);
     };
-  }, []); // Remove statusFilter dependency to prevent multiple subscriptions
-
-  // Separate effect for filtering
-  useEffect(() => {
-    // Refetch when filter changes
-    fetchOrders();
   }, [statusFilter]);
 
   // Handle filter change
@@ -455,17 +420,12 @@ export default function Orders() {
                   <AnimatePresence>
                     {paginatedOrders.map((order) => {
                       const { color, label } = getStatusInfo(order.status);
-                      const isNewOrder = newOrderIds.includes(order.id);
                       
                       return (
                         <motion.tr
                           key={order.id}
                           initial={{ opacity: 0, y: 10 }}
-                          animate={{ 
-                            opacity: 1, 
-                            y: 0,
-                            backgroundColor: isNewOrder ? 'rgba(76, 175, 80, 0.15)' : 'transparent'
-                          }}
+                          animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0 }}
                           transition={{ duration: 0.2 }}
                           style={{ display: 'table-row' }}
@@ -489,36 +449,9 @@ export default function Orders() {
                                   </List>
                                 }
                               >
-                                <Box>
-                                  {order.order_items.map((item, idx) => (
-                                    <Typography 
-                                      key={idx} 
-                                      variant="body2" 
-                                      sx={{ 
-                                        display: 'flex', 
-                                        justifyContent: 'space-between',
-                                        mb: idx < order.order_items.length - 1 ? 0.5 : 0
-                                      }}
-                                    >
-                                      <Box component="span" sx={{ 
-                                        maxWidth: '160px', 
-                                        overflow: 'hidden', 
-                                        textOverflow: 'ellipsis',
-                                        whiteSpace: 'nowrap',
-                                        display: 'inline-block',
-                                        mr: 1
-                                      }}>
-                                        {item.name}
-                                      </Box>
-                                      <Box component="span" sx={{ whiteSpace: 'nowrap' }}>
-                                        {item.quantity}x
-                                      </Box>
-                                    </Typography>
-                                  ))}
-                                  <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 0.5 }}>
-                                    {order.order_items.length} {t('orders.itemCount')}
-                                  </Typography>
-                                </Box>
+                                <Typography variant="body2">
+                                  {order.order_items.length} {t('orders.itemCount')}
+                                </Typography>
                               </Tooltip>
                             ) : (
                               "-"
