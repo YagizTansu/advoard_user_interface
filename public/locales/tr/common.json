@@ -69,7 +69,8 @@
   "footerText": "Akıllı Kampüs Robotu - Tüm Hakları Saklıdır",
   "pageTitle": {
     "home": "Ana Sayfa",
-    "services": "Sipariş Ver"
+    "services": "Sipariş Ver",
+    "orders": "Siparişler"
   },
   "nav": {
     "home": "Ana Sayfa",
@@ -77,7 +78,8 @@
     "directions": "Yol Tarifi",
     "information": "Bilgi",
     "help": "Yardım",
-    "back": "Geri"
+    "back": "Geri",
+    "orders": "Siparişler"
   },
   "categories": {
     "cafeteria": {
@@ -321,7 +323,43 @@
     "back": "Geri Dön",
     "learnMore": "Daha Fazla",
     "clearSearch": "Aramayı Temizle",
-    "backToInformation": "Bilgi Merkezine Dön"
+    "backToInformation": "Bilgi Merkezine Dön",
+    "refresh": "Yenile",
+    "close": "Kapat"
+  },
+  "orders": {
+    "title": "Siparişler",
+    "search": "Sipariş ara...",
+    "filterByStatus": "Duruma Göre Filtrele",
+    "statusOptions": {
+      "all": "Tümü",
+      "pending": "Bekliyor",
+      "processing": "İşleniyor",
+      "completed": "Tamamlandı",
+      "cancelled": "İptal Edildi"
+    },
+    "noSearchResults": "Arama sonucu bulunamadı",
+    "noOrdersWithStatus": "{{status}} durumunda sipariş bulunamadı",
+    "noOrders": "Henüz sipariş bulunmuyor",
+    "orderId": "Sipariş ID",
+    "items": "Ürünler",
+    "location": "Konum",
+    "totalAmount": "Toplam Tutar",
+    "status": "Durum",
+    "createdAt": "Oluşturma Tarihi",
+    "actions": "İşlemler",
+    "itemCount": "ürün",
+    "viewDetails": "Detayları Gör",
+    "orderDetails": "Sipariş Detayları",
+    "orderItems": "Sipariş Ürünleri",
+    "deliveryDetails": "Teslimat Bilgileri",
+    "orderedAt": "Sipariş Tarihi",
+    "updateStatus": "Sipariş Durumunu Güncelle",
+    "newOrderReceived": "Yeni sipariş alındı!"
+  },
+  "table": {
+    "rowsPerPage": "Sayfa başına satır",
+    "of": "/"
   },
   "exams": {
     "title": "Sınav Programı",

@@ -70,14 +70,16 @@
   
   "pageTitle": {
     "home": "Home",
-    "services": "Place Order"
+    "services": "Place Order",
+    "orders": "Orders"
   },
   "nav": {
     "home": "Home",
     "services": "Place Order",
     "directions": "Directions",
     "information": "Information",
-    "help": "Help"
+    "help": "Help",
+    "orders": "Orders"
   },
   "categories": {
     "cafeteria": {
@@ -319,7 +321,9 @@
     "back": "Go Back",
     "learnMore": "Learn More",
     "clearSearch": "Clear Search",
-    "backToInformation": "Back to Information Center"
+    "backToInformation": "Back to Information Center",
+    "refresh": "Refresh",
+    "close": "Close"
   },
   "exams": {
     "title": "Exam Schedule",
@@ -339,5 +343,39 @@
       "examLocation": "Exam Location",
       "supervisor": "Supervisor"
     }
+  },
+  "orders": {
+    "title": "Orders",
+    "search": "Search orders...",
+    "filterByStatus": "Filter by Status",
+    "statusOptions": {
+      "all": "All",
+      "pending": "Pending",
+      "processing": "Processing",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "noSearchResults": "No search results found",
+    "noOrdersWithStatus": "No orders with {{status}} status",
+    "noOrders": "No orders yet",
+    "orderId": "Order ID",
+    "items": "Items",
+    "location": "Location",
+    "totalAmount": "Total Amount",
+    "status": "Status",
+    "createdAt": "Created At",
+    "actions": "Actions",
+    "itemCount": "items",
+    "viewDetails": "View Details",
+    "orderDetails": "Order Details",
+    "orderItems": "Order Items",
+    "deliveryDetails": "Delivery Details",
+    "orderedAt": "Ordered At",
+    "updateStatus": "Update Order Status",
+    "newOrderReceived": "New order received!"
+  },
+  "table": {
+    "rowsPerPage": "Rows per page",
+    "of": "of"
   }
 }

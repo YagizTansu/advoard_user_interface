@@ -226,32 +226,32 @@ export default function Services() {
       setSubmitError(null);
       
       const orderData = {
-        // studentId: formData.studentId,
-        // orderItems: selectedItems.map(item => ({
-        //   id: item.id,
-        //   name: item.name,
-        //   price: item.price,
-        //   quantity: item.quantity,
-        //   totalPrice: item.price * item.quantity
-        // })),
-        // category: selectedCategory,
-        // totalAmount: calculateTotal(),
-        // deliveryDetails: {
-        //   location: formData.deliveryLocation,
-        //   time: formData.deliveryTime,
-        //   specialInstructions: formData.orderDetails || ""
-        // },
-        // paymentMethod: formData.paymentMethod,
-        // status: "pending",
-        // createdAt: new Date().toISOString(),
-        // robot_request: {
-        //   request: "finish_batch", 
-        //   fleet_name: "showroom", 
-        //   goal_node: "D014", 
-        //   start_batch: true, 
-        //   time_stamp: 212.122, 
-        //   service_name: "command_fleet_goal"
-        // },
+        studentId: formData.studentId,
+        orderItems: selectedItems.map(item => ({
+          id: item.id,
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity,
+          totalPrice: item.price * item.quantity
+        })),
+        category: selectedCategory,
+        totalAmount: calculateTotal(),
+        deliveryDetails: {
+          location: formData.deliveryLocation,
+          time: formData.deliveryTime,
+          specialInstructions: formData.orderDetails || ""
+        },
+        paymentMethod: formData.paymentMethod,
+        status: "pending",
+        createdAt: new Date().toISOString(),
+        robot_request: {
+          request: "finish_batch", 
+          fleet_name: "showroom", 
+          goal_node: "D014", 
+          start_batch: true, 
+          time_stamp: 212.122, 
+          service_name: "command_fleet_goal"
+        },
 
       };
 
@@ -283,8 +283,71 @@ export default function Services() {
     }
   };
 
+  const submitOrderToSupabase = async () => {
+    try {
+      setIsSubmitting(true);
+      setSubmitError(null);
+      
+      const orderData = {
+        student_id: formData.studentId,
+        order_items: selectedItems.map(item => ({
+          id: item.id,
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity,
+          total_price: item.price * item.quantity
+        })),
+        category: selectedCategory,
+        total_amount: calculateTotal(),
+        delivery_details: {
+          location: formData.deliveryLocation,
+          time: formData.deliveryTime,
+          special_instructions: formData.orderDetails || ""
+        },
+        payment_method: formData.paymentMethod,
+        status: "pending"
+      };
+
+      // Insert order into Supabase
+      const { data, error } = await supabase
+        .from('orders')
+        .insert(orderData)
+        .select();
+
+      if (error) throw error;
+      
+      console.log('Order submitted to Supabase with ID:', data[0].id);
+      
+      // Send command to robot via Firebase
+      const commandData = {
+        request:{
+          finish_batch: false,
+          fleet_name: "showroom",
+          goal_node: "D014",
+          start_batch: true,
+          time_stamp: 212.122,
+        },
+        service_name: "command_fleet_goal"
+      };
+
+      // Also submit to Firebase for robot control
+      const robotId = await dbService.setDataWithId('robots_command', "robot4", commandData);
+      console.log('Robot command sent with ID:', robotId);
+
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      
+    } catch (error) {
+      console.error('Error submitting order:', error);
+      setSubmitError(typeof error === 'object' && error !== null && 'message' in error 
+        ? String(error.message) 
+        : 'An unexpected error occurred while submitting your order.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const handleSubmit = () => {
-    submitOrderToFirebase();
+    submitOrderToSupabase();
   };
 
   const calculateTotal = () => {
@@ -526,6 +589,7 @@ export default function Services() {
                   </Typography>
                 </Grid>
                 
+                {/* Student ID field commented out
                 <Grid item xs={12}>
                   <TextField
                     label={t('form.studentId')}
@@ -539,6 +603,7 @@ export default function Services() {
                     helperText={t('form.studentIdHelp')}
                   />
                 </Grid>
+                */}
 
                 <Grid item xs={12}>
                   <Divider sx={{ my: 1 }} />
@@ -600,6 +665,7 @@ export default function Services() {
                   <Divider sx={{ my: 1 }} />
                 </Grid>
 
+                {/* Payment method section commented out
                 <Grid item xs={12}>
                   <Typography className={styles.sectionTitle}>
                     {t('form.paymentDetails')}
@@ -622,6 +688,7 @@ export default function Services() {
                     </Select>
                   </FormControl>
                 </Grid>
+                */}
                 
                 <Grid item xs={12} md={6}>
                   <Paper className={styles.summaryPaper}>
@@ -708,6 +775,7 @@ export default function Services() {
                   </Grid>
                 )}
                 
+                {/* Student ID display commented out
                 <Grid item xs={12}>
                   <Typography variant="subtitle2" color="text.secondary">
                     {t('form.studentId')}
@@ -716,6 +784,7 @@ export default function Services() {
                     {formData.studentId || '-'}
                   </Typography>
                 </Grid>
+                */}
                 
                 <Grid item xs={12} sm={6}>
                   <Typography variant="subtitle2" color="text.secondary">
@@ -736,12 +805,14 @@ export default function Services() {
                 </Grid>
                 
                 <Grid item xs={12} sm={6}>
+                  {/* Payment method display commented out
                   <Typography variant="subtitle2" color="text.secondary">
                     {t('form.paymentMethod')}
                   </Typography>
                   <Typography variant="body1" sx={{ mb: 2 }}>
                     {formData.paymentMethod ? t(`payment.${formData.paymentMethod}`) : '-'}
                   </Typography>
+                  */}
                 </Grid>
                 
                 <Grid item xs={12}>
@@ -956,7 +1027,6 @@ export default function Services() {
                 onClick={handleNext}
                 endIcon={<ArrowForwardIcon />}
                 disabled={(activeStep === 1 && selectedItems.length === 0) || 
-                          (activeStep === 2 && !formData.studentId) ||
                           isSubmitting}
                 sx={{ px: { xs: 2, sm: 3 } }}
                 size={isMobile ? "small" : "medium"}
