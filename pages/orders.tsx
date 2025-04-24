@@ -43,7 +43,8 @@ import {
   DialogActions,
   ListItem,
   ListItemText,
-  List
+  List,
+  SelectChangeEvent
 } from '@mui/material';
 import { 
   Search as SearchIcon,
@@ -175,7 +176,7 @@ export default function Orders() {
   }, [statusFilter]);
 
   // Handle filter change
-  const handleStatusFilterChange = (e: React.ChangeEvent<{ value: unknown }>) => {
+  const handleStatusFilterChange = (e: SelectChangeEvent<string>) => {
     setStatusFilter(e.target.value as string);
     setPage(0);
   };
@@ -510,7 +511,7 @@ export default function Orders() {
                                 }
                               >
                                 <Typography variant="body2">
-                                  {order.order_items.length} {t('orders.itemCount')}
+                                  {order.order_items.map(item => `${item.name} (${item.quantity})`).join(', ')}
                                 </Typography>
                               </Tooltip>
                             ) : (
