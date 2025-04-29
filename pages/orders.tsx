@@ -4,7 +4,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import Link from 'next/link';
+import Link from 'next/link'; 
 import { 
   Box, 
   Container, 
@@ -274,7 +274,7 @@ export default function Orders() {
       };
 
       // Send command to Firebase for robot
-      const robotCommandId = await dbService.setDataWithId('robots_command', "robot4", commandData);
+      const robotCommandId = await dbService.setDataWithId('robots_command', "robot-0", commandData);
       console.log('Robot command sent for order delivery, command ID:', robotCommandId);
       
       // Update order status to completed

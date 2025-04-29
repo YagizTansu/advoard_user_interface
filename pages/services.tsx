@@ -288,7 +288,7 @@ export default function Services() {
 
 
       // Also submit to Firebase for robot control
-      const robotId = await dbService.setDataWithId('robots_command', "robot4", commandData);
+      const robotId = await dbService.setDataWithId('robots_command', "robot-0", commandData);
       console.log('Robot command sent with ID:', robotId);
 
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
