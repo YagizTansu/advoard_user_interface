@@ -413,10 +413,10 @@ export default function GptChat() {
             transition={{ duration: 0.5 }}
           >
             <Typography variant="h3" component="h1" className={`${styles.chatTitle} ${styles.uniGptTitle}`}>
-              UniGPT
+              {t('uniGpt.title')}
             </Typography>
             <Typography variant="subtitle1" className={styles.uniGptSubtitle}>
-              {t('Your AI assistant for university information')}
+              {t('uniGpt.subtitle')}
             </Typography>
           </motion.div>
           <Divider sx={{ my: 2 }} />
@@ -434,7 +434,7 @@ export default function GptChat() {
                 ref={inputRef}
                 fullWidth
                 variant="standard"
-                placeholder={isListening ? t('Listening...') : t('Ask UniGPT anything...')}
+                placeholder={isListening ? t('uniGpt.listening') : t('uniGpt.askPlaceholder')}
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && !isLoading && handleSendMessage()}
@@ -504,8 +504,9 @@ export default function GptChat() {
               }}
             >
               {msg.isLoading ? (
-                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 1 }}>
                   <CircularProgress size={24} sx={{ color: '#2a3eb1' }} />
+                  <Typography variant="body2">{t('uniGpt.waitingForResponse')}</Typography>
                 </Box>
               ) : (
                 <Typography sx={{ 
@@ -531,7 +532,7 @@ export default function GptChat() {
                 ref={inputRef}
                 fullWidth
                 variant="standard"
-                placeholder={isListening ? t('Listening...') : t('Ask UniGPT anything...')}
+                placeholder={isListening ? t('uniGpt.listening') : t('uniGpt.askPlaceholder')}
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && !isLoading && handleSendMessage()}

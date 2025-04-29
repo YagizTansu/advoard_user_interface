@@ -36,7 +36,8 @@ import {
   ListItemSecondaryAction,
   CircularProgress,
   Snackbar,
-  Alert
+  Alert,
+  Fab
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -48,6 +49,10 @@ import SchoolIcon from '@mui/icons-material/School';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import CloseIcon from '@mui/icons-material/Close';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import Link from 'next/link';
 import Head from 'next/head';
 import { supabase, getCategories, getMenuItems, Category, MenuItemType } from '../src/lib/supabase';
@@ -97,6 +102,7 @@ export default function Services() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const inactivityTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   // Function to handle inactivity timeout
   const resetInactivityTimer = () => {
@@ -127,6 +133,16 @@ export default function Services() {
     setIsSubmitting(false);
     // Reset inactivity timer
     resetInactivityTimer();
+  };
+
+  // Function to remove an item completely from cart
+  const handleRemoveItem = (itemId: string) => {
+    setSelectedItems(prev => prev.filter(item => item.id !== itemId));
+  };
+
+  // Toggle cart visibility
+  const toggleCart = () => {
+    setIsCartOpen(!isCartOpen);
   };
 
   // Set up event listeners for user activity
@@ -191,6 +207,12 @@ export default function Services() {
     }
     fetchMenuItems();
   }, [selectedCategory]);
+
+  useEffect(() => {
+    console.log('Available categories:', categories);
+    console.log('Selected category:', selectedCategory);
+    console.log('Menu items:', menuItems);
+  }, [categories, selectedCategory, menuItems]);
 
   const pageTransition = {
     hidden: { opacity: 0, x: -20 },
@@ -421,6 +443,39 @@ export default function Services() {
                 <Typography variant="h4" component="h2" sx={{ fontWeight: 500 }}>
                   {t('order.selectMenu')}
                 </Typography>
+              </Box>
+              
+              {/* Category Switch Buttons */}
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                <Typography variant="body2" color="text.secondary">
+                  {t('menu.switchCategory')}:
+                </Typography>
+                <ButtonGroup variant="contained" size="medium">
+                  <Button
+                    color={selectedCategory === 'cafeteria' ? 'primary' : 'inherit'}
+                    variant={selectedCategory === 'cafeteria' ? 'contained' : 'outlined'}
+                    onClick={() => setSelectedCategory('cafeteria')}
+                    startIcon={<FastfoodIcon />}
+                    sx={{ 
+                      fontWeight: selectedCategory === 'cafeteria' ? 600 : 400,
+                      px: 2
+                    }}
+                  >
+                    {t('categories.cafeteria.title')}
+                  </Button>
+                  <Button
+                    color={selectedCategory === 'coffee' ? 'primary' : 'inherit'}
+                    variant={selectedCategory === 'coffee' ? 'contained' : 'outlined'}
+                    onClick={() => setSelectedCategory('coffee')}
+                    startIcon={<CoffeeIcon />}
+                    sx={{ 
+                      fontWeight: selectedCategory === 'coffee' ? 600 : 400,
+                      px: 2
+                    }}
+                  >
+                    {t('categories.coffee.title')}
+                  </Button>
+                </ButtonGroup>
               </Box>
             </Box>
             
@@ -714,9 +769,6 @@ export default function Services() {
                               primary={item.name} 
                               secondary={`${item.quantity} x`}
                             />
-                            {/* <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                              {item.quantity * item.price} ₺
-                            </Typography> */}
                           </ListItem>
                         ))}
                         <Divider sx={{ my: 1 }} />
@@ -728,25 +780,11 @@ export default function Services() {
                               </Typography>
                             } 
                           />
-                          {/* <Typography variant="subtitle2" sx={{ fontWeight: 700, color: 'primary.main' }}>
-                            {calculateTotal()} ₺
-                          </Typography> */}
                         </ListItem>
                       </List>
                     </Paper>
                   </Grid>
                 )}
-                
-                {/* Student ID display commented out
-                <Grid item xs={12}>
-                  <Typography variant="subtitle2" color="text.secondary">
-                    {t('form.studentId')}
-                  </Typography>
-                  <Typography variant="body1" sx={{ mb: 2 }}>
-                    {formData.studentId || '-'}
-                  </Typography>
-                </Grid>
-                */}
                 
                 <Grid item xs={12} sm={6}>
                   <Typography variant="subtitle2" color="text.secondary">
@@ -767,14 +805,7 @@ export default function Services() {
                 </Grid>
                 
                 <Grid item xs={12} sm={6}>
-                  {/* Payment method display commented out
-                  <Typography variant="subtitle2" color="text.secondary">
-                    {t('form.paymentMethod')}
-                  </Typography>
-                  <Typography variant="body1" sx={{ mb: 2 }}>
-                    {formData.paymentMethod ? t(`payment.${formData.paymentMethod}`) : '-'}
-                  </Typography>
-                  */}
+                  {/* Payment method display commented out */}
                 </Grid>
                 
                 <Grid item xs={12}>
@@ -788,12 +819,6 @@ export default function Services() {
                 </Grid>
               </Grid>
             </Paper>
-
-            <Box className={styles.submissionNote}>
-              <Typography variant="body2" color="info.dark">
-                {t('order.submissionNote')}
-              </Typography>
-            </Box>
           </motion.div>
         );
         
@@ -936,42 +961,82 @@ export default function Services() {
         )}
         
         {selectedItems.length > 0 && activeStep < 4 && (
-          <Box className={styles.cartBadgeContainer}>
-            <Badge 
-              className={styles.cartBadge}
-              badgeContent={selectedItems.length} 
-              color="primary"
-              sx={{ 
-                '& .MuiBadge-badge': { 
-                  fontSize: { xs: '12px', sm: '14px' }, 
-                  fontWeight: 'bold' 
-                } 
-              }}
-            >
-              <Paper 
-                className={styles.cartPaper} 
-                elevation={3}
-                sx={{ 
-                  padding: { xs: '8px 12px', sm: '10px 16px' },
-                  flexDirection: { xs: 'column', sm: 'row' }
-                }}
+          <>
+            {!isCartOpen && (
+              <Fab
+                color="primary"
+                variant="extended"
+                onClick={toggleCart}
+                className={styles.cartFloatingButton}
+                size={isMobile ? "medium" : "large"}
               >
-                <ShoppingCartIcon 
-                  className={styles.cartIcon}
-                  sx={{ fontSize: { xs: '1.2rem', sm: '1.5rem' } }}
-                />
-                {/* <Typography 
-                  variant="subtitle1" 
-                  sx={{ 
-                    fontWeight: 600,
-                    fontSize: { xs: '0.9rem', sm: '1.1rem' }
-                  }}
+                <Badge 
+                  badgeContent={selectedItems.length} 
+                  color="error"
+                  sx={{ mr: 1 }}
                 >
-                  {calculateTotal()} ₺
-                </Typography> */}
+                  <ShoppingCartIcon />
+                </Badge>
+                {t('menu.viewCart')}
+              </Fab>
+            )}
+            
+            {/* Cart Panel */}
+            {isCartOpen && (
+              <Paper className={styles.cartPanel}>
+                <Box className={styles.cartPanelHeader}>
+                  <Typography variant="subtitle1" sx={{ fontWeight: 600, display: 'flex', alignItems: 'center' }}>
+                    <ShoppingCartIcon sx={{ mr: 1, fontSize: '1.2rem' }} />
+                    {t('menu.selectedItems')} ({selectedItems.length})
+                  </Typography>
+                  <IconButton size="small" onClick={toggleCart}>
+                    <CloseIcon fontSize="small" />
+                  </IconButton>
+                </Box>
+                
+                {selectedItems.length > 0 ? (
+                  <>
+                    <Box className={styles.cartItemsContainer}>
+                      {selectedItems.map(item => (
+                        <Box key={item.id} className={styles.cartItem}>
+                          <Box className={styles.cartItemInfo}>
+                            <Typography className={styles.cartItemName}>{item.name}</Typography>
+                            <Typography className={styles.cartItemQuantity}>{item.quantity} x</Typography>
+                          </Box>
+                          <Box className={styles.cartItemActions}>
+                            <IconButton 
+                              size="small" 
+                              color="error"
+                              onClick={() => handleRemoveItem(item.id)}
+                              title={t('menu.removeItem')}
+                            >
+                              <DeleteOutlineIcon fontSize="small" />
+                            </IconButton>
+                          </Box>
+                        </Box>
+                      ))}
+                    </Box>
+                    <Box className={styles.cartTotalSection}>
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        size="small"
+                        onClick={toggleCart}
+                        startIcon={<VisibilityOffIcon />}
+                      >
+                        {t('menu.hideCart')}
+                      </Button>
+                    </Box>
+                  </>
+                ) : (
+                  <Box className={styles.emptyCartMessage}>
+                    <RemoveShoppingCartIcon sx={{ fontSize: '2rem', mb: 1 }} />
+                    <Typography>{t('menu.emptyCart')}</Typography>
+                  </Box>
+                )}
               </Paper>
-            </Badge>
-          </Box>
+            )}
+          </>
         )}
           
         <Box className={styles.contentContainer}>
@@ -999,7 +1064,9 @@ export default function Services() {
                 color="primary"
                 onClick={handleNext}
                 endIcon={<ArrowForwardIcon />}
-                disabled={(activeStep === 1 && selectedItems.length === 0) || 
+                disabled={(activeStep === 0 && selectedCategory === '') || 
+                          (activeStep === 1 && selectedItems.length === 0) || 
+                          (activeStep === 2 && formData.deliveryLocation === '') ||
                           isSubmitting}
                 sx={{ px: { xs: 2, sm: 3 } }}
                 size={isMobile ? "small" : "medium"}

@@ -82,13 +82,17 @@
     "orders": "Orders"
   },
   "categories": {
-    "cafeteria": {
+    "food": {
       "title": "Cafeteria Order",
       "description": "Sandwiches, salads, snacks and other foods"
     },
     "coffee": {
       "title": "Coffee Shop & Drinks",
       "description": "Coffee, tea, beverages and snacks"
+    },
+    "cafeteria": {
+      "title": "Cafeteria Order",
+      "description": "Sandwiches, salads, snacks and other foods"
     },
     "printing": {
       "title": "Printing & Stationery",
@@ -136,7 +140,12 @@
     "quantity": "Quantity",
     "selectedItems": "Selected Items",
     "total": "Total",
-    "items": "items"
+    "items": "items",
+    "switchCategory": "Switch category",
+    "viewCart": "View Cart",
+    "hideCart": "Hide Cart",
+    "emptyCart": "Your cart is empty",
+    "removeItem": "Remove Item"
   },
   "payment": {
     "creditCard": "Credit Card",
@@ -386,5 +395,14 @@
   "table": {
     "rowsPerPage": "Rows per page",
     "of": "of"
+  },
+  "uniGpt": {
+    "title": "UniGPT",
+    "subtitle": "Your AI assistant for university information",
+    "askPlaceholder": "Ask UniGPT anything...",
+    "listening": "Listening...",
+    "waitingForResponse": "Please wait, response is being generated...",
+    "typeYourQuestion": "Type your question...",
+    "back": "Back"
   }
 }

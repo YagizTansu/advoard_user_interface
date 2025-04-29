@@ -592,4 +592,124 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+@media (max-width: 600px) {
+  .menuHeaderContainer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* Category Switch */
+.categorySwitch {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+@media (max-width: 600px) {
+  .categorySwitch {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+/* Cart Panel */
+.cartPanel {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  width: 300px;
+  max-height: 400px;
+  border-radius: 12px;
+  background-color: white;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.cartPanelHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background-color: #f5f5f5;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.cartItemsContainer {
+  overflow-y: auto;
+  max-height: 300px;
+  padding: 8px 0;
+}
+
+.cartItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.cartItemInfo {
+  flex: 1;
+}
+
+.cartItemName {
+  font-weight: 500;
+  margin-bottom: 4px;
+  font-size: 0.9rem;
+}
+
+.cartItemQuantity {
+  font-size: 0.8rem;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.cartItemActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.emptyCartMessage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.cartTotalSection {
+  padding: 12px 16px;
+  background-color: #f5f5f5;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cartFloatingButton {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 999;
+}
+
+@media (max-width: 600px) {
+  .cartPanel {
+    width: calc(100% - 40px);
+    right: 20px;
+    bottom: 70px; /* Adjust for mobile navigation */
+  }
+  
+  .cartFloatingButton {
+    bottom: 70px;
+  }
 }

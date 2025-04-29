@@ -82,13 +82,17 @@
     "orders": "Siparişler"
   },
   "categories": {
-    "cafeteria": {
+    "food": {
       "title": "Kantin Siparişi",
       "description": "Sandviç, salata, atıştırmalıklar ve diğer yiyecekler"
     },
     "coffee": {
       "title": "Kafeterya & İçecek",
       "description": "Kahve, çay, içecekler ve atıştırmalıklar"
+    },
+    "cafeteria": {
+      "title": "Kantin Siparişi",
+      "description": "Sandviç, salata, atıştırmalıklar ve diğer yiyecekler"
     },
     "printing": {
       "title": "Baskı & Kırtasiye",
@@ -136,7 +140,12 @@
     "quantity": "Adet",
     "selectedItems": "Seçilen Ürünler",
     "total": "Toplam",
-    "items": "ürün"
+    "items": "ürün",
+    "switchCategory": "Kategori değiştir",
+    "viewCart": "Sepeti Görüntüle",
+    "hideCart": "Sepeti Gizle",
+    "emptyCart": "Sepetiniz boş",
+    "removeItem": "Ürünü Çıkar"
   },
   "payment": {
     "creditCard": "Kredi Kartı",
@@ -388,5 +397,14 @@
       "examLocation": "Sınav Yeri",
       "supervisor": "Gözetmen"
     }
+  },
+  "uniGpt": {
+    "title": "UniGPT",
+    "subtitle": "Üniversite bilgileri için yapay zeka asistanınız",
+    "askPlaceholder": "UniGPT'ye herhangi bir şey sorun...",
+    "listening": "Dinleniyor...",
+    "waitingForResponse": "Lütfen bekleyin, yanıt oluşturuluyor...",
+    "typeYourQuestion": "Sorunuzu yazın...",
+    "back": "Geri"
   }
 }
