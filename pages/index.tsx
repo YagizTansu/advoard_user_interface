@@ -47,7 +47,7 @@ export default function Home() {
       // Send robot command before entering presentation mode
       await sendRobotCommand(false);
       setIsIdle(true);
-    }, 10000); // 20 seconds
+    }, 30000); // 20 seconds
   };
   
   // Set to presentation mode after inactivity

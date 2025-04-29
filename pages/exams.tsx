@@ -38,7 +38,7 @@ export default function ExamsPage() {
 
     inactivityTimerRef.current = setTimeout(() => {
       router.push('/');
-    }, 10000); // 10 seconds
+    }, 30000); // 10 seconds
   };
 
   // Set up the inactivity timer and event listeners

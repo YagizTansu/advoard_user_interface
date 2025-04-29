@@ -113,7 +113,7 @@ export default function Services() {
     // Set timeout for 20 seconds of inactivity
     inactivityTimeoutRef.current = setTimeout(() => {
       router.push('/');
-    }, 10000); // 20 seconds
+    }, 30000); // 20 seconds
   };
 
   // Add this new function to reset all state
