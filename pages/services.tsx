@@ -953,7 +953,16 @@ export default function Services() {
             >
               {steps.map((label) => (
                 <Step key={label}>
-                  <StepLabel>{t(`order.steps.${label}`)}</StepLabel>
+                  <StepLabel
+                    onClick={() => {
+                      if (label == 'customizeOrder') {
+                        router.push('/orders')
+                      }
+                    }}
+                    sx = {{
+                      cursor: label === 'customizeOrder' ? 'pointer' : 'default',
+                    }}
+                  >{t(`order.steps.${label}`)}</StepLabel>
                 </Step>
               ))}
             </Stepper>

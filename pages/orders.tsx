@@ -468,13 +468,13 @@ export default function Orders() {
               <Table sx={{ minWidth: 650 }} size="medium">
                 <TableHead>
                   <TableRow>
-                    <TableCell sx={{ fontWeight: 'bold' }}>{t('orders.orderId')}</TableCell>
                     <TableCell sx={{ fontWeight: 'bold' }}>{t('orders.items')}</TableCell>
                     <TableCell sx={{ fontWeight: 'bold' }}>{t('orders.location')}</TableCell>
-                    <TableCell sx={{ fontWeight: 'bold' }}>{t('orders.totalAmount')}</TableCell>
                     <TableCell sx={{ fontWeight: 'bold' }}>{t('orders.status')}</TableCell>
                     <TableCell sx={{ fontWeight: 'bold' }}>{t('orders.createdAt')}</TableCell>
                     <TableCell sx={{ fontWeight: 'bold' }}>{t('orders.actions')}</TableCell>
+                    <TableCell sx={{ fontWeight: 'bold' }}>{t('orders.orderId')}</TableCell>
+                    <TableCell sx={{ fontWeight: 'bold' }}>{t('orders.totalAmount')}</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -491,9 +491,9 @@ export default function Orders() {
                           transition={{ duration: 0.2 }}
                           style={{ display: 'table-row' }}
                         >
-                          <TableCell component="th" scope="row">
+                          {/* <TableCell component="th" scope="row">
                             {order.id.substring(0, 8)}...
-                          </TableCell>
+                          </TableCell> */}
                           <TableCell>
                             {order.order_items.length > 0 ? (
                               <Tooltip
@@ -519,7 +519,7 @@ export default function Orders() {
                             )}
                           </TableCell>
                           <TableCell>{order.delivery_details.location}</TableCell>
-                          <TableCell>{order.total_amount} ₺</TableCell>
+                          {/* <TableCell>{order.total_amount} ₺</TableCell> */}
                           <TableCell>
                             <Chip 
                               label={label} 
